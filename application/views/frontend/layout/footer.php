@@ -170,7 +170,7 @@
 
 		  </div>
 		</div>
-		<script src="<?php echo base_url();?>js/jquery-3.2.0.min.js"></script>
+		
         <script src="<?php echo base_url();?>js/bootstrap-slider.min.js"></script>
         <script src="<?php echo base_url();?>js/bootstrap-select.min.js"></script>
         <script src="<?php echo base_url();?>js/jquery.scrolling-tabs.min.js"></script>
@@ -224,3 +224,18 @@
 <script src="<?php echo base_url();?>js/auth/placeholder.min.js"></script>
 <script src="<?php echo base_url();?>js/custom.js"></script>
 <script src="<?php echo base_url();?>js/booking/ticketbooking.js"></script>
+
+
+
+<script>
+	(function() {
+		var $section = $('.wrapper-image');
+		$section.find('.panzoom').panzoom({
+		$zoomIn: $section.find(".zoom-in"),
+		$zoomOut: $section.find(".zoom-out"),
+		$zoomRange: $section.find(".zoom-range"),
+		$reset: $section.find(".reset")
+		});
+	})();
+</script>
+	  

@@ -31,6 +31,8 @@
       <script src="http://cdnjs.cloudflare.com/ajax/libs/selectivizr/1.0.2/selectivizr-min.js"></script>
       <script src="http://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-       
+    <script src="<?php echo base_url();?>js/jquery-3.2.0.min.js"></script>
+    <script src="<?php echo base_url();?>js/jquery.panzoom.js"></script>
+<script src="<?php echo base_url();?>js/jquery.mousewheel.js"></script>
 
 </head>

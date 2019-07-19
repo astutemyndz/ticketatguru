@@ -6,229 +6,42 @@ if (!defined("ROOT_PATH"))
 }
 class EventController extends App_Controller
 {	
-	public $defaultCaptcha = 'pjTicketBooking_Captcha';
-	
-	public $defaultLocale = 'pjTicketBooking_LocaleId';
-	
-	public $defaultLangMenu = 'pjTicketBooking_LangMenu';
 	
 	public $defaultStore = 'pjTicketBooking_Store';
-	
 	public $defaultForm = 'pjTicketBooking_Form';
+	public $pjActionSeatsAjaxResponse = 'pjActionSeatsAjaxResponse';
 	public $data = array();
-	public $option_arr = array();
-	public function __construct()
-	{
+
+
+	protected 	$option_arr 			= array();
+	protected 	$optionArr 				= 'option_arr';
+	protected 	$locale_arr 			= 'locale_arr';
+	
+	public function __construct() {
 		parent::__construct();
-		
-		$OptionModel = pjOptionModel::factory();
-		$this->option_arr = $OptionModel->getPairs($this->getForeignId());
-		$this->data['tpl'] = array();
-		$this->data['tpl']['option_arr'] = array();
-		$this->data['tpl']['option_arr'] = $this->option_arr;
-		$this->setTime();
-
-		//$this->unsetSession('venue_id');
-
-		// if (!isset($_SESSION[$this->defaultLocale]))
-		// {
-		// 	$locale_arr = pjLocaleModel::factory()->where('is_default', 1)->limit(1)->findAll()->getData();
-		// 	if (count($locale_arr) === 1)
-		// 	{
-		// 		$this->setLocaleId($locale_arr[0]['id']);
-		// 	}
-		// }
-		$this->pjActionLoad();
-
-		
 		self::allowCORS();
 	}
-
 	
 
-
-	//['pjTicketBooking_Store']['key'] = 'vlue';
-	public function afterFilter()
-	{		
-		if (!isset($_GET['hide']) || (isset($_GET['hide']) && (int) $_GET['hide'] !== 1) &&
-			in_array($_GET['action'], array('pjActionEvents', 'pjActionDetails', 'pjActionSeats', 'pjActionCheckout', 'pjActionPreview', 'pjActionGetPaymentForm')))
-		{
-			$locale_arr = pjLocaleModel::factory()->select('t1.*, t2.file, t2.title')
-				->join('pjLocaleLanguage', 't2.iso=t1.language_iso', 'left')
-				->where('t2.file IS NOT NULL')
-				->orderBy('t1.sort ASC')->findAll()->getData();
-			
-			$this->set('locale_arr', $locale_arr);
-		}
-	}
-	
-	public function beforeFilter()
-	{
-		$OptionModel = pjOptionModel::factory();
-		$this->option_arr = $OptionModel->getPairs($this->getForeignId());
-		$this->set('option_arr', $this->option_arr);
-		$this->setTime();
-
-		if (!$this->hasSession($this->defaultLocale))
-		{
-			$locale_arr = pjLocaleModel::factory()->where('is_default', 1)->limit(1)->findAll()->getData();
-			if (count($locale_arr) === 1)
-			{
-				$this->setLocaleId($locale_arr[0]['id']);
-			}
-		}
-		if (!in_array($_GET['action'], array('pjActionLoadCss')))
-		{
-			$this->loadSetFields();
-		}
-	}
-	
-	public function beforeRender()
-	{
-		if (isset($_GET['iframe']))
-		{
-			$this->setLayout('pjActionIframe');
-		}
-	}
-	
-	public function pjActionLocale()
-	{
-		$this->setAjax(true);
-	
-		if ($this->isXHR())
-		{
-			if (isset($_GET['locale_id']))
-			{
-				$this->pjActionSetLocale($_GET['locale_id']);
-				
-				$this->loadSetFields(true);
-				
-				$day_names = __('day_names', true);
-				ksort($day_names, SORT_NUMERIC);
-				
-				$months = __('months', true);
-				ksort($months, SORT_NUMERIC);
-				
-				pjAppController::jsonResponse(array('status' => 'OK', 'code' => 200, 'text' => 'Locale have been changed.', 'opts' => array(
-					'day_names' => array_values($day_names),
-					'month_names' => array_values($months)
-				)));
-			}
-		}
-		exit;
-	}
-	private function pjActionSetLocale($locale)
-	{
-		if ((int) $locale > 0)
-		{
-			$this->setSession('pjTicketBooking_LocaleId', (int) $locale);
+	private function pjActionSetLocale($locale) {
+		if ((int) $locale > 0) {
+			$this->setSession($this->defaultLocale, (int) $locale);
 		}
 		return $this;
 	}
 	
-	public function pjActionGetLocale()
-	{
-		return ($this->getSession('pjTicketBooking_LocaleId')) && (int) $this->getSession('pjTicketBooking_LocaleId') > 0 ? (int) $this->getSession('pjTicketBooking_LocaleId') : FALSE;
+	public function pjActionGetLocale() {
+		return ($this->getSession($this->defaultLocale)) && (int) $this->getSession($this->defaultLocale) > 0 ? (int) $this->getSession($this->defaultLocale) : FALSE;
 	}
-	public function pjActionGetHide()
-	{
+	public function pjActionGetHide() {
 		return ($this->getSession('hide')) ? (int) $this->getSession('locale') : 0;
 	}
-	
-	public function pjActionCaptcha()
-	{
-		$this->setAjax(true);
-		header("Cache-Control: max-age=3600, private");
-		$Captcha = new pjCaptcha(PJ_WEB_PATH.'obj/Anorexia.ttf', $this->defaultCaptcha, 6);
-		$Captcha->setImage(PJ_IMG_PATH.'button.png')->init(isset($_GET['rand']) ? $_GET['rand'] : null);
-		exit;
-	}
-
-	public function pjActionCheckCaptcha()
-	{
-		$this->setAjax(true);
-		if (!isset($_GET['captcha']) || empty($_GET['captcha']) || !pjCaptcha::validate($_GET['captcha'], $_SESSION[$this->defaultCaptcha])){
-			echo 'false';
-		}else{
-			echo 'true';
-		}
-		exit;
-	}
-	
-	public function pjActionLoadCss()
-	{
-		$dm = new pjDependencyManager(PJ_INSTALL_PATH, PJ_THIRD_PARTY_PATH);
-		$dm->load(PJ_CONFIG_PATH . 'dependencies.php')->resolve();
 		
-		$layout = $this->option_arr['o_theme'];
-		// if(isset($_GET['layout']) && in_array($_GET['layout'], array('theme1', 'theme2', 'theme3', 'theme4', 'theme5', 'theme6', 'theme7', 'theme8', 'theme9', 'theme10')))
-		// {
-		// 	$layout = $_GET['layout'];
-		// }
-		$arr = array(
-			// array('file' => 'jquery-ui.custom.min.css', 'path' => $dm->getPath('pj_jquery_ui') . 'css/smoothness/'),
-			array('file' => 'default.css', 'path' => PJ_CSS_PATH),
-			array('file' => 'font-awesome.min.css', 'path' => $dm->getPath('font_awesome') . 'css/'),
-			//array('file' => "$layout.css", 'path' => PJ_CSS_PATH)
-		);
-		header("Content-Type: text/css; charset=utf-8");
-		foreach ($arr as $item)
-		{
-			ob_start();
-			@readfile($item['path'] . $item['file']);
-			$string = ob_get_contents();
-			ob_end_clean();
-			
-			if ($string !== FALSE)
-			{
-				echo str_replace(
-					array('../fonts/glyphicons', '../fonts/fontawesome', 'images/', "pjWrapper"),
-					array(
-						PJ_INSTALL_URL . PJ_FRAMEWORK_LIBS_PATH . 'pj/fonts/glyphicons',
-						PJ_INSTALL_URL . $dm->getPath('font_awesome') . 'fonts/fontawesome',
-						PJ_INSTALL_URL . $dm->getPath('pj_jquery_ui') . 'css/smoothness/images/',
-						"pjWrapperTicketBooking_" . $layout
-					),
-					$string
-				) . "\n";
-			}
-		}
-		exit;
-	}
 	
-	private function pjActionLoad()
-	{
-		ob_start();
-		//header("Content-Type: text/javascript; charset=utf-8");
-		/*
-		$terms_conditions = pjMultiLangModel::factory()->select('t1.*')
-			->where('t1.model','pjOption')
-			->where('t1.locale', $this->getLocaleId())
-			->where('t1.field', 'o_terms')
-			->limit(0, 1)
-			->findAll()->getData();
-		$this->set('terms_conditions', $terms_conditions[0]['content']);
-		*/
-		if($this->getSession('locale') && $this->getSession('locale') > 0)
-		{
-			$this->setSession('pjTicketBooking_LocaleId', (int) $this->getSession('locale'));
-			$this->setSession('pjTicketBooking_LangMenu', 'hide');
-			$this->loadSetFields(true);
-		} else {
-			$locale_arr = pjLocaleModel::factory()->where('is_default', 1)->limit(1)->findAll()->getData();
-			if (count($locale_arr) === 1)
-			{
-				$this->setSession('pjTicketBooking_LocaleId', $locale_arr[0]['id']);
-			}
-			$this->setSession('pjTicketBooking_LangMenu', 'show');
-			$this->setSession('pjActionSeatsAjaxResponse', []);
-		}
-	}
 	
 	public function pjActionEvents()
 	{
 		$this->setAjax(true);
-		
 		if ($this->isXHR())
 		{
 			$ts = time();
@@ -294,38 +107,10 @@ class EventController extends App_Controller
 	
 	public function pjActionDetails($id)
 	{
-		//$this->setAjax(true);
-	
-		//if ($this->isXHR())
-		//{
-			/*
-			$hash_date = date('Y-m-d');
-			if(isset($_GET['date']) && !empty($_GET['date']) && pjUtil::checkFormatDate($_GET['date'], $this->option_arr['o_date_format']) == TRUE)
-			{
-				$hash_date = pjUtil::formatDate($_GET['date'], $this->option_arr['o_date_format']);
-			}
-			
-			$selected_date = $hash_date;
-			$this->_set('selected_date', $selected_date);
-			
-			
-			
-			*/
-			//$ts = time();
-			//$hash_date = date('Y-m-d', $ts);
-			
-			//$from_ts = $ts;
-			
-			// if(isset($_GET['from_date']) && !empty($_GET['from_date']))
-			// {
-			// 	$from_ts = strtotime(pjUtil::formatDate($_GET['from_date'], $this->option_arr['o_date_format']));
-			// }
-			// $end_ts = $from_ts + (86400 * 7);
 			$hash_date = NULL;
 			$selected_date = NULL;
 			if($this->get('date'))
 			{
-				
 				$hash_date = pjUtil::formatDate($this->get('date'), $this->option_arr['o_date_format']);
 			}
 			if($hash_date) {
@@ -333,22 +118,14 @@ class EventController extends App_Controller
 			}
 
 			$this->setSession('selected_date', $selected_date);
-			
 
-			// echo $hash_date;
-			// 	exit;
-			// if(strtotime($hash_date) < $from_ts || strtotime($hash_date) > $end_ts)
-			// {
-			// 	$hash_date = date('Y-m-d', $from_ts);
-			// }
-
-			if($this->hasSession('pjActionSeatsAjaxResponse')['tickets'])
+			if($this->hasSession($this->defaultStore)['tickets'])
 			{
-				$this->unsetSession($this->getSession('pjActionSeatsAjaxResponse')['tickets']);
+				$this->unsetSession($this->getSession($this->defaultStore)['tickets']);
 			}
-			if($this->hasSession('pjActionSeatsAjaxResponse')['seat_id'])
+			if($this->hasSession($this->defaultStore)['seat_id'])
 			{
-				$this->unsetSession($this->getSession('pjActionSeatsAjaxResponse')['seat_id']);
+				$this->unsetSession($this->getSession($this->defaultStore)['seat_id']);
 			}
 
 
@@ -391,16 +168,9 @@ class EventController extends App_Controller
 					}
 				}
 			}
-			
-			// echo "<pre>";
-			// print_r($grid['time_arr']);
-			// exit;
-			
 			$show_date_arr = array();
 			foreach($show_arr as $v)
 			{
-				
-
 				$date = date($this->option_arr['o_date_format'], strtotime($v['date_time']));
 				if(strtotime($v['date_time']) > time() + $this->option_arr['o_booking_earlier'] * 60)
 				{
@@ -629,13 +399,17 @@ class EventController extends App_Controller
 				$this->data['hall_arr'] 		= $_show_arr;
 				$this->data['status'] 			= 'OK';
 				$this->data['title'] = 'Ticket at Guru';
+				//$this->data[$this->optionArr] = $this->option_arr;
 				
 			} else {
 				$selected_date 	= $hash_date;
 				$this->data['status'] 			= 'ERR';
 			}
 
-			$this->setSession('pjActionSeatsAjaxResponse', $this->data);
+			// echo "<pre>";
+			// print_r($this->data);
+			// exit;
+			$this->setSession($this->defaultStore, $this->data);
 			pjAppController::jsonResponse(array('status' => TRUE, 'code' => 200, 'data' => $this->data));
 			
 		}
@@ -648,7 +422,7 @@ class EventController extends App_Controller
 	public function pjActionSeats() {
 		// if(isset($_SESSION)) {
 		// 	echo "<pre>";
-		// 	print_r($this->getSession('pjActionSeatsAjaxResponse'));
+		// 	print_r($this->getSession($this->defaultStore));
 		// }
 		$this->data['tpl']['title'] = 'Ticket at Guru';
 		$this->load->view('frontend/layout/head', $this->data);

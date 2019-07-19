@@ -5453,6 +5453,7 @@ Primary style
 /*------------------------------------------------------------
 # Page Header
 ------------------------------------------------------------*/
+/*
 .tickets-page .page-header {
     background: url("images/tickets-page-header-background.jpg") no-repeat;
 }
@@ -5684,15 +5685,18 @@ Primary style
     font-weight: 500;
     color: #ff2630;
 }
-
+*/
 #pjWrapperTicketBooking_theme1 .tbContainer .tbMapHolder{
+	/*
 	margin: 0 auto;
 	overflow: auto;
     -ms-overflow-y: hidden;
 	overflow-y:hidden;
-    position: relative;
+	position: relative;
+	*/
 }
 #pjWrapperTicketBooking_theme1 .tbContainer .tbMapHolder .tbSeatRect {
+	
 	border-radius: 3px;
     display: block;
     font-size: 12px;
@@ -5701,7 +5705,8 @@ Primary style
     text-align: center;
     z-index: 1000;
     color: #FFFFFF;
-    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
+	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
+	
 }
 #pjWrapperTicketBooking_theme1 .tbContainer .tbMapHolder .tbSeatAvailable{
     background-color: #3e8f3e;
@@ -6181,3 +6186,10 @@ Primary style
 #pjWrapperTicketBooking_theme1 .pjCbEventRow .pjCbMovieIntroContent .pjCbMovieTime .pjCbTimePassed:focus { background: #1b6aac; color: #fff; }
 #pjWrapperTicketBooking_theme1 .pjCbEventRow .pjCbMovieIntroContent .pjCbMovieTime a:hover,
 #pjWrapperTicketBooking_theme1 .pjCbEventRow .pjCbMovieIntroContent .pjCbMovieTime a:focus { background: #56af31; text-decoration: none; }
+
+
+.zoom-buttons-wrapper{position:relative;margin-top:1px;text-align:right;}
+.zoom-buttons-wrapper .button{padding:0.4rem;border-radius:2px}
+.zoom-buttons-wrapper .button:hover{background:#636363;}
+
+.panzoom-parent, .map-wrapper-column-mob{border: 1px solid #636363;}

@@ -19,6 +19,7 @@ if (pjObject::getPlugin('pjOneAdmin') !== NULL && $controller->isAdmin())
 			<li><a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminVenues&amp;action=pjActionIndex" class="<?php echo $_GET['controller'] == 'pjAdminVenues' ? 'menu-focus' : NULL; ?>"><span class="menu-venues">&nbsp;</span><?php __('menuVenues'); ?></a></li>
 			<li><a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminImageGallery&amp;action=pjActionIndex" class="<?php echo $_GET['controller'] == 'pjAdminImageGallery' ? 'menu-focus' : NULL; ?>"><span class="menu-venues">&nbsp;</span>Image Gallery</a></li>
 			<li><a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminSlider&amp;action=pjActionIndex" class="<?php echo $_GET['controller'] == 'pjAdminSlider' ? 'menu-focus' : NULL; ?>"><span class="menu-venues">&nbsp;</span><?php __('menuSlider'); ?></a></li>
+			<li><a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminSponsors&amp;action=pjActionIndex" class="<?php echo $_GET['controller'] == 'pjAdminSponsors' ? 'menu-focus' : NULL; ?>"><span class="menu-users">&nbsp;</span><?php __('menuSponsor'); ?></a></li>
 			<li><a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminGroups&amp;action=pjActionIndex" class="<?php echo $_GET['controller'] == 'pjAdminGroups' ? 'menu-focus' : NULL; ?>"><span class="menu-groups">&nbsp;</span><?php __('menuGroups'); ?></a></li>
 			<li><a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminSubscribers&amp;action=pjActionIndex" class="<?php echo $_GET['controller'] == 'pjAdminSubscribers' ? 'menu-focus' : NULL; ?>"><span class="menu-subscribers">&nbsp;</span><?php __('menuSubscriber'); ?></a></li>
 			<li><a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminMessages&amp;action=pjActionIndex" class="<?php echo ($_GET['controller'] == 'pjAdminMessages' && $_GET['action'] != 'pjActionSend') ? 'menu-focus' : NULL; ?>"><span class="menu-messages">&nbsp;</span><?php __('menuMessages'); ?></a></li>
@@ -26,7 +27,7 @@ if (pjObject::getPlugin('pjOneAdmin') !== NULL && $controller->isAdmin())
 			<li><a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminOptions&amp;action=pjActionIndex" class="<?php echo ($_GET['controller'] == 'pjAdminOptions' && in_array($_GET['action'], array('pjActionIndex', 'pjActionBooking', 'pjActionNotification', 'pjActionBookingForm', 'pjActionTicket', 'pjActionTerm'))) || in_array($_GET['controller'], array('pjAdminLocales', 'pjBackup', 'pjLocale', 'pjSms')) || ($_GET['controller'] == 'pjInvoice' && $_GET['action'] == 'pjActionIndex') ? 'menu-focus' : NULL; ?>"><span class="menu-options">&nbsp;</span><?php __('menuOptions'); ?></a></li>
 			<li><a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminUsers&amp;action=pjActionIndex" class="<?php echo $_GET['controller'] == 'pjAdminUsers' ? 'menu-focus' : NULL; ?>"><span class="menu-users">&nbsp;</span><?php __('menuUsers'); ?></a></li>
 			
-			<li><a href="?controller=pjAdminClients&amp;action=pjActionIndex" class="<?php echo $_GET['controller'] == 'pjAdminClients' ? 'menu-focus' : NULL; ?>"><span class="menu-users">&nbsp;</span>Clients</a></li>
+			
 			
 			<?php
 		}

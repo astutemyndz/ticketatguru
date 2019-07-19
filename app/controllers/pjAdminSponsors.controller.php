@@ -4,7 +4,7 @@ if (!defined("ROOT_PATH"))
 	header("HTTP/1.1 403 Forbidden");
 	exit;
 }
-class pjAdminSlider extends pjAdmin
+class pjAdminSponsors extends pjAdmin
 {
 	public $sessionShow = 'pjShow_session';
 	/***********Adding function*************/
@@ -18,18 +18,16 @@ class pjAdminSlider extends pjAdmin
 			$post_max_size = pjUtil::getPostMaxSize();
 			if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_SERVER['CONTENT_LENGTH']) && (int) $_SERVER['CONTENT_LENGTH'] > $post_max_size)
 			{
-				pjUtil::redirect(PJ_INSTALL_URL . "admin.php?controller=pjAdminSlider&action=pjActionIndex&err=AE05");
+				pjUtil::redirect(PJ_INSTALL_URL . "admin.php?controller=pjAdminSponsors&action=pjActionIndex&err=ASP05");
 			}
-			if (isset($_POST['image_slider_create']))
+			if (isset($_POST['image_sponsor_create']))
 			{
 					
 				
-				$pjSliderModel = pjSliderModel::factory();
+				$pjSponsorsModel = pjSponsorsModel::factory();
 				
-				$id = $pjSliderModel->setAttributes($_POST)->insert()->getInsertId();
-				// echo "<pre>"; 
-				// print_r($_POST);	
-				// print_r($_FILES);
+				$id = $pjSponsorsModel->setAttributes($_POST)->insert()->getInsertId();
+				
 				if ($id !== false && (int) $id > 0)
 				{
 				
@@ -39,7 +37,7 @@ class pjAdminSlider extends pjAdmin
 					 */
 					if (isset($_POST['i18n']))
 					{
-						$pjMultiLangModel->saveMultiLang($_POST['i18n'], $id, 'pjSlider', 'data');
+						$pjMultiLangModel->saveMultiLang($_POST['i18n'], $id, 'pjSponsor', 'data');
 					
 						if(isset($_POST['index_arr']) && $_POST['index_arr'] != '')
 						{
@@ -49,7 +47,7 @@ class pjAdminSlider extends pjAdmin
 								if(strpos($v, 'fd') !== false)
 								{
 									$p_data = array();
-									$p_data['slider_image_id'] = $id;
+									$p_data['sponsor_image_id'] = $id;
 							
 								}
 							}
@@ -57,55 +55,56 @@ class pjAdminSlider extends pjAdmin
 					
 					}
 					
-					if (isset($_FILES['slider_image']))
+					if (isset($_FILES['sponsor_image']))
 					{
-						if($_FILES['slider_image']['error'] == 0)
+						if($_FILES['sponsor_image']['error'] == 0)
 						{
-							if(getimagesize($_FILES['slider_image']["tmp_name"]) != false)
+							if(getimagesize($_FILES['sponsor_image']["tmp_name"]) != false)
 							{
-								if (is_writable('app/web/upload/slider_images'))
+								if (is_writable('app/web/upload/sponsor_images'))
 								{
 									$Image = new pjImage();
 									if ($Image->getErrorCode() !== 200)
 									{
 										$Image->setAllowedTypes(array('image/png', 'image/gif', 'image/jpg', 'image/jpeg', 'image/pjpeg'));
-										if ($Image->load($_FILES['slider_image']))
+										if ($Image->load($_FILES['sponsor_image']))
 										{
 											$resp = $Image->isConvertPossible();
 											if ($resp['status'] === true)
 											{
 												$hash = md5(uniqid(rand(), true));
-												$image_path = PJ_UPLOAD_PATH . 'slider_images/' . $id . '_' . $hash . '.' . $Image->getExtension();
+												$image_path = PJ_UPLOAD_PATH . 'sponsor_images/' . $id . '_' . $hash . '.' . $Image->getExtension();
 												
-												$Image->loadImage($_FILES['slider_image']["tmp_name"]);
-												$Image->resizeSmart(1800, 430);
+												$Image->loadImage($_FILES['sponsor_image']["tmp_name"]);
+												// $Image->resizeSmart(350, 150);
+												$Image->thumbnail(368, 150);
 												$Image->saveImage($image_path);
 												$data = array();
-												$data['slider_image'] = $image_path;
+												$data['sponsor_image'] = $image_path;
 																			
-												$pjSliderModel->reset()->where('id', $id)->limit(1)->modifyAll($data);
+												$pjSponsorsModel->reset()->where('id', $id)->limit(1)->modifyAll($data);
 											}
 										}
 									}
 								}else{
-									pjUtil::redirect($_SERVER['PHP_SELF'] . "?controller=pjAdminSlider&action=pjActionUpdate&id=$id&err=AE11");
+									pjUtil::redirect($_SERVER['PHP_SELF'] . "?controller=pjAdminSponsors&action=pjActionUpdate&id=$id&err=ASP11");
 								}
 							}else{
-								pjUtil::redirect($_SERVER['PHP_SELF'] . "?controller=pjAdminSlider&action=pjActionUpdate&id=$id&err=AE12");
+								pjUtil::redirect($_SERVER['PHP_SELF'] . "?controller=pjAdminSponsors&action=pjActionUpdate&id=$id&err=ASP12");
 							}
-						}else if($_FILES['slider_image']['error'] != 4){
-							pjUtil::redirect($_SERVER['PHP_SELF'] . "?controller=pjAdminSlider&action=pjActionUpdate&id=$id&err=AE09");
+						}else if($_FILES['sponsor_image']['error'] != 4){
+							pjUtil::redirect($_SERVER['PHP_SELF'] . "?controller=pjAdminSponsors&action=pjActionUpdate&id=$id&err=ASP09");
 						}
 
 				
 					}
 					
-					$err = 'SLDR03';
+					$err = 'ASP03';
 					
-					pjUtil::redirect($_SERVER['PHP_SELF'] . "?controller=pjAdminSlider&action=pjActionUpdate&id=$id&err=$err");
+					pjUtil::redirect($_SERVER['PHP_SELF'] . "?controller=pjAdminSponsors&action=pjActionUpdate&id=$id&err=$err");
 				} else {
-					$err = 'AE04';
-					pjUtil::redirect($_SERVER['PHP_SELF'] . "?controller=pjAdminSlider&action=pjActionIndex&err=$err");
+					$err = 'ASP04';
+					pjUtil::redirect($_SERVER['PHP_SELF'] . "?controller=pjAdminSponsors&action=pjActionIndex&err=$err");
 				}
 				
 			} else {
@@ -128,30 +127,30 @@ class pjAdminSlider extends pjAdmin
 				$this->appendJs('jquery.multilang.js', PJ_FRAMEWORK_LIBS_PATH . 'pj/js/');
 				$this->appendJs('jquery.tipsy.js', PJ_THIRD_PARTY_PATH . 'tipsy/');
 				$this->appendCss('jquery.tipsy.css', PJ_THIRD_PARTY_PATH . 'tipsy/');
-				$this->appendJs('pjAdminSlider.js');
+				$this->appendJs('pjAdminSponsors.js');
 			}
 		} else {
 			$this->set('status', 2);
 		}
 	}
 	/***********Ajax Fetching function*************/
-	public function pjActionGetSlider()
+	public function pjActionGetSponsors()
 	{
 		$this->setAjax(true);
 	
 		if ($this->isXHR())
 		{
-			$pjSliderModel = pjSliderModel::factory()
-							->join('pjMultiLang', "t2.model='pjSlider' AND t2.foreign_id=t1.id AND t2.field='title' AND t2.locale='".$this->getLocaleId()."'", 'left outer');
+			$pjSponsorsModel = pjSponsorsModel::factory()
+							->join('pjMultiLang', "t2.model='pjSponsor' AND t2.foreign_id=t1.id AND t2.field='title' AND t2.locale='".$this->getLocaleId()."'", 'left outer');
 			
 			if (isset($_GET['q']) && !empty($_GET['q']))
 			{
 				$q = pjObject::escapeString($_GET['q']);
-				$pjSliderModel->where('t2.content LIKE', "%$q%");
+				$pjSponsorsModel->where('t2.content LIKE', "%$q%");
 			}
 			if (isset($_GET['status']) && !empty($_GET['status']) && in_array($_GET['status'], array('T', 'F')))
 			{
-				$pjSliderModel->where('t1.status', $_GET['status']);
+				$pjSponsorsModel->where('t1.status', $_GET['status']);
 			}
 			$column = 'name';
 			$direction = 'ASC';
@@ -161,7 +160,7 @@ class pjAdminSlider extends pjAdmin
 				$direction = strtoupper($_GET['direction']);
 			}
 
-			$total = $pjSliderModel->findCount()->getData();
+			$total = $pjSponsorsModel->findCount()->getData();
 			$rowCount = isset($_GET['rowCount']) && (int) $_GET['rowCount'] > 0 ? (int) $_GET['rowCount'] : 10;
 			$pages = ceil($total / $rowCount);
 			$page = isset($_GET['page']) && (int) $_GET['page'] > 0 ? intval($_GET['page']) : 1;
@@ -173,13 +172,13 @@ class pjAdminSlider extends pjAdmin
 
 			$data = array();
 			
-			$data = $pjSliderModel
-				->select(" t1.id, t1.slider_image, t1.created, t1.status, t2.content as name")
+			$data = $pjSponsorsModel
+				->select(" t1.id, t1.sponsor_image,t1.sponsor_year, t1.created, t1.status, t2.content as name")
 				->orderBy("$column $direction")
 				->limit($rowCount, $offset)
 				->findAll()
 				->getData();
-			
+			// echo "<pre>"; print_r($data);
 			pjAppController::jsonResponse(compact('data', 'total', 'pages', 'page', 'rowCount', 'column', 'direction'));
 		}
 		exit;
@@ -192,26 +191,26 @@ class pjAdminSlider extends pjAdmin
 		if ($this->isAdmin() || $this->isEditor())
 		{
 			$this->appendJs('jquery.datagrid.js', PJ_FRAMEWORK_LIBS_PATH . 'pj/js/');
-			$this->appendJs('pjAdminSlider.js');
+			$this->appendJs('pjAdminSponsors.js');
 		} else {
 			$this->set('status', 2);
 		}
 	}
 	/***********Ajax Change Status function*************/
-	public function pjActionSaveSlider()
+	public function pjActionSaveSponsors()
 	{
 		$this->setAjax(true);
 	
 		if ($this->isXHR())
 		{
-			$pjSliderModel = pjSliderModel::factory();
-			if (!in_array($_POST['column'], $pjSliderModel->i18n))
+			$pjSponsorsModel = pjSponsorsModel::factory();
+			if (!in_array($_POST['column'], $pjSponsorsModel->i18n))
 			{
 				$value = $_POST['value'];
 				
-				$pjSliderModel->where('id', $_GET['id'])->limit(1)->modifyAll(array($_POST['column'] => $value));
+				$pjSponsorsModel->where('id', $_GET['id'])->limit(1)->modifyAll(array($_POST['column'] => $value));
 			} else {
-				pjMultiLangModel::factory()->updateMultiLang(array($this->getLocaleId() => array($_POST['column'] => $_POST['value'])), $_GET['id'], 'pjSlider', 'data');
+				pjMultiLangModel::factory()->updateMultiLang(array($this->getLocaleId() => array($_POST['column'] => $_POST['value'])), $_GET['id'], 'pjSponsor', 'data');
 			}
 		}
 		exit;
@@ -226,73 +225,74 @@ class pjAdminSlider extends pjAdmin
 			$post_max_size = pjUtil::getPostMaxSize();
 			if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_SERVER['CONTENT_LENGTH']) && (int) $_SERVER['CONTENT_LENGTH'] > $post_max_size)
 			{
-				pjUtil::redirect(PJ_INSTALL_URL . "admin.php?controller=pjAdminSlider&action=pjActionIndex&err=AE06");
+				pjUtil::redirect(PJ_INSTALL_URL . "admin.php?controller=pjAdminSponsors&action=pjActionIndex&err=ASP06");
 			}	
-			if (isset($_POST['image_slider_update']))
+			if (isset($_POST['image_sponsor_update']))
 			{
-				$pjSliderModel = pjSliderModel::factory();
+				$pjSponsorsModel = pjSponsorsModel::factory();
 				//$pjSeatModel = pjSeatModel::factory();
 				
-				$arr = $pjSliderModel->find($_POST['id'])->getData();
+				$arr = $pjSponsorsModel->find($_POST['id'])->getData();
 				if (empty($arr))
 				{
-					pjUtil::redirect($_SERVER['PHP_SELF'] . "?controller=pjAdminSlider&action=pjActionIndex&err=AE08");
+					pjUtil::redirect($_SERVER['PHP_SELF'] . "?controller=pjAdminSponsors&action=pjActionIndex&err=ASP08");
 				}
 				
 				$data = array();
 				
-				if (isset($_FILES['slider_image']))
+				if (isset($_FILES['sponsor_image']))
 				{
-					if($_FILES['slider_image']['error'] == 0)
+					if($_FILES['sponsor_image']['error'] == 0)
 					{
-						if(getimagesize($_FILES['slider_image']["tmp_name"]) != false)
+						if(getimagesize($_FILES['sponsor_image']["tmp_name"]) != false)
 						{
-							if (is_writable('app/web/upload/slider_images'))
+							if (is_writable('app/web/upload/sponsor_images'))
 							{
-								if (file_exists(PJ_INSTALL_PATH . $arr['slider_image']))
+								if (file_exists(PJ_INSTALL_PATH . $arr['sponsor_image']))
 								{
-									@unlink(PJ_INSTALL_PATH . $arr['slider_image']);
+									@unlink(PJ_INSTALL_PATH . $arr['sponsor_image']);
 								}
 								
 								$Image = new pjImage();
 								if ($Image->getErrorCode() !== 200)
 								{
 									$Image->setAllowedTypes(array('image/png', 'image/gif', 'image/jpg', 'image/jpeg', 'image/pjpeg'));
-									if ($Image->load($_FILES['slider_image']))
+									if ($Image->load($_FILES['sponsor_image']))
 									{
 										$resp = $Image->isConvertPossible();
 										if ($resp['status'] === true)
 										{
 											$hash = md5(uniqid(rand(), true));
-											$image_path = PJ_UPLOAD_PATH . 'slider_images/' . $_POST['id'] . '_' . $hash . '.' . $Image->getExtension();
+											$image_path = PJ_UPLOAD_PATH . 'sponsor_images/' . $_POST['id'] . '_' . $hash . '.' . $Image->getExtension();
 											
-											$Image->loadImage($_FILES['slider_image']["tmp_name"]);
-											$Image->resizeSmart(1800, 430);
+											$Image->loadImage($_FILES['sponsor_image']["tmp_name"]);
+											// $Image->resizeSmart(350, 150);
+											$Image->thumbnail(368, 150);
 											$Image->saveImage($image_path);
-											$data['slider_image'] = $image_path;
+											$data['sponsor_image'] = $image_path;
 											
 										}
 									}
 								}
 							}else{
-								pjUtil::redirect($_SERVER['PHP_SELF'] . "?controller=pjAdminSlider&action=pjActionUpdate&id=".$_POST['id']."&err=AE11");
+								pjUtil::redirect($_SERVER['PHP_SELF'] . "?controller=pjAdminSponsors&action=pjActionUpdate&id=".$_POST['id']."&err=ASP11");
 							}
 						}else{
-							pjUtil::redirect($_SERVER['PHP_SELF'] . "?controller=pjAdminSlider&action=pjActionUpdate&id=".$_POST['id']."&err=AE12");
+							pjUtil::redirect($_SERVER['PHP_SELF'] . "?controller=pjAdminSponsors&action=pjActionUpdate&id=".$_POST['id']."&err=ASP12");
 						}
-					}else if($_FILES['slider_image']['error'] != 4){
-						pjUtil::redirect($_SERVER['PHP_SELF'] . "?controller=pjAdminSlider&action=pjActionUpdate&id=".$_POST['id']."&err=AE10");
+					}else if($_FILES['sponsor_image']['error'] != 4){
+						pjUtil::redirect($_SERVER['PHP_SELF'] . "?controller=pjAdminSponsors&action=pjActionUpdate&id=".$_POST['id']."&err=ASP10");
 					}
 				}
 				
-				$pjSliderModel->reset()->where('id', $_POST['id'])->limit(1)->modifyAll(array_merge($_POST, $data));
+				$pjSponsorsModel->reset()->where('id', $_POST['id'])->limit(1)->modifyAll(array_merge($_POST, $data));
 				
 				$pjMultiLangModel = pjMultiLangModel::factory();
 				
 					
 				if (isset($_POST['i18n']))
 				{
-					$pjMultiLangModel->updateMultiLang($_POST['i18n'], $_POST['id'], 'pjSlider', 'data');
+					$pjMultiLangModel->updateMultiLang($_POST['i18n'], $_POST['id'], 'pjSponsor', 'data');
 					
 					if(isset($_POST['index_arr']) && $_POST['index_arr'] != '')
 					{
@@ -338,18 +338,18 @@ class pjAdminSlider extends pjAdmin
 					//$pjPriceModel->reset()->whereIn('id', $remove_arr)->eraseAll();
 				}
 				
-				pjUtil::redirect($_SERVER['PHP_SELF'] . "?controller=pjAdminSlider&action=pjActionUpdate&id=".$_POST['id']."&err=SLDR01");
+				pjUtil::redirect($_SERVER['PHP_SELF'] . "?controller=pjAdminSponsors&action=pjActionUpdate&id=".$_POST['id']."&err=ASP01");
 				
 			} else {
 				$pjMultiLangModel = pjMultiLangModel::factory();
 				
-				$arr = pjSliderModel::factory()->find($_GET['id'])->getData();
+				$arr = pjSponsorsModel::factory()->find($_GET['id'])->getData();
 				// echo "<pre>"; print_r($arr);
 				if (count($arr) === 0)
 				{
-					pjUtil::redirect($_SERVER['PHP_SELF'] . "?controller=pjAdminSlider&action=pjActionIndex&err=AE08");
+					pjUtil::redirect($_SERVER['PHP_SELF'] . "?controller=pjAdminSponsors&action=pjActionIndex&err=ASP08");
 				}
-				$arr['i18n'] = $pjMultiLangModel->getMultiLang($arr['id'], 'pjSlider');
+				$arr['i18n'] = $pjMultiLangModel->getMultiLang($arr['id'], 'pjSponsor');
 				
 				$locale_arr = pjLocaleModel::factory()->select('t1.*, t2.file')
 					->join('pjLocaleLanguage', 't2.iso=t1.language_iso', 'left')
@@ -379,7 +379,7 @@ class pjAdminSlider extends pjAdmin
 				$this->appendJs('jquery.multilang.js', PJ_FRAMEWORK_LIBS_PATH . 'pj/js/');
 				$this->appendJs('jquery.tipsy.js', PJ_THIRD_PARTY_PATH . 'tipsy/');
 				$this->appendCss('jquery.tipsy.css', PJ_THIRD_PARTY_PATH . 'tipsy/');
-				$this->appendJs('pjAdminSlider.js');
+				$this->appendJs('pjAdminSponsors.js');
 			}
 		} else {
 			$this->set('status', 2);
@@ -395,19 +395,19 @@ class pjAdminSlider extends pjAdmin
 		{
 			$response = array();
 				
-			$pjSliderModel = pjSliderModel::factory();
-			$arr = $pjSliderModel->find($_GET['id'])->getData();
+			$pjSponsorsModel = pjSponsorsModel::factory();
+			$arr = $pjSponsorsModel->find($_GET['id'])->getData();
 				
 			if(!empty($arr))
 			{
-				if(!empty($arr['slider_image']))
+				if(!empty($arr['sponsor_image']))
 				{
-					@unlink(PJ_INSTALL_PATH . $arr['slider_image']);
+					@unlink(PJ_INSTALL_PATH . $arr['sponsor_image']);
 				}
 	
 				$data = array();
-				$data['slider_image'] = ':NULL';
-				$pjSliderModel->reset()->where(array('id' => $_GET['id']))->limit(1)->modifyAll($data);
+				$data['sponsor_image'] = ':NULL';
+				$pjSponsorsModel->reset()->where(array('id' => $_GET['id']))->limit(1)->modifyAll($data);
 	
 				$response['code'] = 200;
 			}else{
@@ -418,7 +418,7 @@ class pjAdminSlider extends pjAdmin
 		}
 	}
 	/***********Single Delete function*************/
-	public function pjActionDeleteSlider()
+	public function pjActionDeleteSponsors()
 	{
 		$this->setAjax(true);
 	
@@ -426,9 +426,9 @@ class pjAdminSlider extends pjAdmin
 		{
 			$response = array();
 			
-			if (pjSliderModel::factory()->setAttributes(array('id' => $_GET['id']))->erase()->getAffectedRows() == 1)
+			if (pjSponsorsModel::factory()->setAttributes(array('id' => $_GET['id']))->erase()->getAffectedRows() == 1)
 			{
-				pjMultiLangModel::factory()->where('model', 'pjSlider')->where('foreign_id', $_GET['id'])->eraseAll();
+				pjMultiLangModel::factory()->where('model', 'pjSponsor')->where('foreign_id', $_GET['id'])->eraseAll();
 				
 				$response['code'] = 200;
 			} else {
@@ -440,7 +440,7 @@ class pjAdminSlider extends pjAdmin
 		exit;
 	}
 	/***********Multi Delete function*************/
-	public function pjActionDeleteSliderBulk()
+	public function pjActionDeleteSponsorsBulk()
 	{
 		$this->setAjax(true);
 	
@@ -448,8 +448,8 @@ class pjAdminSlider extends pjAdmin
 		{
 			if (isset($_POST['record']) && count($_POST['record']) > 0)
 			{
-				pjSliderModel::factory()->whereIn('id', $_POST['record'])->eraseAll();
-				pjMultiLangModel::factory()->where('model', 'pjSlider')->whereIn('foreign_id', $_POST['record'])->eraseAll();
+				pjSponsorsModel::factory()->whereIn('id', $_POST['record'])->eraseAll();
+				pjMultiLangModel::factory()->where('model', 'pjSponsor')->whereIn('foreign_id', $_POST['record'])->eraseAll();
 			}
 		}
 		exit;

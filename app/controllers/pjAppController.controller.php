@@ -751,5 +751,71 @@ class pjAppController extends pjController
 		}
 		return compact('ticket_cnt_arr', 'ticket_name_arr', 'ticket_seat_arr');
 	}
+	public function getFromEmailInfo()
+	{
+		$arr = pjUserModel::factory()->where('role_id', 1)->findAll()->getData();
+		$email = 'admin@admin.com';
+		$name = NULL;
+		if(!empty($arr)){
+			$email = $arr[0]['email'];
+			$name = $arr[0]['name'];
+		}
+		return compact('email', 'name');
+	}
+	public function sendMessage($to, $subject, $message, $plain_message, $option_arr, $file_arr)
+	{
+		$pjEmail = new pjEmail();
+		if ($option_arr['o_send_email'] == 'smtp')
+		{
+			$pjEmail
+				->setTransport('smtp')
+				->setSmtpHost($option_arr['o_smtp_host'])
+				->setSmtpPort($option_arr['o_smtp_port'])
+				->setSmtpUser($option_arr['o_smtp_user'])
+				->setSmtpPass($option_arr['o_smtp_pass'])
+				->setSender($option_arr['o_smtp_user']);
+		}
+		
+		$from_email_info = $this->getFromEmailInfo();
+		
+		$pjEmail->setContentType('text/html')
+				->setSubject($subject)
+				->detach()
+				->addPart($plain_message, 'text/plain')
+				->setFrom($from_email_info['email'], $from_email_info['name']);
+		if(!empty($file_arr))
+		{
+			foreach($file_arr as $f)
+			{
+				$pjEmail->attach($f['file_path'], $f['file_name'], $f['mime_type']);
+			}
+		}
+		$pjEmail->setTo($to)
+				->send($message);
+	}
+	
+	public function sendConfirm($to, $subject, $message, $option_arr)
+	{
+		$pjEmail = new pjEmail();
+		$pjEmail->setContentType('text/html');
+		if ($option_arr['o_send_email'] == 'smtp')
+		{
+			$pjEmail
+				->setTransport('smtp')
+				->setSmtpHost($option_arr['o_smtp_host'])
+				->setSmtpPort($option_arr['o_smtp_port'])
+				->setSmtpUser($option_arr['o_smtp_user'])
+				->setSmtpPass($option_arr['o_smtp_pass'])
+				->setSender($option_arr['o_smtp_user'])
+			;
+		}
+		
+		$from_email_info = $this->getFromEmailInfo();
+		
+		$pjEmail->setFrom($from_email_info['email'], $from_email_info['name'])
+				->setTo($to)
+				->setSubject($subject)
+				->send(pjUtil::textToHtml($message));
+	}
 }
 ?>

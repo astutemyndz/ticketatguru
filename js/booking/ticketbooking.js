@@ -1,7 +1,8 @@
 (function (window, undefined) {
 	"use strict";
-	console.log('ticketbooking.js');
+	
     function TicketBooking(opts) {
+		
 		if (!(this instanceof TicketBooking)) {
 			return new TicketBooking(opts);
 		}
@@ -137,10 +138,10 @@
 		init: function (opts) {
 			var self = this;
 			this.opts = opts;
-			console.log(this.opts.index);
-			this.container = document.getElementById("tbContainer_" + this.opts.index);
-			this.$container = $(this.container);
 			
+			this.container = document.getElementById("tbContainer_" + this.opts.index);
+			
+			this.$container = $(this.container);
 			this.$container.on("click.tb", ".tbSelectorLocale", function (e) {
 				if (e && e.preventDefault) {
 					e.preventDefault();
@@ -225,22 +226,22 @@
 				if (e && e.preventDefault) {
 					e.preventDefault();
 				}
-				hashBang("#!/Events/from_date:" + self.from_date + "/date:" + self.date);
+				//hashBang("#!/Events/from_date:" + self.from_date + "/date:" + self.date);
 			}).on("click.tb", ".tbBackToDetails", function (e) {
 				if (e && e.preventDefault) {
 					e.preventDefault();
 				}
-				hashBang("#!/EventDetails/id:" + $(this).attr('data-id') + "/date:"+ $(this).attr('data-date'));
+				//hashBang("#!/EventDetails/id:" + $(this).attr('data-id') + "/date:"+ $(this).attr('data-date'));
 			}).on("click.tb", ".tbBackToSeats", function (e) {
 				if (e && e.preventDefault) {
 					e.preventDefault();
 				}
-				hashBang("#!/Seats/date:" + $(this).attr('data-date'));
+				//hashBang("#!/Seats/date:" + $(this).attr('data-date'));
 			}).on("click.tb", ".tbBackToCheckout", function (e) {
 				if (e && e.preventDefault) {
 					e.preventDefault();
 				}
-				hashBang("#!/Checkout/date:" + $(this).attr('data-date'));
+				//hashBang("#!/Checkout/date:" + $(this).attr('data-date'));
 			}).on("click.tb", ".tbSelectorButtonPurchase", function (e) {
 				if (e && e.preventDefault) {
 					e.preventDefault();
@@ -287,7 +288,6 @@
 				if (e && e.preventDefault) {
 					e.preventDefault();
 				}
-				
 				var $frm = $('#tbSeatsForm_' + self.opts.index),
 					$seatContainer = $('#tbSelectedSeats_' + self.opts.index),
 					price_id_arr = ($(this).attr('data-price-id')).split('~:~'),
@@ -297,6 +297,7 @@
 				
 				if(self.current_ticket != null && self.checkHasPriceId.call(self, self.current_ticket, price_id_arr) == true)
 				{
+					
 					var price_id = self.current_ticket,
 						$ticket = $('#tbTicket_' + price_id),
 						chosen_ticket = parseInt($ticket.val(), 10),
@@ -353,7 +354,10 @@
 					}else{
 						$('.tbGuideMessage').attr('data-type', 'ticket' + price_id).html((self.opts.error_msg.no_tickets).replace("[TICKET]", ticket_name)).show();
 					}
+				} else {
+					console.log("else"  + price_id);
 				}
+				
 								
 			}).on("change.tb", ".tbTicketSelector", function (e) {
 				var $frm = $('#tbSeatsForm_' + self.opts.index),
@@ -364,7 +368,7 @@
 					value = parseInt($(this).val(), 10),
 					el_arr = [],
 					cnt_seats = 0;
-				
+				//console.log($frm);
 				self.adviseToSelectSeats.call(self);
 				
 				if(!$mapHolder.hasClass('tbMapHolder'))
@@ -573,7 +577,9 @@
 					e.preventDefault();
 				}
 				$('.tbContinueButton').trigger('click');
-			}).on("change.tb", "select[name='payment_method']", function () {
+			})
+			/*
+			.on("change.tb", "select[name='payment_method']", function () {
 				self.$container.find(".tbCcWrap").hide();
 				self.$container.find(".tbBankWrap").hide();
 				switch ($("option:selected", this).val()) {
@@ -621,9 +627,13 @@
 					$captchaImg.attr("src", self.opts.folder + 'admin.php?controller=pjFront&action=pjActionCaptcha&rand=' + rand);
 					$('#pjCbsCaptchaField').val("").removeData("previousValue");
 				}
-			});
+			})
+			*/
+			;
 			
-			$(window).on("loadEvents", this.container, function (e) {
+			$(window)
+			/*
+			.on("loadEvents", this.container, function (e) {
 				if(arguments.length == 3)
 				{
 					self.from_date = arguments[1];
@@ -637,7 +647,9 @@
 					self.date = arguments[2];
 				}
 				self.loadEventDetails.call(self);
-			}).on("loadSeats", this.container, function (e) {
+			})
+			
+			.on("loadSeats", this.container, function (e) {
 				if(arguments.length == 2)
 				{
 					self.date = arguments[1];
@@ -662,8 +674,9 @@
 			} else {
 				onHashChange.call(null);
 			}
+			*/
 		},
-		
+		/*
 		loadEvents: function () {
 			var self = this,
 				index = this.opts.index,
@@ -734,6 +747,7 @@
 				self.enableButtons.call(self);
 			});
 		},
+		
 		loadSeats: function () {
 			var self = this,
 				index = this.opts.index,
@@ -919,7 +933,8 @@
 				log("Deferred is rejected");
 			});
 		}
+		*/
 	};
-	
-	window.TicketBooking = TicketBooking;	
+	//console.log(TicketBooking);
+	window.TicketBooking = TicketBooking(options);	
 })(window);

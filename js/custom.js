@@ -179,7 +179,6 @@ $("document").ready(function() {
                                 const status = res.status
 
                                 if(STATUS === "OK" && status === true) {
-                                    console.log("OK:",STATUS,"===",status);
                                     setTimeout(() => {
                                         window.location.href = `${API_URL}event/seats`;
                                     }, 500);
