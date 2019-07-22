@@ -473,7 +473,7 @@ if (isset($tpl['status']))
 				<p>
 					<label class="title">&nbsp;</label>
 					<input type="submit" value="<?php __('btnSave', false, true); ?>" class="pj-button" />
-					<input type="button" value="<?php __('btnCancel'); ?>" class="pj-button" onclick="window.location.href='<?php echo PJ_INSTALL_URL; ?>index.php?controller=pjAdminBookings&action=pjActionIndex';" />
+					<input type="button" value="<?php __('btnCancel'); ?>" class="pj-button" onclick="window.location.href='<?php echo PJ_INSTALL_URL; ?>admin.php?controller=pjAdminBookings&action=pjActionIndex';" />
 				</p>
 			</div>
 			<div id="tabs-3">
@@ -572,7 +572,7 @@ if (isset($tpl['status']))
 			'cancelled' => 'cancelled'
 		);
 		?>
-		<form action="<?php echo PJ_INSTALL_URL; ?>index.php" method="get" target="_blank" style="display: inline" id="frmCreateInvoice">
+		<form action="<?php echo PJ_INSTALL_URL; ?>admin.php" method="get" target="_blank" style="display: inline" id="frmCreateInvoice">
 			<input type="hidden" name="controller" value="pjInvoice" />
 			<input type="hidden" name="action" value="pjActionCreateInvoice" />
 			<input type="hidden" name="tmp" value="<?php echo md5(uniqid(rand(), true)); ?>" />

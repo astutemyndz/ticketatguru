@@ -398,8 +398,8 @@ class EventController extends App_Controller
 				$this->data['selected_time'] 	= $selected_time;
 				$this->data['hall_arr'] 		= $_show_arr;
 				$this->data['status'] 			= 'OK';
-				$this->data['title'] = 'Ticket at Guru';
-				//$this->data[$this->optionArr] = $this->option_arr;
+				$this->data['title'] 			= 'Ticket at Guru';
+				$this->data['id'] 				= $id;
 				
 			} else {
 				$selected_date 	= $hash_date;

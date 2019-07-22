@@ -134,7 +134,7 @@ class pjAdminQueues extends pjAdmin
 		{
 			$this->appendJs('jquery.datagrid.js', PJ_FRAMEWORK_LIBS_PATH . 'pj/js/');
 			$this->appendJs('pjAdminQueues.js');
-			$this->appendJs('index.php?controller=pjAdmin&action=pjActionMessages&page=queue', PJ_INSTALL_URL, true);
+			$this->appendJs('admin.php?controller=pjAdmin&action=pjActionMessages&page=queue', PJ_INSTALL_URL, true);
 		} else {
 			$this->set('status', 2);
 		}

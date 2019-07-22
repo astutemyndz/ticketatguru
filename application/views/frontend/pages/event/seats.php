@@ -10,7 +10,7 @@ $validate = str_replace(array('"', "'"), array('\"', "\'"), __('validate', true,
 
 $defaultStore = ($this->session->userdata('pjTicketBooking_Store')) ? $this->session->userdata('pjTicketBooking_Store') : [];
 // echo "<pre>";
-// print_r($defaultStore);
+// print_r($defaultStore['tickets']);
 // exit;
 $option_arr = ($this->session->userdata('option_arr')) ? $this->session->userdata('option_arr') : [];
 $layout = ($this->input->get('layout')) ? $this->input->get('layout') : $option_arr['o_theme'];
@@ -169,8 +169,10 @@ if($defaultStore['ticket_arr'] && count($defaultStore['ticket_arr']) > 0)
 						<div class="ticket-price">
 							<div class="tickets">
 							<!--alert alert-info-->
-							
+									<div class="well">
 									<div class="tbAskToSelectTickets alert alert-info" role="alert" style="display: <?php echo isset($defaultStore['tickets']) ? 'none': 'block';?>"><?php $defaultStore['seats_available'] == true ? __('front_select_ticket_types_above') : __('front_no_seats_available');?></div>
+									
+									
 										<div style="display: <?php echo isset($defaultStore['tickets']) ? 'block': 'none';?>">
 											<div class="tbSelectSeatGuide alert alert-info" role="alert"></div>
 												<label for="" class="tbSelectedSeatsLabel"><?php __('front_selected_seats');?>:</label>
@@ -263,7 +265,7 @@ if($defaultStore['ticket_arr'] && count($defaultStore['ticket_arr']) > 0)
 								<!-- <label>Price Range</label>
 								<input id="price-range" type="text" class="span2" value="" data-slider-min="10" data-slider-max="200" data-slider-step="5" data-slider-value="[50,150]"/>  -->
 							</div>
-							
+							</div>
 						</div>
 					</div>
 
@@ -275,7 +277,8 @@ if($defaultStore['ticket_arr'] && count($defaultStore['ticket_arr']) > 0)
 </section>
 
 <script type="text/javascript">
-var TicketBooking_<?php echo $index; ?>;
+var pjQ = pjQ || {},
+	TicketBooking_<?php echo $index; ?>;
 
 	"use strict";
 	var isSafari = /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor),
@@ -302,6 +305,11 @@ var TicketBooking_<?php echo $index; ?>;
 		error_msg: <?php echo pjAppController::jsonEncode(__('front_err', true)); ?>,
 		validate: <?php echo pjAppController::jsonEncode($validate); ?>
 	};
+	// code goes here
+	
+
+
+	
 	
 
 </script>

@@ -78,6 +78,7 @@
 				var price_id = $(el).attr('data-id'),
 					value = parseInt($(el).val(), 10),
 					ticket_name = $(el).attr('data-ticket');
+					//console.log
 				if(value > 0)
 				{
 					ticket_arr[price_id] = {'cnt': value, 'name': ticket_name};
@@ -85,6 +86,7 @@
 				total_ticket += value;
 			});
 			$.each(ticket_arr, function (price_id, pair) {
+				//console.log(ticket_arr);
 				if($seatContainer.find(".tbAssignedSeats_" + price_id).length < pair.cnt)
 				{
 					self.current_ticket = price_id;
@@ -98,19 +100,23 @@
 					if($mapHolder.hasClass('tbMapHolder'))
 					{
 						guide_message = guide_message.replace(/\{tickets\}/g, pair.cnt + ' ' + pair.name);
+						console.log(guide_message);
 						$('.tbSelectSeatGuide').removeClass('alert-success').addClass('alert-info').html(guide_message).show();
 					}
 					return false;
 				}
 			});
+			console.log(total_ticket);
 			if(total_ticket == 0)
 			{
+				console.log("if:", total_ticket);
 				self.current_ticket = null;
 				$('.tbSelectSeatGuide').html('').hide();
 				
 				$('.tbAskToSelectTickets').show();
 				$('.tbAskToSelectTickets').siblings().hide();
 			}else if(total_ticket > 0){
+				console.log("else:", total_ticket);
 				$('.tbAskToSelectTickets').hide();
 				$('.tbAskToSelectTickets').siblings().show();
 				if(total_ticket == $seatContainer.find(".tbAssignedSeats").length){

@@ -10,7 +10,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 			}
 			var $grid = $("#grid").datagrid({
 				buttons: [
-				          {type: "delete", url: "index.php?controller=pjAdminQueues&action=pjActionDeleteQueue&id={:id}", beforeShow: onBeforeShow}
+				          {type: "delete", url: "admin.php?controller=pjAdminQueues&action=pjActionDeleteQueue&id={:id}", beforeShow: onBeforeShow}
 				          ],
 						  
 				columns: [{text: myLabel.message, type: "text", sortable: true, editable: false, width: 210},
@@ -20,19 +20,19 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 				                                                                                     {label: myLabel.inprogress, value: "inprogress"}, 
 				                                                                                     {label: myLabel.completed, value: "completed"}
 				                                                                                     ], applyClass: "pj-status"}],
-				dataUrl: "index.php?controller=pjAdminQueues&action=pjActionGetQueue" + pjGrid.queryString,
+				dataUrl: "admin.php?controller=pjAdminQueues&action=pjActionGetQueue" + pjGrid.queryString,
 				dataType: "json",
 				fields: ['subject', 'email', 'date_sent', 'status'],
 				paginator: {
 					actions: [
-					   {text: myLabel.delete_selected, url: "index.php?controller=pjAdminQueues&action=pjActionDeleteQueueBulk", render: true, confirmation: myLabel.delete_confirmation}
+					   {text: myLabel.delete_selected, url: "admin.php?controller=pjAdminQueues&action=pjActionDeleteQueueBulk", render: true, confirmation: myLabel.delete_confirmation}
 					],
 					gotoPage: true,
 					paginate: true,
 					total: true,
 					rowCount: true
 				},
-				saveUrl: "index.php?controller=pjAdminQueues&action=pjActionSaveQueue&id={:id}",
+				saveUrl: "admin.php?controller=pjAdminQueues&action=pjActionSaveQueue&id={:id}",
 				select: {
 					field: "id",
 					name: "record[]"
@@ -52,7 +52,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 				q: ""
 			});
 			$grid.datagrid("option", "cache", cache);
-			$grid.datagrid("load", "index.php?controller=pjAdminQueues&action=pjActionGetQueue", "date_sent", "DESC", content.page, content.rowCount);
+			$grid.datagrid("load", "admin.php?controller=pjAdminQueues&action=pjActionGetQueue", "date_sent", "DESC", content.page, content.rowCount);
 			return false;
 		}).on("click", ".btn-filter", function (e) {
 			if (e && e.preventDefault) {
@@ -67,7 +67,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 			obj[$this.data("column")] = $this.data("value");
 			$.extend(cache, obj);
 			$grid.datagrid("option", "cache", cache);
-			$grid.datagrid("load", "index.php?controller=pjAdminQueues&action=pjActionGetQueue", "date_sent", "DESC", content.page, content.rowCount);
+			$grid.datagrid("load", "admin.php?controller=pjAdminQueues&action=pjActionGetQueue", "date_sent", "DESC", content.page, content.rowCount);
 			return false;
 		}).on("submit", ".frm-filter", function (e) {
 			if (e && e.preventDefault) {
@@ -80,7 +80,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 				q: $this.find("input[name='q']").val()
 			});
 			$grid.datagrid("option", "cache", cache);
-			$grid.datagrid("load", "index.php?controller=pjAdminQueues&action=pjActionGetQueue", "date_sent", "DESC", content.page, content.rowCount);
+			$grid.datagrid("load", "admin.php?controller=pjAdminQueues&action=pjActionGetQueue", "date_sent", "DESC", content.page, content.rowCount);
 			return false;
 		});
 	});

@@ -114,7 +114,7 @@ class pjSms extends pjSmsAppController
 			$this->appendCss('pjSms.css', $this->getConst('PLUGIN_CSS_PATH'));
 			$this->appendJs('jquery.datagrid.js', PJ_FRAMEWORK_LIBS_PATH . 'pj/js/');
 			$this->appendJs('pjSms.js', $this->getConst('PLUGIN_JS_PATH'));
-			$this->appendJs('index.php?controller=pjAdmin&action=pjActionMessages', PJ_INSTALL_URL, true);
+			$this->appendJs('admin.php?controller=pjAdmin&action=pjActionMessages', PJ_INSTALL_URL, true);
 		} else {
 			$this->set('status', 2);
 		}
