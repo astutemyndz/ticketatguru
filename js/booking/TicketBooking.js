@@ -1,7 +1,6 @@
-(function (window, undefined) {
+(function(window, undefined) {
 	"use strict";
-	
-    function TicketBooking(opts) {
+	function TicketBooking(opts) {
 		
 		if (!(this instanceof TicketBooking)) {
 			return new TicketBooking(opts);
@@ -73,18 +72,24 @@
 				ticket_arr = {},
 				$seatContainer = $('#tbSelectedSeats_' + self.opts.index),
 				$mapHolder = $('#tbMapHolder_' + self.opts.index);
-			
+			//console.log(self);
+			var tt = 0;
 			$(".tbTicketSelector").each(function (i, el) {
 				var price_id = $(el).attr('data-id'),
 					value = parseInt($(el).val(), 10),
 					ticket_name = $(el).attr('data-ticket');
-					//console.log
+					//console.log(value);
 				if(value > 0)
 				{
 					ticket_arr[price_id] = {'cnt': value, 'name': ticket_name};
 				}
-				total_ticket += value;
+				total_ticket = value;
+				//tt = value;
+				
 			});
+			//console.log(tt);
+			//total_ticket = 0;
+			//console.log(total_ticket);
 			$.each(ticket_arr, function (price_id, pair) {
 				//console.log(ticket_arr);
 				if($seatContainer.find(".tbAssignedSeats_" + price_id).length < pair.cnt)
@@ -100,23 +105,26 @@
 					if($mapHolder.hasClass('tbMapHolder'))
 					{
 						guide_message = guide_message.replace(/\{tickets\}/g, pair.cnt + ' ' + pair.name);
-						console.log(guide_message);
+						//console.log(guide_message);
 						$('.tbSelectSeatGuide').removeClass('alert-success').addClass('alert-info').html(guide_message).show();
 					}
 					return false;
 				}
 			});
-			console.log(total_ticket);
+			
 			if(total_ticket == 0)
 			{
-				console.log("if:", total_ticket);
+				//console.log(total_ticket);
+				//$('.selectSeat').show();
+				//console.log("if:", total_ticket);
 				self.current_ticket = null;
 				$('.tbSelectSeatGuide').html('').hide();
 				
 				$('.tbAskToSelectTickets').show();
 				$('.tbAskToSelectTickets').siblings().hide();
 			}else if(total_ticket > 0){
-				console.log("else:", total_ticket);
+				//console.log("else:", total_ticket);
+				//$('.tbAskToSelectSeat').hide();
 				$('.tbAskToSelectTickets').hide();
 				$('.tbAskToSelectTickets').siblings().show();
 				if(total_ticket == $seatContainer.find(".tbAssignedSeats").length){
@@ -130,8 +138,10 @@
 		},
 		checkAssignedSeats: function()
 		{
+
 			var self = this,
 				$seatContainer = $('#tbSelectedSeats_' + self.opts.index);
+				//console.log(this);
 			if($seatContainer.find('.tbAssignedSeats').length > 0)
 			{
 				$('.tbAskToSelectSeats').hide();
@@ -143,6 +153,7 @@
 		},
 		init: function (opts) {
 			var self = this;
+			//console.log(self);
 			this.opts = opts;
 			
 			this.container = document.getElementById("tbContainer_" + this.opts.index);
@@ -327,7 +338,9 @@
 							}
 							if($el.length > 0)
 							{
+								//console.log(`${$el.length} > ${cnt}`);
 								var cnt_seats = parseInt($el.val(), 10);
+								//console.log(cnt_seats);
 								if(cnt_seats < cnt)
 								{
 									$el.val(cnt_seats + 1);
@@ -337,7 +350,8 @@
 										$(this).removeClass('tbSeatAvailable');
 									}
 								}
-							}else{
+							}else {
+								//console.log(`${$el.length} < ${cnt}`);
 								$('<input>').attr({
 								    type: 'hidden',
 								    name: 'seat_id['+price_id+'][' + seat_id + ']',
@@ -346,6 +360,7 @@
 								    value: '1'
 								}).appendTo($frm);
 								$seatContainer.append('<span class="'+seatClass+' tbAssignedSeats_'+price_id+'" data_price_id="'+price_id+'" data_seat_id="'+seat_id+'">'+$ticket.attr('data-ticket') + ' #'+ seat_name +'</span>');
+								
 								if(cnt == 1)
 								{
 									$(this).removeClass('tbSeatAvailable');
@@ -361,7 +376,10 @@
 						$('.tbGuideMessage').attr('data-type', 'ticket' + price_id).html((self.opts.error_msg.no_tickets).replace("[TICKET]", ticket_name)).show();
 					}
 				} else {
-					console.log("else"  + price_id);
+					//console.log("else"  + self.current_ticket);
+					//$('.selectSeat').show();
+					alert('please select value from dropdown');
+					//return false;
 				}
 				
 								
@@ -382,6 +400,7 @@
 					$mapHolder.find(".tbSeatSelected").each(function (i, el) {
 						var price_id_arr = ($(el).attr('data-price-id')).split('~:~'),
 							seat_id = $(el).attr('data-id');
+							//console.log(seat_id);
 						if(self.checkHasPriceId.call(self, price_id, price_id_arr))
 						{
 							var can_removed = false;
@@ -554,13 +573,15 @@
 					$seatContainer = $('#tbSelectedSeats_' + self.opts.index),
 					date = $(this).attr('data-date');
 				$('.tbTicketSelector').each(function(i, el){
-					total_tickets += parseInt($(el).val(), 10);
+					total_tickets = parseInt($(el).val(), 10);
 				});
 				total_seats	= $seatContainer.find('.tbAssignedSeats').length;
 				if(total_seats == 0)
 				{
 					total_seats	= $seatContainer.find('.tbAssignedNoMap').length;
 				}
+				//console.log(`total seats:${total_seats}, total_tickets: ${total_tickets}, date: ${date}`);
+				//return false;
 				if(total_seats == 0)
 				{
 					$('.tbErrorMessage').html(self.opts.error_msg.empty).fadeIn('slow').delay(2000).fadeOut('slow');
@@ -569,10 +590,11 @@
 				}else{
 					var params = $('#tbSeatsForm_'+self.opts.index+', .tbTicketSelector').serialize();
 					self.disableButtons.call(self);
-					$.post([self.opts.folder, "admin.php?controller=pjFront&action=pjActionSaveSeats", "&session_id=", self.opts.session_id].join(""), params).done(function (data) {
+					$.post(`${self.opts.folder}event/pjActionSaveSeats`,params).done(function (data) {
 						if(data.code == '200')
 						{
-							hashBang("#!/Checkout/date:" + date);
+							//console.log(data.ticket);
+							//hashBang("#!/Checkout/date:" + date);
 						}
 					}).fail(function () {
 						self.enableButtons.call(self);
@@ -942,5 +964,5 @@
 		*/
 	};
 	//console.log(TicketBooking);
-	window.TicketBooking = TicketBooking(options);	
+	window.TicketBooking = TicketBooking;	
 })(window);

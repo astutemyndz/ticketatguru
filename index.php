@@ -288,7 +288,7 @@ switch (ENVIRONMENT)
 	 */
 	if (!defined("PJ_HOST")) define("PJ_HOST", "localhost");
 	if (!defined("PJ_USER")) define("PJ_USER", "root");
-	if (!defined("PJ_PASS")) define("PJ_PASS", "work@9063");
+	if (!defined("PJ_PASS")) define("PJ_PASS", "");
 	if (!defined("PJ_DB")) define("PJ_DB", "ticketbooking");
 	if (!defined("PJ_PREFIX")) define("PJ_PREFIX", "tk_");
 	if (!defined("PJ_SCRIPT_PREFIX")) define("PJ_SCRIPT_PREFIX", "cbs_");
@@ -325,8 +325,8 @@ switch (ENVIRONMENT)
 	if (!defined("PJ_RSA_PRIVATE")) define("PJ_RSA_PRIVATE", '7');
 
 	if (!defined("PJ_INVOICE_PLUGIN")) define("PJ_INVOICE_PLUGIN", 'index.php?controller=pjAdminBookings&action=pjActionUpdate&uuid={ORDER_ID}');
-	if (!defined("PJ_INSTALL_URL")) define("PJ_INSTALL_URL", "http://103.121.156.221/projects/ticketatguru/");
-	if (!defined("PJ_INSTALL_PATH")) define("PJ_INSTALL_PATH", "E:/xampp/htdocs/projects/ticketatguru/");
+	if (!defined("PJ_INSTALL_URL")) define("PJ_INSTALL_URL", "http://127.0.0.1/projects/ticketatguru/");
+	if (!defined("PJ_INSTALL_PATH")) define("PJ_INSTALL_PATH", "/opt/lampp/htdocs/projects/ticketatguru/");
 	$CONFIG = array();
 	$CONFIG['plugins'] = array('pjLocale', 'pjBackup', 'pjLog', 'pjInstaller', 'pjOneAdmin', 'pjPaypal', 'pjAuthorize', 'pjCountry', 'pjInvoice', 'pjSms');
 

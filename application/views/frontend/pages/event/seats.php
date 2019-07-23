@@ -169,95 +169,102 @@ if($defaultStore['ticket_arr'] && count($defaultStore['ticket_arr']) > 0)
 						<div class="ticket-price">
 							<div class="tickets">
 							<!--alert alert-info-->
-									<div class="well">
-									<div class="tbAskToSelectTickets alert alert-info" role="alert" style="display: <?php echo isset($defaultStore['tickets']) ? 'none': 'block';?>"><?php $defaultStore['seats_available'] == true ? __('front_select_ticket_types_above') : __('front_no_seats_available');?></div>
-									
-									
-										<div style="display: <?php echo isset($defaultStore['tickets']) ? 'block': 'none';?>">
-											<div class="tbSelectSeatGuide alert alert-info" role="alert"></div>
-												<label for="" class="tbSelectedSeatsLabel"><?php __('front_selected_seats');?>:</label>
-												<?php
-												if($class == 'tbAssignedSeats')
-												{ 
-													?>
-													<div class="tbAskToSelectSeats pjCbSeatsMessage" style="display: <?php echo isset($defaultStore['seat_id']) ? 'none': 'block';?>"><?php __('front_select_available_seats');?></div>
-													<?php
-												} 
-												?>
-												<div id="tbSelectedSeats_<?php echo $index;?>">
-													<?php
-													if(isset($defaultStore['seat_id']))
-													{
-														$seat_label_arr = $defaultStore['seat_id'];
-														foreach($seat_label_arr as $price_id => $seat_arr)
-														{
-															foreach($seat_arr as $seat_id => $cnt)
-															{
-																for($i = 1; $i <= $cnt; $i++)
-																{
-																	?><span class="<?php echo $class;?> tbAssignedSeats_<?php echo $price_id;?>" data_seat_id="<?php echo $seat_id;?>" data_price_id="<?php echo $price_id;?>"><?php echo $ticket_name_arr[$price_id]; ?> #<?php echo $defaultStore['seat_name_arr'][$seat_id];?></span><?php
-																}	
-															}
-														}
-													} 
-													?>
-												</div>
-												<?php
-												if($class == 'tbAssignedSeats')
-												{ 
-													?>
-													<div class="tbTipToRemoveSeats pjCbSeatsMessage" style="display: <?php echo isset($defaultStore['seat_id']) ? 'block': 'none';?>"><?php __('front_how_to_remove_seats');?><br/></div>
-													<?php
-												} 
-												?>
-										</div>
-								
-								<!--alert alert-info-->	
 							<label>Available seats: <?php echo $defaultStore['total_remaining_avaliable_seats'];?></label>
-							<?php 
-								if($defaultStore['ticket_arr'] && count($defaultStore['ticket_arr']) > 0)
-								{
-									foreach($defaultStore['ticket_arr'] as $v)
-									{
-										if($v['cnt_tickets'] > 0 && $defaultStore['seats_available'] == true)
-										{
-											?>
-												<label for=""><?php echo pjSanitize::html($v['ticket']);?>:</label>
-															<?php echo pjUtil::formatCurrencySign($v['price'], $option_arr['o_currency']);?>
-															<select id="tbTicket_<?php echo $v['price_id'];?>" name="tickets[<?php echo $v['id'];?>][<?php echo $v['price_id'];?>]" class="selectpicker dropdown tbTicketSelector" data-id="<?php echo $v['price_id'];?>" data-ticket="<?php echo pjSanitize::html($v['ticket']);?>" data-price="<?php echo pjUtil::formatCurrencySign($v['price'], $option_arr['o_currency']);?>">
-																<?php
-																for($i = 0; $i <= $v['cnt_tickets']; $i++)
-																{
-																	?><option value="<?php echo $i;?>"<?php echo isset($defaultStore['tickets'][$v['id']][$v['price_id']]) ? ($defaultStore['tickets'][$v['id']][$v['price_id']] == $i ? ' selected="selected"' : null) : null;?>><?php echo $i?></option><?php
-																} 
-																?>
-															</select>
-											<?php
-										}else{
-											?>
-											<div class="col-md-12 col-sm-12 col-xs-12">
-												<p class="text-muted"><?php echo pjSanitize::html($v['ticket']);?>:</p>
-												<p class="lead"><strong><?php __('front_na');?></strong></p>
-											</div>
-											<?php
-										}
-									}
-								} 
-								?>
-								<!-- Choose a hall form list of hall arr -->
-								<?php if(count($defaultStore['hall_arr']) > 1) {?>
-									<label>Choose Hall</label>
-											<select class="selectpicker dropdown pjCbSeatVenue" id="venue_id_<?php echo $defaultStore['index'];?>" name="venue_id">
-											<option>choose hall</option>
-												<?php
-												foreach($defaultStore['hall_arr'] as $hall)
+								<div class="well">
+									<div class="row">
+										<?php 
+											if($defaultStore['ticket_arr'] && count($defaultStore['ticket_arr']) > 0)
+											{
+												foreach($defaultStore['ticket_arr'] as $v)
 												{
-													?><option value="<?php echo $hall['venue_id'];?>"<?php echo ($defaultStore['venue_id']) ? ($defaultStore['venue_id'] == $hall['venue_id'] ? ' selected="selected"' : NULL) : NULL;?>><?php echo pjSanitize::html($hall['venue_name']);?></option><?php
-												} 
-												?>
-											</select>
-								<?php  } ?>
-								<!-- Choose a hall form list of hall arr -->
+													if($v['cnt_tickets'] > 0 && $defaultStore['seats_available'] == true)
+													{
+														?>
+														<label for=""><?php echo pjSanitize::html($v['ticket']);?>:</label>
+															<?php echo pjUtil::formatCurrencySign($v['price'], $option_arr['o_currency']);?>
+																<select id="tbTicket_<?php echo $v['price_id'];?>" name="tickets[<?php echo $v['id'];?>][<?php echo $v['price_id'];?>]" class="selectpicker dropdown tbTicketSelector" data-id="<?php echo $v['price_id'];?>" data-ticket="<?php echo pjSanitize::html($v['ticket']);?>" data-price="<?php echo pjUtil::formatCurrencySign($v['price'], $option_arr['o_currency']);?>">
+																	<?php
+																	for($i = 0; $i <= $v['cnt_tickets']; $i++)
+																	{
+																		?><option value="<?php echo $i;?>"<?php echo isset($defaultStore['tickets'][$v['id']][$v['price_id']]) ? ($defaultStore['tickets'][$v['id']][$v['price_id']] == $i ? ' selected="selected"' : null) : null;?>><?php echo $i?></option><?php
+																	} 
+																	?>
+																</select>
+													<?php
+												} else {
+											?>
+														<div class="col-md-12 col-sm-12 col-xs-12">
+															<p class="text-muted"><?php echo pjSanitize::html($v['ticket']);?>:</p>
+															<p class="lead"><strong><?php __('front_na');?></strong></p>
+														</div>
+											<?php
+												}
+											}
+										} 
+										?>
+									</div>
+										<!-- Choose a hall form list of hall arr -->
+										<?php if(count($defaultStore['hall_arr']) > 1) {?>
+											<label>Choose Hall</label>
+													<select class="selectpicker dropdown pjCbSeatVenue" id="venue_id_<?php echo $defaultStore['index'];?>" name="venue_id">
+													<option>choose hall</option>
+														<?php
+														foreach($defaultStore['hall_arr'] as $hall)
+														{
+															?><option value="<?php echo $hall['venue_id'];?>"<?php echo ($defaultStore['venue_id']) ? ($defaultStore['venue_id'] == $hall['venue_id'] ? ' selected="selected"' : NULL) : NULL;?>><?php echo pjSanitize::html($hall['venue_name']);?></option><?php
+														} 
+														?>
+													</select>
+										<?php  } ?>
+										<!-- Choose a hall form list of hall arr -->
+										<div class="row">
+											<div claa="col-xs-12">
+											<!-- <div class="selectSeat alert alert-danger" role="alert" style="display:none;">Please selct at leat single seat</div> -->
+											<div class="tbAskToSelectTickets alert alert-info" role="alert" style="display: <?php echo isset($defaultStore['tickets']) ? 'none': 'block';?>"><?php $defaultStore['seats_available'] == true ? __('front_select_ticket_types_above') : __('front_no_seats_available');?></div>
+											
+												<div style="display: <?php echo isset($defaultStore['tickets']) ? 'block': 'none';?>">
+													<div class="tbSelectSeatGuide alert alert-info" role="alert"></div>
+														<label for="" class="tbSelectedSeatsLabel"><?php __('front_selected_seats');?>:</label>
+														<?php
+														if($class == 'tbAssignedSeats')
+														{ 
+															?>
+															<div class="tbAskToSelectSeats pjCbSeatsMessage" style="display: <?php echo isset($defaultStore['seat_id']) ? 'none': 'block';?>"><?php __('front_select_available_seats');?></div>
+															<?php
+														} 
+														?>
+														<div id="tbSelectedSeats_<?php echo $index;?>">
+															<?php
+															if(isset($defaultStore['seat_id']))
+															{
+																$seat_label_arr = $defaultStore['seat_id'];
+																foreach($seat_label_arr as $price_id => $seat_arr)
+																{
+																	foreach($seat_arr as $seat_id => $cnt)
+																	{
+																		for($i = 1; $i <= $cnt; $i++)
+																		{
+																			?><span class="<?php echo $class;?> tbAssignedSeats_<?php echo $price_id;?>" data_seat_id="<?php echo $seat_id;?>" data_price_id="<?php echo $price_id;?>"><?php echo $ticket_name_arr[$price_id]; ?> #<?php echo $defaultStore['seat_name_arr'][$seat_id];?></span><?php
+																		}	
+																	}
+																}
+															} 
+															?>
+														</div>
+														<?php
+														if($class == 'tbAssignedSeats')
+														{ 
+															?>
+															<div class="tbTipToRemoveSeats pjCbSeatsMessage" style="display: <?php echo isset($defaultStore['seat_id']) ? 'block': 'none';?>"><?php __('front_how_to_remove_seats');?><br/></div>
+															<?php
+														} 
+														?>
+														</div>
+								</div>
+											</div>
+								<!--alert alert-info-->	
+								
+													</div>
 
 								
 								
@@ -277,13 +284,80 @@ if($defaultStore['ticket_arr'] && count($defaultStore['ticket_arr']) > 0)
 </section>
 
 <script type="text/javascript">
-var pjQ = pjQ || {},
+	var pjQ = pjQ || {},
 	TicketBooking_<?php echo $index; ?>;
+	(function() {
+		"use strict";
+		var isSafari = /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor),
 
-	"use strict";
-	var isSafari = /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor),
+	loadCssHack = function(url, callback){
+		var link = document.createElement('link');
+		link.type = 'text/css';
+		link.rel = 'stylesheet';
+		link.href = url;
 
-	
+		document.getElementsByTagName('head')[0].appendChild(link);
+
+		var img = document.createElement('img');
+		img.onerror = function(){
+			if (callback && typeof callback === "function") {
+				callback();
+			}
+		};
+		img.src = url;
+	},
+	loadRemote = function(url, type, callback) {
+		if (type === "css" && isSafari) {
+			loadCssHack(url, callback);
+			return;
+		}
+		var _element, _type, _attr, scr, s, element;
+		
+		switch (type) {
+		case 'css':
+			_element = "link";
+			_type = "text/css";
+			_attr = "href";
+			break;
+		case 'js':
+			_element = "script";
+			_type = "text/javascript";
+			_attr = "src";
+			break;
+		}
+		
+		scr = document.getElementsByTagName(_element);
+		s = scr[scr.length - 1];
+		element = document.createElement(_element);
+		element.type = _type;
+		if (type == "css") {
+			element.rel = "stylesheet";
+		}
+		if (element.readyState) {
+			element.onreadystatechange = function () {
+				if (element.readyState == "loaded" || element.readyState == "complete") {
+					element.onreadystatechange = null;
+					if (callback && typeof callback === "function") {
+						callback();
+					}
+				}
+			};
+		} else {
+			element.onload = function () {
+				if (callback && typeof callback === "function") {
+					callback();
+				}
+			};
+		}
+		element[_attr] = url;
+		s.parentNode.insertBefore(element, s.nextSibling);
+	},
+	loadScript = function (url, callback) {
+		loadRemote(url, "js", callback);
+	},
+	loadCss = function (url, callback) {
+		loadRemote(url, "css", callback);
+	},
 	getSessionId = function () {
 		return sessionStorage.getItem("session_id") == null ? "" : sessionStorage.getItem("session_id");
 	},
@@ -306,6 +380,12 @@ var pjQ = pjQ || {},
 		validate: <?php echo pjAppController::jsonEncode($validate); ?>
 	};
 	// code goes here
+	
+	loadScript("<?php echo base_url();?>js/booking/TicketBooking.js", function () {
+		//console.log(options);
+		TicketBooking_<?php echo $index; ?> = new TicketBooking(options);
+	});
+})();
 	
 
 

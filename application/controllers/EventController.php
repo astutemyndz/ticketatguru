@@ -701,17 +701,25 @@ class EventController extends App_Controller
 		if ($this->isXHR())
 		{
 			$response = array();
-			if($this->_is('tickets'))
+			if($this->hasSession('tickets'))
 			{
-				unset($_SESSION[$this->defaultStore]['tickets']);
+				//unset($_SESSION[$this->defaultStore]['tickets']);
+				$this->unsetSession($this->getSession($this->defaultStore)['tickets']);
 			}
-			if($this->_is('seat_id'))
+			if($this->hasSession('seat_id'))
 			{
-				unset($_SESSION[$this->defaultStore]['seat_id']);
+				//unset($_SESSION[$this->defaultStore]['seat_id']);
+				$this->unsetSession($this->getSession($this->defaultStore)['seat_id']);
 			}
-			$this->_set('tickets', $_POST['tickets']);
-			$this->_set('seat_id', $_POST['seat_id']);
+			//$this->_set('tickets', $_POST['tickets']);
+			//$this->_set('seat_id', $_POST['seat_id']);
+			$tickets = $this->post('tickets');
+			$seat_id = $this->post('seat_id');
+			$this->setSession('tickets', $tickets);
+			$this->setSession('seat_id', $seat_id);
 			$response['code'] = 200;
+			$response['tickets'] = $tickets;
+			$response['seat_id'] = $seat_id;
 			pjAppController::jsonResponse($response);
 			exit;
 		}
