@@ -119,6 +119,7 @@ $route['auth/register'] = 'auth/register';
 
 $route['event/details/(:any)'] = 'EventController/pjActionDetails/$1';
 $route['event/pjActionSeatsAjax'] = 'EventController/pjActionSeatsAjax';
+$route['event/pjActionSaveSeats'] = 'EventController/pjActionSaveSeats';
 $route['event/seats'] = 'EventController/pjActionSeats';
 //$route['event/(:any)'] = ''
 $route['welcome'] = 'welcome';

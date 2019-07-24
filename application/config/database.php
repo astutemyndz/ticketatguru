@@ -156,7 +156,7 @@ $db['default'] = array(
 
 	'username' => 'root',//officewo_gpf
 
-	'password' => 'work@9063',//51!=Uw1vw+7w
+	'password' => '',//51!=Uw1vw+7w
 
 	'database' => 'ticketbooking',
 

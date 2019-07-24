@@ -221,9 +221,9 @@
 			});
 		</script>		
 <script src="<?php echo base_url();?>js/auth/auth.js"></script>
-<script src="<?php echo base_url();?>js/auth/placeholder.min.js"></script>
+<!-- <script src="<?php echo base_url();?>js/auth/placeholder.min.js"></script> -->
 <script src="<?php echo base_url();?>js/custom.js"></script>
-<script src="<?php echo base_url();?>js/booking/ticketbooking.js"></script>
+<!-- <script src="<?php echo base_url();?>js/booking/ticketbooking.js"></script> -->
 
 
 
