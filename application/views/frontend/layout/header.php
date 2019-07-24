@@ -1,6 +1,4 @@
-<?php
 
-/*
 <header class="site-header">
 	<div class="top-header top-header-bg">
 				<div class="container">
@@ -26,7 +24,7 @@
 						</div>
 						<div class="top-right">
 							<ul>
-								<li>
+								<?php /*<li>
 									<a href="" class="btn" data-toggle="modal" data-target="#modalLoginForm">Sign In</a>
 								</li>
 							
@@ -36,7 +34,17 @@
 							
 								<li>
 									<a href="" class="btn" data-toggle="modal" data-target="#modalRegisterForm">Sign up</a>
+								</li> 
+								*/?>
+								<?php if(!empty($_SESSION['loggedIn']) && $_SESSION['loggedIn'] === TRUE) { ?>
+								<li>
+									<a class="cd-main-nav__item cd-main-nav__item--signup btn" href="<?php echo base_url();?>auth/logout" >Sign out</a>
 								</li>
+								<?php } else { ?>
+									<li>
+										<a class="cd-main-nav__item cd-main-nav__item--signin btn" href="#0" data-signin="login">Sign in</a>
+									</li>
+								<?php } ?>
 							</ul>
 						</div>
 					</div>
@@ -47,10 +55,7 @@
 				<div class="row align-items-center">
 					<div class="col-10 col-lg-4">
 						<h1 class="site-branding flex">
-							<a href="#" title="globalgala" rel="home">
-								<img src="<?php echo base_url();?>images/logo.png" alt="logo" width="100"> 
-								Ticket at Guru
-							</a>
+							<a href="<?php echo base_url();?>"><img src="<?php echo base_url();?>/images/ticketGuruLogo.png" alt="Logo"></a>
 						</h1>
 					</div>
 
@@ -79,9 +84,10 @@
 			</div>
 		</div>
 </header>
-*/
-?>
 
+<?php
+
+/*
 <header class="cd-main-header">
 		<div class="cd-main-header__logo"><a href="<?php echo base_url();?>"><img src="<?php echo base_url();?>/images/ticketGuruLogo.png" alt="Logo"></a></div>
 
@@ -98,7 +104,8 @@
 			</ul>
 		</nav>
 	</header>
-
+*/
+?>
 <!-- <div class="modal fade" id="modalLoginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
   	
