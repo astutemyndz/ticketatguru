@@ -64,4 +64,7 @@ if (!defined("PJ_INVOICE_PLUGIN")) define("PJ_INVOICE_PLUGIN", 'index.php?contro
 
 $CONFIG = array();
 $CONFIG['plugins'] = array('pjLocale', 'pjBackup', 'pjLog', 'pjInstaller', 'pjOneAdmin', 'pjPaypal', 'pjAuthorize', 'pjCountry', 'pjInvoice', 'pjSms');
+
+
+if (!defined("PJ_APPLICATION_PATH")) define("PJ_APPLICATION_PATH", ROOT_PATH . "application/");
 ?>

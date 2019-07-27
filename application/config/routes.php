@@ -100,7 +100,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 */
 
-$route['default_controller'] = 'home';
+$route['default_controller'] = 'EventController/pjActionEvents';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 $route['ajaxCity'] = 'home/ajaxCity';
@@ -112,17 +112,32 @@ $route['job/(:any)'] = 'job/listings';
 
 
 
-$route['auth/login'] = 'auth/login';
-$route['auth/register'] = 'auth/register';
+
 
 
 
 $route['event/details/(:any)'] = 'EventController/pjActionDetails/$1';
 $route['event/pjActionSeatsAjax'] = 'EventController/pjActionSeatsAjax';
 $route['event/pjActionSaveSeats'] = 'EventController/pjActionSaveSeats';
+$route['event/cart'] = 'EventController/pjActionCart';
+
 $route['event/seats'] = 'EventController/pjActionSeats';
 //$route['event/(:any)'] = ''
 $route['welcome'] = 'welcome';
 
 $route['set'] = 'EventController/setSessionData';
 $route['get'] = 'EventController/getSessionData';
+
+
+//Get Login Form
+$route['auth/login'] = 'AuthController/pjAuthForm';
+// Post Login
+$route['auth/login/post'] = 'AuthController/login';
+
+//Post Logout 
+$route['auth/logout'] = 'AuthController/logout';
+
+// Post Register
+$route['auth/register/post'] = 'AuthController/register';
+
+$route['account'] = 'AccountController/pjAccountForm';

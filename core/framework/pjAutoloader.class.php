@@ -16,7 +16,9 @@ class pjAutoloader
 			PJ_CONTROLLERS_PATH . $className . '.controller.php',
 			PJ_MODELS_PATH . $model . '.model.php',
 			PJ_COMPONENTS_PATH. $className . '.component.php',
-			PJ_FRAMEWORK_PATH . 'components/'. $className . '.component.php'
+			PJ_FRAMEWORK_PATH . 'components/'. $className . '.component.php',
+			PJ_APPLICATION_PATH . 'libraries/'. $className . '.php',
+			
 		);
 
 		// echo "<pre>";

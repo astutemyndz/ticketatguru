@@ -3202,3 +3202,192 @@ iframe {
 .comment-content > h6:first-child {
     margin-top: 0;
 }
+
+
+/******************************************************
+						Login
+******************************************************/
+
+.login-sec{
+	/*background-image: url(../images/login-bg1.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 576px;
+	position: relative;*/
+}
+.login-inner{
+	/*width: 100%;*/
+	/*float:left;*/
+    background: #fff;
+    /*height: 100%;*/
+    padding: 60px 0;
+}
+/*.login-inner:after{
+	content: "";
+	display: block;
+	background-image: url(../images/triangle.png);
+	width: 565px;
+    height: 576px;
+    position: absolute;
+    left: 540px;
+	top: 0;
+	z-index: 1;
+}*/
+.after {
+    float: left;
+    width: 50%;
+}
+.after img {
+    height: 576px;
+    width: 100%;
+}
+.login-inner .container {
+    position: relative;
+    z-index: 2;
+}
+.login-inner .nav-tabs{
+	border: none;
+	text-align: center;
+}
+.login-inner .nav-tabs>li{
+	margin: 0 auto;
+	display: inline-block;
+	float: none;
+}
+.login-inner .nav-tabs>li>a{
+	border: none;
+	background-color: transparent;
+	color: #545454;
+    font-size: 30px;
+    padding: 0;
+}
+.nav-tabs>li a{
+	margin: 0 -2px;
+}
+.nav-tabs>li.left-radius>a {
+	background-color: #242424;
+    width: 200px;
+    border: none ;
+    text-align: center;
+    color: #fff;
+    font-size: 22px;
+    padding: 10px 0;
+    border-radius: 50px 0 0 50px;
+	border: none;
+}
+.nav-tabs>li.active>a{
+	border: none;
+	background-color: #ff6600 !important;
+	color:#fff !important;
+	border: none !important;
+}
+
+.nav-tabs>li.right-radius>a {
+	background-color: #242424;
+    width: 200px;
+    border: none ;
+    text-align: center;
+    color: #fff;
+    font-size: 22px;
+    padding: 10px 0;
+    border-radius: 0 50px 50px 0;
+	border: none;
+}
+.check a {
+    color: #ff6600;
+    float: right;
+}
+#registration .check a{
+	float:none;
+}
+.check a:hover{
+	color: #242424;
+}
+.from-sec{
+	    max-width: 100%;
+}
+.from-sec input{
+	width: 100%;
+    padding: 10px 10px;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    margin: 10px 0;
+    outline: none;
+
+}
+.sign-btn{
+	background-color: #ff6600;
+    max-width: 50%;
+    color: #fff;
+    outline: none !important;
+}
+.tab-content {
+    padding-top: 30px;
+}
+.check {
+  display: block;
+  position: relative;
+      padding: 0 0 5px 40px;
+  margin: 10px 0 5px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 100; 
+  color: #505050;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.check input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 15px;
+  width: 15px;
+  border: 1px solid #ff6600;
+  border-radius: 3px;
+}
+
+
+/* When the checkbox is checked, add a blue background */
+.check input:checked ~ .checkmark {
+  background-color: #ff6600;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.check input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.check .checkmark:after {
+  left: 0;
+  right: 0;
+  top: 1px;
+  width: 5px;
+  height: 10px;
+  margin: auto;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}

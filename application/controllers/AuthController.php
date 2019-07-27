@@ -5,7 +5,7 @@
  * @property Ion_auth|Ion_auth_model $ion_auth        The ION Auth spark
  * @property CI_Form_validation      $form_validation The form validation library
  */
-class Auth extends CI_Controller
+class AuthController extends CI_Controller
 {
 	public function __construct()
 	{
@@ -76,7 +76,7 @@ class Auth extends CI_Controller
 		$this->form_validation->set_rules('last_name', $this->lang->line('create_user_validation_lname_label'), 'trim|required');
 		//if ($identity_column !== 'email')
 		//{
-			$this->form_validation->set_rules('identity', $this->lang->line('create_user_validation_identity_label'), 'trim|required|is_unique[' . $tables['users'] . '.' . $identity_column . ']');
+			$this->form_validation->set_rules('registerIdentity', $this->lang->line('create_user_validation_identity_label'), 'trim|required|is_unique[' . $tables['users'] . '.' . $identity_column . ']');
 			//$this->form_validation->set_rules('email', $this->lang->line('create_user_validation_email_label'), 'trim|required|valid_email');
 		//}
 		//else
@@ -91,7 +91,7 @@ class Auth extends CI_Controller
 		if ($this->form_validation->run() === TRUE)
 		{
 			$email = strtolower($this->input->post('email'));
-			$identity = strtolower($this->input->post('identity'));//($identity_column === 'email') ? $email : $this->input->post('identity');
+			$identity = strtolower($this->input->post('registerIdentity'));//($identity_column === 'email') ? $email : $this->input->post('identity');
 			$password = $this->input->post('password');
 
 			$additional_data = array(
@@ -126,15 +126,7 @@ class Auth extends CI_Controller
 						->set_status_header(200)
 						->set_output(json_encode(array(
 								'data' => [],
-								'errors' => array(
-									'first_name' 		=> $validation_errors[0], 
-									'last_name' 		=> $validation_errors[1], 
-									'username' 			=> $validation_errors[2], 
-									'signupEmail' 		=> $validation_errors[3], 
-									'signupEmailConfirm' 	=> $validation_errors[4], 
-									'signupPassword' 	=> $validation_errors[5], 
-									'signupPasswordConfirm' 	=> $validation_errors[6], 
-								),
+								'errors' => $validation_errors,
 								'message' => '',
 								'status' => false
 								
@@ -149,6 +141,7 @@ class Auth extends CI_Controller
 	 */
 	public function login()
 	{
+		
 		$this->data['title'] = $this->lang->line('login_heading');
 
 		// validate form input
@@ -243,6 +236,23 @@ class Auth extends CI_Controller
 		$this->session->set_userdata('abc', 1);
 		echo $this->session->userdata('abc');
 		
+	}
+
+	public function pjAuthForm() {
+
+		$this->data['title'] = "Login Form";
+		$this->load->view('frontend/layout/head', $this->data);
+		$this->load->view('frontend/layout/header');
+		$this->load->view('frontend/pages/auth/index');
+		$this->load->view('frontend/layout/footer');
+	}
+	public function pjAccount() {
+
+		$this->data['title'] = "My Account";
+		$this->load->view('frontend/layout/head', $this->data);
+		$this->load->view('frontend/layout/header');
+		$this->load->view('frontend/pages/account/index');
+		$this->load->view('frontend/layout/footer');
 	}
 
 

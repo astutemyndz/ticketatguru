@@ -95,6 +95,7 @@
 				if($seatContainer.find(".tbAssignedSeats_" + price_id).length < pair.cnt)
 				{
 					self.current_ticket = price_id;
+					console.log(self.current_ticket);
 					var guide_message = '';
 					if(pair.cnt > 1)
 					{
@@ -302,16 +303,18 @@
 				}
 				
 			}).on("click.tb", ".tbSeatAvailable", function (e) {
+				
 				if (e && e.preventDefault) {
 					e.preventDefault();
 				}
+				
 				var $frm = $('#tbSeatsForm_' + self.opts.index),
 					$seatContainer = $('#tbSelectedSeats_' + self.opts.index),
 					price_id_arr = ($(this).attr('data-price-id')).split('~:~'),
 					seat_id = $(this).attr('data-id'),
 					seat_name = $(this).attr('data-name'),
 					cnt = parseInt($(this).attr('data-count'), 10);
-				
+					
 				if(self.current_ticket != null && self.checkHasPriceId.call(self, self.current_ticket, price_id_arr) == true)
 				{
 					
@@ -319,9 +322,9 @@
 						$ticket = $('#tbTicket_' + price_id),
 						chosen_ticket = parseInt($ticket.val(), 10),
 						ticket_name = $ticket.attr('data-ticket');
-					
-					if(chosen_ticket > 0)
-					{
+						
+					// if(chosen_ticket > 0)
+					// {
 						var cnt_selected = 0;
 						
 						$frm.find(".tbHiddenSeat_" + price_id).each(function (i, el) {
@@ -336,6 +339,7 @@
 							{
 								seatClass = 'tbAssignedNoMap';
 							}
+							//console.log($el.length);
 							if($el.length > 0)
 							{
 								//console.log(`${$el.length} > ${cnt}`);
@@ -351,7 +355,6 @@
 									}
 								}
 							}else {
-								//console.log(`${$el.length} < ${cnt}`);
 								$('<input>').attr({
 								    type: 'hidden',
 								    name: 'seat_id['+price_id+'][' + seat_id + ']',
@@ -369,18 +372,33 @@
 							self.adviseToSelectSeats.call(self);
 							self.checkAssignedSeats.call(self);
 							$(this).addClass('tbSeatSelected');
+							var increment = 0;
+							if($(this).hasClass('tbSeatSelected')) {
+								//console.log(`Before Increment: ${increment}`); 
+								//increment += 1
+								//console.log(`After Increment: ${increment}`); 
+								//$.post()
+								var params = $('#tbSeatsForm_'+self.opts.index+', .tbTicketSelector').serialize();
+								self.disableButtons.call(self);
+								//console.log(params);
+								$.post(`${self.opts.folder}event/pjActionSaveSeats`,params).done(function (data) {
+									if(data.code == '200')
+									{
+										console.log(data);
+										//location.reload();
+									}
+								}).fail(function () {
+///									self.enableButtons.call(self);
+								});
+							}	
+
 						}else{
 							$('.tbGuideMessage').attr('data-type', '').html((self.opts.error_msg.enough).replace("[TICKET]", ticket_name)).fadeIn('slow').delay(1000).fadeOut('slow');
 						}
-					}else{
-						$('.tbGuideMessage').attr('data-type', 'ticket' + price_id).html((self.opts.error_msg.no_tickets).replace("[TICKET]", ticket_name)).show();
-					}
-				} else {
-					//console.log("else"  + self.current_ticket);
-					//$('.selectSeat').show();
-					alert('please select value from dropdown');
-					//return false;
-				}
+					// }else{
+					// 	$('.tbGuideMessage').attr('data-type', 'ticket' + price_id).html((self.opts.error_msg.no_tickets).replace("[TICKET]", ticket_name)).show();
+					// }
+				} 
 				
 								
 			}).on("change.tb", ".tbTicketSelector", function (e) {
@@ -397,6 +415,7 @@
 				
 				if(!$mapHolder.hasClass('tbMapHolder'))
 				{
+					
 					$mapHolder.find(".tbSeatSelected").each(function (i, el) {
 						var price_id_arr = ($(el).attr('data-price-id')).split('~:~'),
 							seat_id = $(el).attr('data-id');
@@ -588,17 +607,18 @@
 				}else if(total_tickets > total_seats){
 					$('.tbErrorMessage').html(self.opts.error_msg.not_enough).fadeIn('slow').delay(2000).fadeOut('slow');
 				}else{
-					var params = $('#tbSeatsForm_'+self.opts.index+', .tbTicketSelector').serialize();
-					self.disableButtons.call(self);
-					$.post(`${self.opts.folder}event/pjActionSaveSeats`,params).done(function (data) {
-						if(data.code == '200')
-						{
-							//console.log(data.ticket);
-							//hashBang("#!/Checkout/date:" + date);
-						}
-					}).fail(function () {
-						self.enableButtons.call(self);
-					});
+					// var params = $('#tbSeatsForm_'+self.opts.index+', .tbTicketSelector').serialize();
+					// self.disableButtons.call(self);
+					// //console.log(params);
+					// $.post(`${self.opts.folder}event/pjActionSaveSeats`,params).done(function (data) {
+					// 	if(data.code == '200')
+					// 	{
+					// 		console.log(data.ticket);
+					// 		//hashBang("#!/Checkout/date:" + date);
+					// 	}
+					// }).fail(function () {
+					// 	self.enableButtons.call(self);
+					// });
 				}
 			}).on("click.tb", ".tbContinueLink", function (e) {
 				if (e && e.preventDefault) {

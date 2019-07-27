@@ -9,12 +9,13 @@ if (isset($tpl['status']))
 			break;
 	}
 } else {
-	pjUtil::printNotice(__('infoUpdateUserTitle', true), __('infoUpdateUserDesc', true));
+	pjUtil::printNotice(__('infoUpdateCustomerTitle', true), __('infoUpdateCustomerDesc', true));
 	?>
 	
 	<form action="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminCustomers&amp;action=pjActionUpdate" method="post" id="frmUpdateUser" class="form pj-form">
 		<input type="hidden" name="user_update" value="1" />
 		<input type="hidden" name="id" value="<?php echo (int) $tpl['arr']['id']; ?>" />
+		<?php /*?>
 		<p>
 			<label class="title"><?php __('lblRole'); ?></label>
 			<?php
@@ -52,6 +53,7 @@ if (isset($tpl['status']))
 			}
 			?>
 		</p>
+		<?php */?>
 		<p>
 			<label class="title"><?php __('email'); ?></label>
 			<span class="pj-form-field-custom pj-form-field-custom-before">
@@ -59,6 +61,7 @@ if (isset($tpl['status']))
 				<input type="text" name="email" id="email" class="pj-form-field required email w200" value="<?php echo pjSanitize::html($tpl['arr']['email']); ?>" />
 			</span>
 		</p>
+		<?php /*?>
 		<p>
 			<label class="title"><?php __('pass'); ?></label>
 			<span class="pj-form-field-custom pj-form-field-custom-before">
@@ -66,12 +69,21 @@ if (isset($tpl['status']))
 				<input type="text" name="password" id="password" class="pj-form-field required w200" value="<?php echo pjSanitize::html($tpl['arr']['password']); ?>" />
 			</span>
 		</p>
+		<?php */?>
+		
 		<p>
-			<label class="title"><?php __('lblName'); ?></label>
+			<label class="title"><?php __('lblFirstName'); ?></label>
 			<span class="inline_block">
-				<input type="text" name="name" id="name" value="<?php echo pjSanitize::html($tpl['arr']['name']); ?>" class="pj-form-field w250 required" />
+				<input type="text" name="first_name" id="first_name" class="pj-form-field w250 required" value="<?php echo pjSanitize::html($tpl['arr']['first_name']); ?>" />
 			</span>
 		</p>
+		<p>
+			<label class="title"><?php __('lblLastName'); ?></label>
+			<span class="inline_block">
+				<input type="text" name="last_name" id="last_name" class="pj-form-field w250 required" value="<?php echo pjSanitize::html($tpl['arr']['last_name']); ?>" />
+			</span>
+		</p>
+		<?php /*?>
 		<p>
 			<label class="title"><?php __('lblPhone'); ?></label>
 			<span class="pj-form-field-custom pj-form-field-custom-before">
@@ -79,6 +91,7 @@ if (isset($tpl['status']))
 				<input type="text" name="phone" id="phone" value="<?php echo pjSanitize::html($tpl['arr']['phone']); ?>" class="pj-form-field w200" placeholder="(123) 456-7890"/>
 			</span>
 		</p>
+		<?php */?>
 		<p>
 			<label class="title"><?php __('lblStatus'); ?></label>
 			<?php

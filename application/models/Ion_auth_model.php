@@ -1,4 +1,5 @@
 <?php
+//echo "model";
 /**
  * Name:    Ion Auth Model
  * Author:  Ben Edmunds
@@ -155,6 +156,7 @@ class Ion_auth_model extends CI_Model
     protected $db;
     public function __construct()
     {
+      
         $this->config->load('ion_auth', TRUE);
         $this->load->helper('cookie');
         $this->load->helper('date');
@@ -2256,4 +2258,8 @@ class Ion_auth_model extends CI_Model
             $this->session->sess_regenerate(FALSE);
         }
     }
+    public static function factory($attr=array())
+	{
+		return new Ion_auth_model($attr);
+	}
 }

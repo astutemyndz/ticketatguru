@@ -10,12 +10,12 @@ if (isset($tpl['status']))
 	}
 } else {
 	
-	pjUtil::printNotice(__('infoAddUserTitle', true), __('infoAddUserDesc', true));
+	pjUtil::printNotice(__('infoAddCustomerTitle', true), __('infoAddCustomerDesc', true));
 	?>
 	
 	<form action="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminCustomers&amp;action=pjActionCreate" method="post" id="frmCreateUser" class="form pj-form" autocomplete="off">
 		<input type="hidden" name="user_create" value="1" />
-		<p>
+		<?php /*?><p>
 			<label class="title"><?php __('lblRole'); ?></label>
 			<span class="inline_block">
 				<select name="role_id" id="role_id" class="pj-form-field required">
@@ -27,6 +27,19 @@ if (isset($tpl['status']))
 					}
 					?>
 				</select>
+			</span>
+		</p>
+		<?php */?>
+		<p>
+			<label class="title"><?php __('lblFirstName'); ?></label>
+			<span class="inline_block">
+				<input type="text" name="first_name" id="first_name" class="pj-form-field w250 required" />
+			</span>
+		</p>
+		<p>
+			<label class="title"><?php __('lblLastName'); ?></label>
+			<span class="inline_block">
+				<input type="text" name="last_name" id="last_name" class="pj-form-field w250 required" />
 			</span>
 		</p>
 		<p>
@@ -43,12 +56,7 @@ if (isset($tpl['status']))
 				<input type="text" name="password" id="password" class="pj-form-field required w200" />
 			</span>
 		</p>
-		<p>
-			<label class="title"><?php __('lblName'); ?></label>
-			<span class="inline_block">
-				<input type="text" name="name" id="name" class="pj-form-field w250 required" />
-			</span>
-		</p>
+		<?php /*?>
 		<p>
 			<label class="title"><?php __('lblPhone'); ?></label>
 			<span class="pj-form-field-custom pj-form-field-custom-before">
@@ -56,6 +64,7 @@ if (isset($tpl['status']))
 				<input type="text" name="phone" id="phone" class="pj-form-field w200" placeholder="(123) 456-7890"/>
 			</span>
 		</p>
+		<?php */?>
 		<p>
 			<label class="title"><?php __('lblStatus'); ?></label>
 			<span class="inline_block">

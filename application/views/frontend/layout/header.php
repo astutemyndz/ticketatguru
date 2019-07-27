@@ -1,5 +1,8 @@
+<?php 
+$cartItemsCount = ($this->cart->contents()) ? count($this->cart->contents()) : 0;
 
-<header class="site-header">
+?>
+<!--<header class="site-header">
 	<div class="top-header top-header-bg">
 				<div class="container">
 					<div class="row">
@@ -66,7 +69,7 @@
 								<span></span>
 								<span></span>
 								<span></span>
-							</div><!-- .hamburger-menu -->
+							</div>
 
 							<ul>
 								<li><a href="#">HOME</a></li>
@@ -83,10 +86,97 @@
 				</div>
 			</div>
 		</div>
-</header>
+</header>-->
 
+<!--23-07-19-->
+
+<header id="masthead" class="site-header">
+			<div class="top-header top-header-bg">
+				<div class="container">
+					<div class="row">
+						<div class="top-left">
+							<ul>
+								<li>
+									<a href="#">
+										<i class="fa fa-phone"></i>
+										+62274 889767
+									</a>
+								</li>
+								<li>
+									<a href="mailto:hello@myticket.com"> 
+										<i class="fa fa-envelope-o"></i>
+										hello@myticket.com
+									</a>
+								</li>
+							</ul>
+						</div>
+						<div class="top-right js-main-nav">
+							<ul class="js-signin-modal">
+							<?php if(!empty($_SESSION['loggedIn']) && $_SESSION['loggedIn'] === TRUE) { ?>
+								<li>
+									<a id="logoutLink" class="" href="javascript:void(0);" >Sign out</a>
+								</li>
+								<?php } else { ?>
+									<li>
+										<a id="loginLink" class="" href="javascript:void(0);" data-signin="login">Sign in</a>
+									</li>
+							<?php } ?>
+								
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="main-header main-header-bg" id="myHeader">
+				<div class="container">
+					<div class="row">
+						<div class="site-branding col-md-3">
+							<h1 class="site-title">
+								<a href="<?php echo base_url();?>"><img src="<?php echo base_url();?>/images/ticketGuruLogo.png" alt="Logo"></a>
+							</h1>
+						</div>
+
+						<div class="col-md-9">
+							<nav id="site-navigation" class="navbar">
+							  <!-- toggle get grouped for better mobile display -->
+								<div class="navbar-header">
+									<div class="mobile-cart">
+										<a href="#"><?php echo $cartItemsCount;?></a>
+									</div>
+									<button type="button" class="navbar-toggle offcanvas-toggle pull-right" data-toggle="offcanvas" data-target="#js-bootstrap-offcanvas">
+										<span class="sr-only">Toggle navigation</span>
+										<span class="icon-bar"></span>
+										<span class="icon-bar"></span>
+										<span class="icon-bar"></span>
+									</button>
+								</div>
+
+								<div class="navbar-offcanvas navbar-offcanvas-touch navbar-offcanvas-right" id="js-bootstrap-offcanvas">
+									<button type="button" class="offcanvas-toggle closecanvas" data-toggle="offcanvas" data-target="#js-bootstrap-offcanvas">
+									   <i class="fa fa-times fa-2x" aria-hidden="true"></i>
+									</button>
+							
+									<ul class="nav navbar-nav navbar-right">
+										<li class="active"><a href="full-event-schedule.html">Schedule</a></li>
+										<li><a href="artist-page.html">Concerts</a></li>
+										<li><a href="upcoming-events.html">Sports</a></li>
+										<li><a href="order-ticket-without-seat.html">Parties</a></li>
+										<li><a href="event-by-category.html">Theater</a></li>
+										<li><a href="gallery.html">Gallery</a></li>
+										<li><a href="select-seat-2.html">Ticekts</a></li>
+										<?php if($cartItemsCount > 0) {?>
+										<li class="cart"><a href="<?php echo base_url();?>event/cart"><?php echo $cartItemsCount;?></a></li>
+										<?php } ?>
+									</ul>
+									
+								</div>
+							</nav><!-- #site-navigation -->
+						</div>
+					</div>
+				</div>
+			</div>
+		</header>
 <?php
-
 /*
 <header class="cd-main-header">
 		<div class="cd-main-header__logo"><a href="<?php echo base_url();?>"><img src="<?php echo base_url();?>/images/ticketGuruLogo.png" alt="Logo"></a></div>
@@ -104,8 +194,8 @@
 			</ul>
 		</nav>
 	</header>
-*/
-?>
+*/?>
+
 <!-- <div class="modal fade" id="modalLoginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
   	
@@ -136,9 +226,9 @@
     </div>
 
   </div>
-</div> -->
+</div> 
 
-<!-- <div class="modal fade" id="modalRegisterForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="modalRegisterForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
   	<form method="post"  id="registerForm">
     <div class="modal-content">
@@ -203,121 +293,4 @@
 	</form>
   </div>
 </div> -->
-
-<div class="cd-signin-modal js-signin-modal"> <!-- this is the entire modal form, including the background -->
-		<div class="cd-signin-modal__container"> <!-- this is the container wrapper -->
-			<ul class="cd-signin-modal__switcher js-signin-modal-switcher js-signin-modal-trigger">
-				<li><a href="#0" data-signin="login" data-type="login">Sign in</a></li>
-				<li><a href="#0" data-signin="signup" data-type="signup">New account</a></li>
-			</ul>
-
-			<div class="cd-signin-modal__block js-signin-modal-block" data-type="login"> <!-- log in form -->
-				<form class="cd-signin-modal__form" id="loginForm" action="<?php echo base_url();?>auth/login" method="post">
-					<p class="cd-signin-modal__fieldset">
-						<label class="cd-signin-modal__label cd-signin-modal__label--email cd-signin-modal__label--image-replace" for="signin-email">E-mail</label>
-						<input class="cd-signin-modal__input cd-signin-modal__input--full-width cd-signin-modal__input--has-padding cd-signin-modal__input--has-border" id="identity" name="identity" type="email" placeholder="E-mail">
-						<span class="cd-signin-modal__error"></span>
-					</p>
-
-					<p class="cd-signin-modal__fieldset">
-						<label class="cd-signin-modal__label cd-signin-modal__label--password cd-signin-modal__label--image-replace" for="signin-password">Password</label>
-						<input class="cd-signin-modal__input cd-signin-modal__input--full-width cd-signin-modal__input--has-padding cd-signin-modal__input--has-border" id="password" name="password" type="password"  placeholder="Password">
-						<!-- <a href="#0" class="cd-signin-modal__hide-password js-hide-password">Hide</a> -->
-						<span class="cd-signin-modal__error"></span>
-					</p>
-
-					<p class="cd-signin-modal__fieldset">
-						<input type="checkbox" id="remember" name="remember" checked class="cd-signin-modal__input ">
-						<label for="remember-me">Remember me</label>
-					</p>
-					<p class="cd-signin-modal__fieldset">
-						<span id="message" class="alert"></span>
-					</p>
-
-					<p class="cd-signin-modal__fieldset">
-						<input class="cd-signin-modal__input cd-signin-modal__input--full-width" type="submit" value="Login">
-					</p>
-				</form>
-				
-				<p class="cd-signin-modal__bottom-message js-signin-modal-trigger"><a href="#0" data-signin="reset">Forgot your password?</a></p>
-			</div> <!-- cd-signin-modal__block -->
-<!-- sign up form -->
-			<div class="cd-signin-modal__block js-signin-modal-block" data-type="signup"> <!-- sign up form -->
-				<form class="cd-signin-modal__form" action="<?php echo base_url();?>auth/register" method="post" id="registerForm">
-					<p class="cd-signin-modal__fieldset">
-						<label class="cd-signin-modal__label cd-signin-modal__label--username cd-signin-modal__label--image-replace" for="signup-username">First Name</label>
-						<input name="first_name" class="cd-signin-modal__input cd-signin-modal__input--full-width cd-signin-modal__input--has-padding cd-signin-modal__input--has-border" id="first_name" type="text" placeholder="First Name">
-						<span class="cd-signin-modal__error"></span>
-					</p>
-					<p class="cd-signin-modal__fieldset">
-						<label class="cd-signin-modal__label cd-signin-modal__label--username cd-signin-modal__label--image-replace" for="signup-username">Last Name</label>
-						<input name="last_name" class="cd-signin-modal__input cd-signin-modal__input--full-width cd-signin-modal__input--has-padding cd-signin-modal__input--has-border" id="last_name" type="text" placeholder="Last Name">
-						<span class="cd-signin-modal__error"></span>
-					</p>
-
-					<p class="cd-signin-modal__fieldset">
-						<label class="cd-signin-modal__label cd-signin-modal__label--username cd-signin-modal__label--image-replace" for="signup-username">Username</label>
-						<input name="identity" class="cd-signin-modal__input cd-signin-modal__input--full-width cd-signin-modal__input--has-padding cd-signin-modal__input--has-border" id="username" type="text" placeholder="Username">
-						<span class="cd-signin-modal__error"></span>
-					</p>
-
-					<p class="cd-signin-modal__fieldset">
-						<label class="cd-signin-modal__label cd-signin-modal__label--email cd-signin-modal__label--image-replace" for="signup-email">E-mail</label>
-						<input name="email" class="cd-signin-modal__input cd-signin-modal__input--full-width cd-signin-modal__input--has-padding cd-signin-modal__input--has-border" id="signupEmail" type="email" placeholder="E-mail">
-						<span class="cd-signin-modal__error"></span>
-					</p>
-
-					<p class="cd-signin-modal__fieldset">
-						<label class="cd-signin-modal__label cd-signin-modal__label--email cd-signin-modal__label--image-replace" for="signup-email">E-mail</label>
-						<input name="confirm_email" class="cd-signin-modal__input cd-signin-modal__input--full-width cd-signin-modal__input--has-padding cd-signin-modal__input--has-border" id="signupEmailConfirm" type="email" placeholder="Confirm E-mail">
-						<span class="cd-signin-modal__error"></span>
-					</p>
-
-					<p class="cd-signin-modal__fieldset">
-						<label class="cd-signin-modal__label cd-signin-modal__label--password cd-signin-modal__label--image-replace" for="signup-password">Password</label>
-						<input name="password" class="cd-signin-modal__input cd-signin-modal__input--full-width cd-signin-modal__input--has-padding cd-signin-modal__input--has-border" id="signupPassword" type="password"  placeholder="Password">
-						<a href="#0" class="cd-signin-modal__hide-password js-hide-password">Hide</a>
-						<span class="cd-signin-modal__error"></span>
-					</p>
-
-					<p class="cd-signin-modal__fieldset">
-						<label class="cd-signin-modal__label cd-signin-modal__label--password cd-signin-modal__label--image-replace" for="signup-password">Password</label>
-						<input name="password_confirm" class="cd-signin-modal__input cd-signin-modal__input--full-width cd-signin-modal__input--has-padding cd-signin-modal__input--has-border" id="signupPasswordConfirm" type="password"  placeholder="Confirm Password">
-						<a href="#0" class="cd-signin-modal__hide-password js-hide-password">Hide</a>
-						<span class="cd-signin-modal__error"></span>
-					</p>
-
-					<p class="cd-signin-modal__fieldset">
-						<input type="checkbox" id="accept-terms" class="cd-signin-modal__input ">
-						<label for="accept-terms">I agree to the <a href="#0">Terms</a></label>
-					</p>
-
-					<p class="cd-signin-modal__fieldset">
-						<input class="cd-signin-modal__input cd-signin-modal__input--full-width cd-signin-modal__input--has-padding" type="submit" id="registerButton" value="Create account">
-					</p>
-				</form>
-			</div> <!-- cd-signin-modal__block -->
-<!-- sign up form -->
-
-
-			<div class="cd-signin-modal__block js-signin-modal-block" data-type="reset"> <!-- reset password form -->
-				<p class="cd-signin-modal__message">Lost your password? Please enter your email address. You will receive a link to create a new password.</p>
-
-				<form class="cd-signin-modal__form" >
-					<p class="cd-signin-modal__fieldset">
-						<label class="cd-signin-modal__label cd-signin-modal__label--email cd-signin-modal__label--image-replace" for="reset-email">E-mail</label>
-						<input class="cd-signin-modal__input cd-signin-modal__input--full-width cd-signin-modal__input--has-padding cd-signin-modal__input--has-border" type="email" placeholder="E-mail">
-						<span class="cd-signin-modal__error">Error message here!</span>
-					</p>
-
-					<p class="cd-signin-modal__fieldset">
-						<input class="cd-signin-modal__input cd-signin-modal__input--full-width cd-signin-modal__input--has-padding" type="submit" value="Reset password">
-					</p>
-				</form>
-
-				<p class="cd-signin-modal__bottom-message js-signin-modal-trigger"><a href="#0" data-signin="login">Back to log-in</a></p>
-			</div> <!-- cd-signin-modal__block -->
-			<a href="#0" class="cd-signin-modal__close js-close">Close</a>
-		</div> <!-- cd-signin-modal__container -->
-	</div> <!-- cd-signin-modal -->
 

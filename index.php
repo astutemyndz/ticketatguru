@@ -288,7 +288,7 @@ switch (ENVIRONMENT)
 	 */
 	if (!defined("PJ_HOST")) define("PJ_HOST", "localhost");
 	if (!defined("PJ_USER")) define("PJ_USER", "root");
-	if (!defined("PJ_PASS")) define("PJ_PASS", "");
+	if (!defined("PJ_PASS")) define("PJ_PASS", "work@9063");
 	if (!defined("PJ_DB")) define("PJ_DB", "ticketbooking");
 	if (!defined("PJ_PREFIX")) define("PJ_PREFIX", "tk_");
 	if (!defined("PJ_SCRIPT_PREFIX")) define("PJ_SCRIPT_PREFIX", "cbs_");
@@ -297,6 +297,7 @@ switch (ENVIRONMENT)
 
 	if(!define("ROOT_PATH", dirname(__FILE__) . '/')) define("ROOT_PATH", dirname(__FILE__) . '/');
 	if (!defined("PJ_APP_PATH")) define("PJ_APP_PATH", ROOT_PATH . "app/");
+	
 	if (!defined("PJ_CORE_PATH")) define("PJ_CORE_PATH", ROOT_PATH . "core/");
 	if (!defined("PJ_LIBS_PATH")) define("PJ_LIBS_PATH", "core/libs/");
 	if (!defined("PJ_THIRD_PARTY_PATH")) define("PJ_THIRD_PARTY_PATH", "core/third-party/");
@@ -325,11 +326,15 @@ switch (ENVIRONMENT)
 	if (!defined("PJ_RSA_PRIVATE")) define("PJ_RSA_PRIVATE", '7');
 
 	if (!defined("PJ_INVOICE_PLUGIN")) define("PJ_INVOICE_PLUGIN", 'index.php?controller=pjAdminBookings&action=pjActionUpdate&uuid={ORDER_ID}');
-	if (!defined("PJ_INSTALL_URL")) define("PJ_INSTALL_URL", "http://127.0.0.1/projects/ticketatguru/");
-	if (!defined("PJ_INSTALL_PATH")) define("PJ_INSTALL_PATH", "/opt/lampp/htdocs/projects/ticketatguru/");
+	if (!defined("PJ_INSTALL_URL")) define("PJ_INSTALL_URL", "http://103.121.156.221/projects/ticketatguru/");
+	if (!defined("PJ_INSTALL_PATH")) define("PJ_INSTALL_PATH", "E:/xampp/htdocs/projects/ticketatguru/");
 	$CONFIG = array();
 	$CONFIG['plugins'] = array('pjLocale', 'pjBackup', 'pjLog', 'pjInstaller', 'pjOneAdmin', 'pjPaypal', 'pjAuthorize', 'pjCountry', 'pjInvoice', 'pjSms');
 
+	if (!defined("PJ_APPLICATION_PATH")) define("PJ_APPLICATION_PATH", ROOT_PATH . "application/");
+	
+	// if (!defined("PJ_APPLICATION_MODELS_PATH")) define("PJ_APPLICATION_MODELS_PATH", PJ_APP_PATH . "application/models");
+	// if (!defined("PJ_APPLICATION_CONFIG_PATH")) define("PJ_APPLICATION_CONFIG_PATH", PJ_APP_PATH . "application/config");
 	/**
 	* copy booking\core\framework and pasete 
 	* copy booking\app\model

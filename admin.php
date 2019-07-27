@@ -3,9 +3,7 @@
 
 // ini_set("display_errors", "On");
 // error_reporting(E_ALL|E_STRICT);
-// echo '<pre>';
-// var_dump($_SESSION);
-// echo '</pre>';
+
 if (!headers_sent())
 {
 	if (isset($_GET['session_id']))
@@ -25,6 +23,7 @@ if (!headers_sent())
 	@session_start();
 }
 //echo "<pre>"; print_r($_SESSION);
+
 $_SERVER['PHP_SELF']=htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES);
 if (isset($_GET["reporting"]) && $_GET["reporting"] == '0') 
 {

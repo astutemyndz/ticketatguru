@@ -16,14 +16,14 @@ if (isset($tpl['status']))
 		pjUtil::printNotice(@$titles[$_GET['err']], @$bodies[$_GET['err']]);
 	}
 	$u_statarr = __('u_statarr', true);
-	
-	pjUtil::printNotice(__('infoUsersTitle', true), __('infoUsersDesc', true));
+	// echo "<pre>"; print_r($u_statarr);
+	pjUtil::printNotice(__('infoCustomersTitle', true), __('infoCustomersDesc', true));
 	?>
 	<div class="b10">
 		<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="get" class="float_left r5">
 			<input type="hidden" name="controller" value="pjAdminCustomers" />
 			<input type="hidden" name="action" value="pjActionCreate" />
-			<input type="submit" class="pj-button" value="<?php __('btnAddUser'); ?>" />
+			<input type="submit" class="pj-button" value="<?php __('btnAddCustomer'); ?>" />
 		</form>
 		<form action="" method="get" class="float_left pj-form frm-filter">
 			<input type="text" name="q" class="pj-form-field pj-form-field-search w150" placeholder="<?php __('btnSearch', false, true); ?>" />
@@ -33,8 +33,8 @@ if (isset($tpl['status']))
 		?>
 		<div class="float_right t5">
 			<a href="#" class="pj-button btn-all"><?php __('lblAll'); ?></a>
-			<a href="#" class="pj-button btn-filter btn-status" data-column="status" data-value="T"><?php echo $filter['active']; ?></a>
-			<a href="#" class="pj-button btn-filter btn-status" data-column="status" data-value="F"><?php echo $filter['inactive']; ?></a>
+			<a href="#" class="pj-button btn-filter btn-status" data-column="status" data-value='T'><?php echo $filter['active']; ?></a>
+			<a href="#" class="pj-button btn-filter btn-status" data-column="status" data-value='F'><?php echo $filter['inactive']; ?></a>
 		</div>
 		<br class="clear_both" />
 	</div>
@@ -48,7 +48,7 @@ if (isset($tpl['status']))
 	myLabel.name = "<?php __('lblName', false, true); ?>";
 	myLabel.email = "<?php __('email', false, true); ?>";
 	myLabel.created = "<?php __('lblUserCreated', false, true); ?>";
-	myLabel.role = "<?php __('lblRole', false, true); ?>";
+	//myLabel.role = "<?php // __('lblRole', false, true); ?>";
 	myLabel.confirmed = "<?php __('lblIsActive', false, true); ?>";
 	myLabel.revert_status = "<?php __('revert_status', false, true); ?>";
 	myLabel.exported = "<?php __('lblExport', false, true); ?>";

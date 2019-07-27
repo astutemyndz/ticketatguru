@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 	<head>
-		<title>Cinema Booking System by PHPJabbers.com</title>
+		<title>Ticket at Guru</title>
 		<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
 		<?php
 		foreach ($controller->getCss() as $css)

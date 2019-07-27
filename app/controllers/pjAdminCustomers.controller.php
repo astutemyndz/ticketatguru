@@ -6,6 +6,160 @@ if (!defined("ROOT_PATH"))
 }
 class pjAdminCustomers extends pjAdmin
 {
+	public  $pjCustomerModel = NULL;
+	private $hash_method = 'bcrypt';
+	private $store_salt  = FALSE;
+	private $salt_length = 22;
+
+	private $default_rounds = NULL;
+	private $random_rounds = NULL;
+	private $min_rounds = NULL;
+	private $max_rounds = NULL;
+	private $bcrypt = NULL;
+
+	public function __construct()
+	{
+		
+		parent::__construct();
+
+		$this->default_rounds 	= 8;
+        $this->random_rounds 	= FALSE;
+        $this->min_rounds 		= 5;
+		$this->max_rounds 		= 9;
+		$this->salt_length 		= 22;
+		$this->store_salt 		= FALSE;
+		$this->hash_method 		= 'bcrypt';
+		
+
+
+		if ($this->hash_method == 'bcrypt')
+        {
+			//echo $this->random_rounds;
+            if ($this->random_rounds)
+            {
+			
+                $rand = rand($this->min_rounds,$this->max_rounds);
+                $params = array('rounds' => $rand);
+            }
+            else
+            {
+                $params = array('rounds' => $this->default_rounds);
+			}
+			
+			$params['salt_prefix'] = $this->getSaltPrefix();
+			
+			$this->bcrypt = new Bcrypt($params);
+			
+			
+        }
+		//$this->ion_auth = Ion_auth_model::factory();
+		// self::allowCORS();
+		
+	}
+
+	private function getSaltPrefix() {
+		return version_compare(PHP_VERSION, '5.3.7', '<') ? '$2a$' : '$2y$';
+	}
+	
+	public function hash_password($password, $salt = FALSE, $use_sha1_override = FALSE)
+    {
+        if (empty($password))
+        {
+            return FALSE;
+		}
+		
+        // bcrypt
+        if ($use_sha1_override === FALSE && $this->hash_method == 'bcrypt')
+        {
+            return $this->bcrypt->hash($password);
+        } 
+        if ($this->store_salt && $salt)
+        {
+            return sha1($password . $salt);
+        }
+        else
+        {
+			$salt = $this->salt();
+            return $salt . substr(sha1($salt . $password), 0, -$this->salt_length);
+		}
+		
+	}
+	
+	
+	private static function salt()
+    {
+		
+        $raw_salt_len = 16;
+        $buffer = '';
+        $buffer_valid = FALSE;
+        if (function_exists('random_bytes'))
+        {
+			
+			$buffer = random_bytes($raw_salt_len);
+            if ($buffer)
+            {
+                $buffer_valid = TRUE;
+			}
+			
+        }
+        if (!$buffer_valid && function_exists('mcrypt_create_iv') && !defined('PHALANGER'))
+        {
+			$buffer = mcrypt_create_iv($raw_salt_len, MCRYPT_DEV_URANDOM);
+            if ($buffer)
+            {
+                $buffer_valid = TRUE;
+            }
+        }
+        if (!$buffer_valid && function_exists('openssl_random_pseudo_bytes'))
+        {
+			$buffer = openssl_random_pseudo_bytes($raw_salt_len);
+            if ($buffer)
+            {
+                $buffer_valid = TRUE;
+            }
+        }
+        if (!$buffer_valid && @is_readable('/dev/urandom'))
+        {
+			$f = fopen('/dev/urandom', 'r');
+            $read = strlen($buffer);
+            while ($read < $raw_salt_len)
+            {
+                $buffer .= fread($f, $raw_salt_len - $read);
+                $read = strlen($buffer);
+            }
+            fclose($f);
+            if ($read >= $raw_salt_len)
+            {
+                $buffer_valid = TRUE;
+            }
+        }
+        if (!$buffer_valid || strlen($buffer) < $raw_salt_len)
+        {
+			$bl = strlen($buffer);
+            for ($i = 0; $i < $raw_salt_len; $i++)
+            {
+                if ($i < $bl)
+                {
+                    $buffer[$i] = $buffer[$i] ^ chr(mt_rand(0, 255));
+                }
+                else
+                {
+                    $buffer .= chr(mt_rand(0, 255));
+                }
+            }
+        }
+		$salt = $buffer;
+	
+        // encode string with the Base64 variant used by crypt
+        $base64_digits = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+        $bcrypt64_digits = './ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        $base64_string = base64_encode($salt);
+		$salt = strtr(rtrim($base64_string, '='), $base64_digits, $bcrypt64_digits);
+	
+		$salt = substr($salt, 0, 22);
+        return $salt;
+	}
+	
 	public function pjActionCheckEmail()
 	{
 		$this->setAjax(true);
@@ -58,16 +212,31 @@ class pjAdminCustomers extends pjAdmin
 	
 	public function pjActionCreate()
 	{
+		$pjCustomerModel = pjCustomerModel::factory();
 		$this->checkLogin();
 		
 		if ($this->isAdmin())
 		{
+			$email 			= (isset($_POST['email'])) ? $_POST['email'] : '';
+			$password 		= (isset($_POST['password'])) ? $_POST['password'] : '';
+			$first_name 	= (isset($_POST['first_name'])) ? $_POST['first_name'] : '';
+			$last_name 		= (isset($_POST['last_name'])) ? $_POST['last_name'] : '';
+
 			if (isset($_POST['user_create']))
 			{
+				$email = strtolower($email);
+				$salt = $this->store_salt ? $this->salt() : FALSE;
+				$password = $this->hash_password($password, $salt);
+			
 				$data = array();
-				$data['is_active'] = 'T';
-				$data['ip'] = $_SERVER['REMOTE_ADDR'];
-				$id = pjCustomerModel::factory(array_merge($_POST, $data))->insert()->getInsertId();
+				$data['first_name'] = $first_name;
+				$data['password'] = $password;
+				$data['last_name'] = $last_name;
+				$data['ip_address'] = $_SERVER['REMOTE_ADDR'];
+				$data['username'] = $_POST['email'];
+				$data['status'] = (isset($_POST['status']) && $_POST['status'] == 'T') ? 'T' : 'F';
+
+				$id = $pjCustomerModel::factory(array_merge($_POST, $data))->insert()->getInsertId();
 				if ($id !== false && (int) $id > 0)
 				{
 					$err = 'AU03';
@@ -75,6 +244,9 @@ class pjAdminCustomers extends pjAdmin
 					$err = 'AU04';
 				}
 				pjUtil::redirect($_SERVER['PHP_SELF'] . "?controller=pjAdminCustomers&action=pjActionIndex&err=$err");
+				
+			
+				
 			} else {
 				
 				$this->set('role_arr', pjRoleModel::factory()->orderBy('t1.id ASC')->findAll()->getData());
@@ -156,7 +328,9 @@ class pjAdminCustomers extends pjAdmin
 			{
 				$q = pjObject::escapeString($_GET['q']);
 				$pjCustomerModel->where('t1.email LIKE', "%$q%");
-				$pjCustomerModel->orWhere('t1.name LIKE', "%$q%");
+				$pjCustomerModel->orWhere('t1.first_name LIKE', "%$q%");
+				$pjCustomerModel->orWhere('t1.last_name LIKE', "%$q%");
+				$pjCustomerModel->orWhere('t1.username LIKE', "%$q%");
 			}
 
 			if (isset($_GET['status']) && !empty($_GET['status']) && in_array($_GET['status'], array('T', 'F')))
@@ -184,8 +358,7 @@ class pjAdminCustomers extends pjAdmin
 
 			$data = array();
 			
-			$data = $pjCustomerModel->select('t1.id, t1.email, t1.name, t1.created, t1.status, t1.is_active, t1.role_id, t2.role')
-				->join('pjRole', 't2.id=t1.role_id', 'left')
+			$data = $pjCustomerModel->select('t1.id, t1.email,CONCAT_WS(" ", t1.`first_name`, t1.`last_name`) AS name, t1.created, t1.status')
 				->orderBy("$column $direction")->limit($rowCount, $offset)->findAll()->getData();
 			foreach($data as $k => $v)
 			{
@@ -199,13 +372,16 @@ class pjAdminCustomers extends pjAdmin
 	
 	public function pjActionIndex()
 	{
+		
 		$this->checkLogin();
 		
 		if ($this->isAdmin())
 		{
+			
 			$this->appendJs('jquery.datagrid.js', PJ_FRAMEWORK_LIBS_PATH . 'pj/js/');
 			$this->appendJs('pjAdminCustomers.js');
 		} else {
+			
 			$this->set('status', 2);
 		}
 	}

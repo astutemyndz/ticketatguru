@@ -78,14 +78,14 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 				columns: [{text: myLabel.name, type: "text", sortable: true, editable: true},
 				          {text: myLabel.email, type: "text", sortable: true, editable: true},
 				          {text: myLabel.created, type: "text", sortable: true, editable: false},
-				          {text: myLabel.role, type: "text", sortable: true, renderer: formatRole},
+				        //   {text: myLabel.role, type: "text", sortable: true, renderer: formatRole},
 				          {text: myLabel.status, type: "select", sortable: true, editable: true, options: [
 				                                                                                     {label: myLabel.active, value: "T"}, 
 				                                                                                     {label: myLabel.inactive, value: "F"}
 				                                                                                     ], applyClass: "pj-status"}],
 				dataUrl: "admin.php?controller=pjAdminCustomers&action=pjActionGetUser",
 				dataType: "json",
-				fields: ['name', 'email', 'created', 'role', 'status'],
+				fields: ['name', 'email', 'created', 'status'],
 				paginator: {
 					actions: [
 					   {text: myLabel.delete_selected, url: "admin.php?controller=pjAdminCustomers&action=pjActionDeleteUserBulk", render: true, confirmation: myLabel.delete_confirmation},

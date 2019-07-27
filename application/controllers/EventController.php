@@ -8,6 +8,7 @@ class EventController extends App_Controller
 {	
 	
 	public $defaultStore = 'pjTicketBooking_Store';
+	public $cartItems = array();
 	public $defaultForm = 'pjTicketBooking_Form';
 	public $pjActionSeatsAjaxResponse = 'pjActionSeatsAjaxResponse';
 	public $data = array();
@@ -38,84 +39,155 @@ class EventController extends App_Controller
 	}
 		
 	
-	
+	/**
+	 * Get all events
+	 * @return Array
+	 */
+
 	public function pjActionEvents()
 	{
-		$this->setAjax(true);
-		if ($this->isXHR())
+		$ts = time();
+		$hash_date = date('Y-m-d', $ts);
+		
+		$from_ts = $ts;
+		
+		if(isset($_GET['from_date']) && !empty($_GET['from_date']))
 		{
-			$ts = time();
-			$hash_date = date('Y-m-d', $ts);
-			
-			$from_ts = $ts;
-			
-			if(isset($_GET['from_date']) && !empty($_GET['from_date']))
-			{
-				$from_ts = strtotime(pjUtil::formatDate($_GET['from_date'], $this->option_arr['o_date_format']));
+			$from_ts = strtotime(pjUtil::formatDate($_GET['from_date'], $this->option_arr['o_date_format']));
+		}
+		$end_ts = $from_ts + (86400 * 7);
+		
+		if(isset($_GET['date']) && !empty($_GET['date']))
+		{
+			$hash_date = pjUtil::formatDate($_GET['date'], $this->option_arr['o_date_format']);
+		}
+		if(strtotime($hash_date) < $from_ts || strtotime($hash_date) > $end_ts)
+		{
+			$hash_date = date('Y-m-d', $from_ts);
+		}
+
+		$pjEventModel = pjEventModel::factory();
+        $pjShowModel = pjShowModel::factory();
+     
+		$pjEventModel->where("t1.id IN(SELECT TS.event_id FROM `".$pjShowModel->getTable()."` AS TS WHERE DATE_FORMAT(TS.date_time,'%Y-%m-%d') = '".$hash_date."')");
+		//$pjShowModel->where("(DATE_FORMAT(t1.date_time,'%Y-%m-%d') = '$hash_date') AND (t1.venue_id IN (SELECT TV.id FROM `".pjVenueModel::factory()->getTable()."` AS TV WHERE TV.status='T') )");
+		
+		$arr = $pjEventModel
+			->join('pjMultiLang', "t2.model='pjEvent' AND t2.foreign_id=t1.id AND t2.field='title' AND t2.locale='".$this->getLocaleId()."'", 'left outer')
+			->join('pjMultiLang', "t3.model='pjEvent' AND t3.foreign_id=t1.id AND t3.field='description' AND t3.locale='".$this->getLocaleId()."'", 'left outer')
+			->select('t1.*, t2.content as title, t3.content as description')
+			->where('status', 'T')
+			->findAll()
+			->getData();
+        
+       // $_arr = $pjShowModel->orderBy("t1.date_time ASC")->findAll()->getData();
+	   $show_arr = $pjShowModel
+				->where("(DATE_FORMAT(t1.date_time,'%Y-%m-%d') = '$hash_date') AND (t1.venue_id IN (SELECT TV.id FROM `".pjVenueModel::factory()->getTable()."` AS TV WHERE TV.status='T') )")
+				->where("t1.venue_id IN (SELECT TV.id FROM `".pjVenueModel::factory()->getTable()."` AS TV WHERE TV.status='T')")
+				->orderBy("t1.date_time ASC")
+				->findAll()
+				->getData();
+
+		$grid = $this->getShowsInGrid($show_arr);
+
+		
+		$time_arr = array();
+		foreach($grid['show_arr'] as $eventId => $v)
+		{
+			for($l=0; $l < count($v); $l++) {
+				$time_arr[] = $v[$l];
+				$date_time_iso = $hash_date . ' ' . $v[$l] . ':00';
+				$date_time_ts = strtotime($hash_date . ' ' . $v[$l] . ':00');
+				$showTime = date($this->option_arr['o_time_format'], strtotime($date_time_iso));
+				
+				if($date_time_ts >= strtotime(date('Y-m-d H:00')) + ($this->option_arr['o_booking_earlier'] * 60 )) {
+					$showTimes[]  = array(
+						'showTime' => $showTime,
+						'dataTime' => $v[$l],
+						'event' => $this->pjGetEvent($eventId)
+					);
+				} 
 			}
-			$end_ts = $from_ts + (86400 * 7);
-			
-			if(isset($_GET['date']) && !empty($_GET['date']))
-			{
-				$hash_date = pjUtil::formatDate($_GET['date'], $this->option_arr['o_date_format']);
-			}
-			if(strtotime($hash_date) < $from_ts || strtotime($hash_date) > $end_ts)
-			{
-				$hash_date = date('Y-m-d', $from_ts);
-			}
-			
-			if($this->_is('tickets'))
-			{
-				unset($_SESSION[$this->defaultStore]['tickets']);
-			}
-			if($this->_is('seat_id'))
-			{
-				unset($_SESSION[$this->defaultStore]['seat_id']);
-			}
-			
-			$pjEventModel = pjEventModel::factory();
-			$pjShowModel = pjShowModel::factory();
-			
-			$pjEventModel->where("t1.id IN(SELECT TS.event_id FROM `".$pjShowModel->getTable()."` AS TS WHERE DATE_FORMAT(TS.date_time,'%Y-%m-%d') = '".$hash_date."')");
-			$pjShowModel->where("(DATE_FORMAT(t1.date_time,'%Y-%m-%d') = '$hash_date') AND (t1.venue_id IN (SELECT TV.id FROM `".pjVenueModel::factory()->getTable()."` AS TV WHERE TV.status='T') )");
-			
-			$arr = $pjEventModel
+		}
+		
+		$events = array();
+
+		foreach($arr as $event) {
+			$events[] = array(
+				'event' => $event,
+				'shows' => $this->pjShowDatesByEventId($event['id'])
+
+			); 
+		}
+
+	
+		$this->data['showTimes'] 	= $showTimes;
+		$this->data['events'] 		= $events;
+		$ts 						= time();
+		$today 						= date('Y-m-d', $ts);
+		
+		$this->data['today'] 		= $today;
+		$this->data['hashDate'] 	= $today;
+		$this->data['title'] 		= 'Home';
+	
+        $this->load->view('frontend/layout/head', $this->data);
+        $this->load->view('frontend/layout/header');
+        $this->load->view('frontend/pages/home', $this->data);
+        $this->load->view('frontend/layout/footer');
+	}
+
+	private function pjGetEvent($id) {
+		$pjEventModel = pjEventModel::factory();
+		$arr = $pjEventModel
 				->join('pjMultiLang', "t2.model='pjEvent' AND t2.foreign_id=t1.id AND t2.field='title' AND t2.locale='".$this->getLocaleId()."'", 'left outer')
 				->join('pjMultiLang', "t3.model='pjEvent' AND t3.foreign_id=t1.id AND t3.field='description' AND t3.locale='".$this->getLocaleId()."'", 'left outer')
 				->select('t1.*, t2.content as title, t3.content as description')
-				->where('status', 'T')
-				->findAll()
+				->find($id)
 				->getData();
-			
-			$_arr = $pjShowModel->orderBy("t1.date_time ASC")->findAll()->getData();
-			
-			$grid = $this->getShowsInGrid($_arr);
-
-			
-
-			$this->set('arr', $arr);
-			$this->set('all_show_arr', $grid['all_show_arr']);
-			$this->set('hash_date', $hash_date);
-			$this->set('from_ts', $from_ts);
-			$this->set('end_ts', $end_ts);
-			$this->set('time_arr', $grid['time_arr']);
-			$this->set('show_arr', $grid['show_arr']);
-		}
+			return $arr;
 	}
+	private function pjShowDatesByEventId($id) {
+		$pjShowModel = pjShowModel::factory();
+		$show_arr = $pjShowModel
+					->where('t1.event_id', $id)
+					->where("t1.venue_id IN (SELECT TV.id FROM `".pjVenueModel::factory()->getTable()."` AS TV WHERE TV.status='T')")
+					->orderBy("t1.date_time ASC")
+					->findAll()
+					->getData();
 
 	
+		$grid = $this->getShowsInGrid($show_arr);
+		$show_date_arr = array();
+			foreach($show_arr as $v)
+			{
+				$date = date($this->option_arr['o_date_format'], strtotime($v['date_time']));
+				if(strtotime($v['date_time']) > time() + $this->option_arr['o_booking_earlier'] * 60)
+				{
+					if(!in_array($date, $show_date_arr))
+					{
+						$show_date_arr[] = $date;
+					}
+				}
+			}
+		return $show_date_arr;
+		
+	}
 	
 	public function pjActionDetails($id)
 	{
 			$hash_date = NULL;
 			$selected_date = NULL;
+			$hash_date = date('Y-m-d');
 			if($this->get('date'))
 			{
-				$hash_date = pjUtil::formatDate($this->get('date'), $this->option_arr['o_date_format']);
+				$hash_date = $this->get('date');//pjUtil::formatDate($this->get('date'), $this->option_arr['o_date_format']);
 			}
 			if($hash_date) {
-				$selected_date = $hash_date;
-			}
+				$selected_date = date($this->option_arr['o_date_format'], strtotime($hash_date));
+			} 
+		
+			$today = date($this->option_arr['o_date_format'], strtotime(date('Y-m-d')));
+		
 
 			$this->setSession('selected_date', $selected_date);
 
@@ -145,20 +217,21 @@ class EventController extends App_Controller
 			
 			$show_arr = $pjShowModel
 				->where('t1.event_id', $id)
-				//->where("(DATE_FORMAT(t1.date_time,'%Y-%m-%d') = '$selected_date') AND (t1.venue_id IN (SELECT TV.id FROM `".pjVenueModel::factory()->getTable()."` AS TV WHERE TV.status='T') )")
 				->where("t1.venue_id IN (SELECT TV.id FROM `".pjVenueModel::factory()->getTable()."` AS TV WHERE TV.status='T')")
 				->orderBy("t1.date_time ASC")
 				->findAll()
 				->getData();
 
-			
+				// echo "<pre>";
+				// print_r($show_arr);
+				// exit;
 			$grid = $this->getShowsInGrid($show_arr);
 		
 			$time_arr = array();
 			foreach($show_arr as $v)
 			{
 				
-
+				//echo $v['date_time'];
 				$time = date('H:i', strtotime($v['date_time']));
 				if(strtotime($v['date_time']) > time() + $this->option_arr['o_booking_earlier'] * 60)
 				{
@@ -168,29 +241,39 @@ class EventController extends App_Controller
 					}
 				}
 			}
+
+			// echo "<pre>";
+			// print_r($time_arr);
+			// exit;
 			$show_date_arr = array();
 			foreach($show_arr as $v)
 			{
+			
 				$date = date($this->option_arr['o_date_format'], strtotime($v['date_time']));
 				if(strtotime($v['date_time']) > time() + $this->option_arr['o_booking_earlier'] * 60)
 				{
-					if(!in_array($time, $show_date_arr))
+					if(!in_array($date, $show_date_arr))
 					{
 						$show_date_arr[] = $date;
 					}
 				}
 			}
-			$this->data['tpl']['arr'] = $arr;
+			
+
+			$this->data['arr'] = $arr;
 			$this->data['all_show_arr'] =  $grid['all_show_arr'];
-			$this->data['tpl']['selected_date'] = $selected_date;
-			$this->data['tpl']['time_arr'] = $grid['time_arr'];
+			$this->data['selected_date'] = $selected_date;
+			$this->data['today'] = $today;
+			$this->data['time_arr'] = $grid['time_arr'];
 	
-			$this->data['tpl']['selected_date_format'] = date("jS M, Y", strtotime($selected_date));
-			$this->data['tpl']['show_date_arr'] = $show_date_arr;
-			$this->data['tpl']['show_arr'] = $grid['show_arr'];
+			$this->data['selected_date_format'] = date("jS M, Y", strtotime($selected_date));
+			$this->data['show_date_arr'] = $show_date_arr;
+			$this->data['show_arr'] = $grid['show_arr'];
 
 
-			$this->data['tpl']['title'] = 'Ticket at Guru';
+			$this->data['title'] = 'Ticket at Guru';
+
+
 			
 			$this->load->view('frontend/layout/head', $this->data);
 			$this->load->view('frontend/layout/header');
@@ -198,6 +281,9 @@ class EventController extends App_Controller
 			$this->load->view('frontend/layout/footer');
 		//}
 	}
+	/**
+	 * http://103.121.156.221/projects/ticketatguru/event/details/5
+	 */
 	
 	public function pjEventsTimesDateWise() {
 		$this->setAjax(true);
@@ -232,19 +318,13 @@ class EventController extends App_Controller
 					
 					$show_time = date($this->option_arr['o_time_format'], strtotime($date_time_iso));
 					
-					if($date_time_ts <= strtotime(date('Y-m-d H:00')) + ($this->option_arr['o_booking_earlier'] * 60 )) {
+					if($date_time_ts >= strtotime(date('Y-m-d H:00')) + ($this->option_arr['o_booking_earlier'] * 60 )) {
 						$time_arr[] = array(
 							'time' => $time,
 							'show_time' => $show_time
 						);
 						
-					} else {
-						$time_arr[] = array(
-							'time' => $time,
-							'show_time' => $show_time
-						);
-					
-					}	
+					} 
 				}
 			} 
 			pjAppController::jsonResponse(array('status' => TRUE, 'code' => 200, 'time_arr' => $time_arr));
@@ -257,23 +337,20 @@ class EventController extends App_Controller
 	
 		if ($this->isXHR())
 		{
-			$date 		= ($this->has('date')) ? $this->post('date') : '';
-			$time 		= ($this->has('time')) ? $this->post('time') : '';
-			$id 		= ($this->has('id')) ? $this->post('id') : '';
-			$hash_date 	= date('Y-m-d');
+			$hash_date = date('Y-m-d');
+			if($this->getSession($this->defaultStore) && count($this->getSession($this->defaultStore)) > 0) {
+				
+				$hash_date 		= ($this->has('date')) ? pjUtil::formatDate($this->post('date'), $this->option_arr['o_date_format']) : '';
+				$time 			= ($this->has('time')) ? $this->post('time') : '';
+				$id 			= ($this->has('id')) ? $this->post('id') : '';
 
-
-			if($time) {
-				$selected_time = $time;
-			}
-
-			if($date)
-			{
-				$hash_date 	= pjUtil::formatDate($date, $this->option_arr['o_date_format']);
 				$selected_date 	= $hash_date;
+				$selected_time = $time;
+				//$selected_date 	= $hash_date;
 				if($this->hasSession('selected_date'))
 				{
-					$selected_date = $this->getSession('selected_date');
+					$selected_date = pjUtil::formatDate($this->getSession('selected_date'), $this->option_arr['o_date_format']);
+					//echo $selected_date;
 				} 
 				
 				$arr = pjEventModel::factory()
@@ -353,7 +430,7 @@ class EventController extends App_Controller
 						->where("t1.id IN (SELECT TSS.seat_id FROM `".pjShowSeatModel::factory()->getTable()."` AS TSS WHERE TSS.show_id IN (SELECT TS.id FROM `".$pjShowModel->getTable()."` AS TS WHERE TS.event_id='".$id."' AND TS.date_time = '". $selected_date . ' ' . $selected_time . ":00') )")
 						->findAll()
 						->getData();
-					
+		
 					$total_available_seats = $total_remaining_avaliable_seats = $total_booked_seats = 0;
 					$seat_name_arr = array();
 					foreach($seat_arr as $v)
@@ -376,61 +453,45 @@ class EventController extends App_Controller
 					{
 						$cnt_booked_seats = $bs_arr[0]['cnt_booked_seats'];
 					}
-					/*
-					$this->set('venue_arr', $venue_arr);
-					$this->set('seat_arr', $seat_arr);
-					$this->set('seat_name_arr', $seat_name_arr);
-					$this->set('seats_available', $cnt_booked_seats >= $total_available_seats ? false: true);
-					$this->set('total_remaining_avaliable_seats', $total_remaining_avaliable_seats);
-					*/
-
 					$this->data['venue_arr'] 						= $venue_arr;
 					$this->data['seat_arr'] 						= $seat_arr;
 					$this->data['seat_name_arr'] 					= $seat_name_arr;
 					$this->data['seats_available'] 					= $cnt_booked_seats >= $total_available_seats ? false: true;
 					$this->data['total_remaining_avaliable_seats'] 	= $total_remaining_avaliable_seats;
-
-				
 				}
-				$this->data['arr'] 				= $arr;
-				$this->data['hash_date'] 		= $hash_date;
-				$this->data['selected_date'] 	= $selected_date;
-				$this->data['selected_time'] 	= $selected_time;
-				$this->data['hall_arr'] 		= $_show_arr;
-				$this->data['status'] 			= 'OK';
-				$this->data['title'] 			= 'Ticket at Guru';
-				$this->data['id'] 				= $id;
-				
+					$this->data['arr'] 				= $arr;
+					$this->data['hash_date'] 		= $hash_date;
+					$this->data['selected_date'] 	= $selected_date;
+					$this->data['selected_time'] 	= $selected_time;
+					$this->data['hall_arr'] 		= $_show_arr;
+					$this->data['status'] 			= 'OK';
+					$this->data['title'] 			= 'Ticket at Guru';
+					$this->data['id'] 				= $id;
 			} else {
 				$selected_date 	= $hash_date;
 				$this->data['status'] 			= 'ERR';
 			}
-
-			// echo "<pre>";
-			// print_r($this->data);
-			// exit;
 			$this->setSession($this->defaultStore, $this->data);
 			pjAppController::jsonResponse(array('status' => TRUE, 'code' => 200, 'data' => $this->data));
-			
 		}
-
-
 	}
 
 
 
 	public function pjActionSeats() {
-		// if(isset($_SESSION)) {
-		// 	echo "<pre>";
-		// 	print_r($this->getSession($this->defaultStore));
-		// }
 		$this->data['tpl']['title'] = 'Ticket at Guru';
 		$this->load->view('frontend/layout/head', $this->data);
 		$this->load->view('frontend/layout/header');
 		$this->load->view('frontend/pages/event/seats');
 		$this->load->view('frontend/layout/footer');
 	}
-	
+	public function pjActionCart() {
+
+		$this->load->view('frontend/layout/head', $this->data);
+		$this->load->view('frontend/layout/header');
+		$this->load->view('frontend/pages/event/cart');
+		$this->load->view('frontend/layout/footer');
+	}
 	public function pjActionCheckout()
 	{
 		$this->setAjax(true);
@@ -700,26 +761,29 @@ class EventController extends App_Controller
 	
 		if ($this->isXHR())
 		{
+			
 			$response = array();
-			if($this->hasSession('tickets'))
-			{
-				//unset($_SESSION[$this->defaultStore]['tickets']);
-				$this->unsetSession($this->getSession($this->defaultStore)['tickets']);
+			mt_srand();
+			$id = mt_rand(1, 9999);
+			$tickets = ($this->has('tickets')) ? $this->post('tickets') : [];
+			$seat_id = ($this->has('seat_id')) ? $this->post('seat_id') : [];
+			$price = ($this->has('price')) ? $this->post('price') : '';
+			$event = 	$this->getSession($this->defaultStore)['arr'];
+			
+			$data = array(
+				'id'		=>	$id,
+				'qty' 		=>	1,
+				'price' 	=>	$price,
+				'name'		=>	'Test',
+				'options' 	=> 	array('event' => $event, 'tickets' => $tickets, 'seat_id' => $seat_id)
+			);
+			if($this->cart->insert($data)){
+				$response['code'] = 200;
+				$response['carItems'] = $this->cart->contents();
+			}else{
+				$response['code'] = 200;
+				$response['carItems'] = [];
 			}
-			if($this->hasSession('seat_id'))
-			{
-				//unset($_SESSION[$this->defaultStore]['seat_id']);
-				$this->unsetSession($this->getSession($this->defaultStore)['seat_id']);
-			}
-			//$this->_set('tickets', $_POST['tickets']);
-			//$this->_set('seat_id', $_POST['seat_id']);
-			$tickets = $this->post('tickets');
-			$seat_id = $this->post('seat_id');
-			$this->setSession('tickets', $tickets);
-			$this->setSession('seat_id', $seat_id);
-			$response['code'] = 200;
-			$response['tickets'] = $tickets;
-			$response['seat_id'] = $seat_id;
 			pjAppController::jsonResponse($response);
 			exit;
 		}

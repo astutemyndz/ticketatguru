@@ -5,10 +5,11 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title><?php echo $tpl['title']; ?></title>
+    <title><?php echo ($title) ? $title : 'Title is undefine'; ?></title>
 
     <!-- Latest compiled and minified CSS -->   
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">
+	<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
     <link rel="stylesheet" href="<?php echo base_url();?>css/bootstrap.min.css">
     <link rel="stylesheet" href="<?php echo base_url();?>css/bootstrap-select.min.css">
     <link rel="stylesheet" href="<?php echo base_url();?>css/bootstrap-slider.min.css">
@@ -25,6 +26,7 @@
     <!-- Custom styles for this template -->
     <link rel="stylesheet" href="<?php echo base_url();?>css/style.css" >
     <link rel="stylesheet" href="<?php echo base_url();?>css/responsive.css" >
+    <link rel="stylesheet" href="<?php echo base_url();?>css/datepicker.css" >
 
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -33,6 +35,7 @@
     <![endif]-->
     <script src="<?php echo base_url();?>js/jquery-3.2.0.min.js"></script>
     <script src="<?php echo base_url();?>js/jquery.panzoom.js"></script>
-<script src="<?php echo base_url();?>js/jquery.mousewheel.js"></script>
+	<script src="<?php echo base_url();?>js/jquery.mousewheel.js"></script>
+	<script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 
 </head>

@@ -10,7 +10,7 @@ $validate = str_replace(array('"', "'"), array('\"', "\'"), __('validate', true,
 
 $defaultStore = ($this->session->userdata('pjTicketBooking_Store')) ? $this->session->userdata('pjTicketBooking_Store') : [];
 // echo "<pre>";
-// print_r($defaultStore['tickets']);
+// print_r($defaultStore);
 // exit;
 $option_arr = ($this->session->userdata('option_arr')) ? $this->session->userdata('option_arr') : [];
 $layout = ($this->input->get('layout')) ? $this->input->get('layout') : $option_arr['o_theme'];
@@ -30,9 +30,13 @@ if($defaultStore['ticket_arr'] && count($defaultStore['ticket_arr']) > 0)
 	foreach($defaultStore['ticket_arr'] as $v)
 	{
 		$ticket_name_arr[$v['price_id']] = pjSanitize::html($v['ticket']);
-		$ticket_tooltip_arr[$v['price_id']] = pjSanitize::html($v['ticket']) . ', ' .  pjUtil::formatCurrencySign($v['price'], $option_arr['o_currency']);
+		$ticket_tooltip_arr['tooltip'][$v['price_id']] = pjSanitize::html($v['ticket']) . ', ' .  pjUtil::formatCurrencySign($v['price'], $option_arr['o_currency']);
+		$ticket_tooltip_arr['tooltip']['price'][$v['price_id']] = $v['price'];
+		$ticket_tooltip_arr['tooltip']['price']['currency'][$v['price_id']] = $option_arr['o_currency'];
 	}
 }
+// echo "<pre>";
+// print_r($ticket_tooltip_arr );
 ?>
 <section class="section-select-seat-page-content">
 	<div id="pjWrapperTicketBooking_theme1">
@@ -62,14 +66,18 @@ if($defaultStore['ticket_arr'] && count($defaultStore['ticket_arr']) > 0)
 														
 														<map name="map" class="seatmap">
 														<?php
+															$seatName = NULL;
 															foreach ($defaultStore['seat_arr'] as $seat)
 															{
+																$seatName = $seat['name'];
 																$is_selected = false;
 																$is_available = true;
 																$_arr = explode("~:~", $seat['price_id']);
 																
 																
 																$tooltip = array();
+																$dataPrice = NULL;
+																$dataCurrency = NULL;
 																foreach($_arr as $pid)
 																{
 																	
@@ -84,14 +92,16 @@ if($defaultStore['ticket_arr'] && count($defaultStore['ticket_arr']) > 0)
 																	} else {
 																		//echo "is_selected = false";
 																	}
-																	$tooltip[] = $ticket_tooltip_arr[$pid];
+																	$tooltip[] = $seatName;//$ticket_tooltip_arr['tooltip'][$pid];
+																	$dataPrice = $ticket_tooltip_arr['tooltip']['price'][$pid];
+																	$dataCurrency = $ticket_tooltip_arr['tooltip']['price']['currency'][$pid];
 																}
-																// echo "<pre>";
-																// print_r($tooltip);
+																
 																$avail_seats = $seat['seats'] - $seat['cnt_booked'];
+															
 																?>
 															
-															<span class="tbSeatRect<?php echo $avail_seats <= 0 ? ' tbSeatBlocked' : ($is_available == true ? ' tbSeatAvailable' : null); ?><?php echo $is_selected == true ? ' tbSeatSelected' : null;?>" data-id="<?php echo $seat['id']; ?>" data-price-id="<?php echo $seat['price_id']; ?>" data-name="<?php echo $seat['name']; ?>" data-count="<?php echo $avail_seats; ?>" style="width: <?php echo $seat['width']; ?>px; height: <?php echo $seat['height']; ?>px; left: <?php echo $seat['left']; ?>px; top: <?php echo $seat['top']; ?>px; line-height: <?php echo $seat['height']; ?>px" data-toggle="tooltip" data-placement="top" data-html="true" title="<?php echo join('<br/>', $tooltip);?>"><?php echo stripslashes($seat['name']); ?></span>
+															<span data-seat="<?php echo $seatName;?>" data-price="<?php echo $dataPrice;?>" data-currency="<?php echo $dataCurrency;?>" class="tbSeatRect<?php echo $avail_seats <= 0 ? ' tbSeatBlocked' : ($is_available == true ? ' tbSeatAvailable' : null); ?><?php echo $is_selected == true ? ' tbSeatSelected' : null;?>" data-id="<?php echo $seat['id']; ?>" data-price-id="<?php echo $seat['price_id']; ?>" data-name="<?php echo $seat['name']; ?>" data-count="<?php echo $avail_seats; ?>" style="width: <?php echo $seat['width']; ?>px; height: <?php echo $seat['height']; ?>px; left: <?php echo $seat['left']; ?>px; top: <?php echo $seat['top']; ?>px; line-height: <?php echo $seat['height']; ?>px" data-toggle="tooltip" data-placement="top" data-html="true" title="<?php echo join('<br/>', $tooltip);?>"><?php echo stripslashes($seat['name']); ?></span>
 															<?php } ?>
 														</map>
 													</div>
@@ -164,7 +174,7 @@ if($defaultStore['ticket_arr'] && count($defaultStore['ticket_arr']) > 0)
 						
 						
 					</div>
-
+				
 					<div id="secondary" class="col-md-4">
 						<div class="ticket-price">
 							<div class="tickets">
@@ -203,7 +213,6 @@ if($defaultStore['ticket_arr'] && count($defaultStore['ticket_arr']) > 0)
 										} 
 										?>
 									</div>
-										<!-- Choose a hall form list of hall arr -->
 										<?php if(count($defaultStore['hall_arr']) > 1) {?>
 											<label>Choose Hall</label>
 													<select class="selectpicker dropdown pjCbSeatVenue" id="venue_id_<?php echo $defaultStore['index'];?>" name="venue_id">
@@ -216,10 +225,8 @@ if($defaultStore['ticket_arr'] && count($defaultStore['ticket_arr']) > 0)
 														?>
 													</select>
 										<?php  } ?>
-										<!-- Choose a hall form list of hall arr -->
 										<div class="row">
 											<div claa="col-xs-12">
-											<!-- <div class="selectSeat alert alert-danger" role="alert" style="display:none;">Please selct at leat single seat</div> -->
 											<div class="tbAskToSelectTickets alert alert-info" role="alert" style="display: <?php echo isset($defaultStore['tickets']) ? 'none': 'block';?>"><?php $defaultStore['seats_available'] == true ? __('front_select_ticket_types_above') : __('front_no_seats_available');?></div>
 											
 												<div style="display: <?php echo isset($defaultStore['tickets']) ? 'block': 'none';?>">
@@ -269,11 +276,11 @@ if($defaultStore['ticket_arr'] && count($defaultStore['ticket_arr']) > 0)
 								
 								
 								
-								<!-- <label>Price Range</label>
-								<input id="price-range" type="text" class="span2" value="" data-slider-min="10" data-slider-max="200" data-slider-step="5" data-slider-value="[50,150]"/>  -->
+								
 							</div>
 							</div>
 						</div>
+						
 					</div>
 
 				
