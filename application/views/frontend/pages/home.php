@@ -6,7 +6,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<div class="row">
 				<div class="col-12 offset-lg-2 col-lg-10">
 					<div class="entry-header">
-						<h2>Hello world!</h2>
+						<h2>Welcome to Ticket at Guru</h2>
 
 						<!--<div class="entry-meta-date">
 							06.28.018
@@ -47,6 +47,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			</div>
 		</div><!-- .container -->
 	</div><!-- .hero-content -->
+	<?php 
+	/*
 		<section class="section-todays-schedule">
 			<div class="container">
 				<div class="row">
@@ -58,9 +60,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					<div class="section-content">
 						<ul class="clearfix">
 							<?php 
-							//echo "<pre>"; print_r($event_lists);
-							if(count($event_lists)>0) 
-								foreach($event_lists as $event_key=>$event_val){
+								foreach($arr as $key => $value) {
 							?>
 							<li class="event-1">
 								<span class="event-time"><?php echo $newDate = date("jS M, Y", strtotime($event_val->date_time)); ?> <strong><?php echo $newDate = date("h:i:s a", strtotime($event_val->date_time)); ?></strong></span>
@@ -74,7 +74,77 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				</div>
 			</div>
 		</section>
-		
+		*/?>
+		<section class="section-todays-schedule">
+			<div class="container">
+				<div class="row">
+					<div class="section-header">
+						<h2>Today's Schedule</h2>
+						<span class="todays-date"><i class="fa fa-calendar" aria-hidden="true"></i> <strong><?php echo $newDate = date("jS M, Y", strtotime($today)); ?></strong></span>
+					</div>
+					<?php if(count($showTimes) > 0) {?>
+					<div class="section-content">
+						<ul class="clearfix autoplay">
+						<?php 
+							foreach($showTimes as $showTime) {
+						?>
+							<li class="event-1">
+								<span class="event-time"><?php echo $showTime['showTime'];?></span>
+								<strong class="event-name"><?php echo $showTime['event']['title'];?></strong>
+								<!-- <a href="<?php echo base_url();?>event/details/<?php echo $showTime['event']['id'];?>" class="get-ticket">Get Ticket</a> -->
+								<a href="javascript:void(0);" class="get-ticket pjCbDaysNav getTicket" data-date="<?php echo $hashDate;?>" data-id="<?php echo $showTime['event']['id'];?>" data-key="<?php echo $showTime['event']['id'];?>" data-time="<?php echo $showTime['dataTime'];?>">Get Ticket</a>
+							</li>
+						<?php } ?>	
+							
+						</ul>
+						<!-- <strong class="event-list-label">Full Event <span>Schedules</span></strong> -->
+					</div>
+							<?php } else {?>
+								<span>Show not available</span>
+							<?php } ?>
+				</div>
+			</div>
+		</section>
+		<section class="section-upcoming-events">
+			<div class="container">
+				<div class="row">
+					<div class="section-header">
+						<h2>Events</h2>
+						<!-- <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut.</p> -->
+						<a href="#">See all upcoming events</a>
+					</div>
+					<?php if(count($events) > 0) {?>
+					<div class="section-content">
+						<ul class="clearfix">
+							<?php foreach($events as $event) { $lastEventDate = end($event['shows']); ?>
+							<li>
+								<div class="date">
+									<a href="#">
+										<span class="day"><?php echo date("jS", strtotime($lastEventDate)); ?></span>
+										<span class="month"><?php echo date("M", strtotime($lastEventDate)); ?></span>
+										<span class="year"><?php echo date("Y", strtotime($lastEventDate)); ?></span>
+									</a>
+								</div>
+								<a href="#">
+									<img src="<?php echo $event['event']['event_img'];?>" alt="<?php echo $event['event']['title'];?>">
+								</a>
+								<div class="info">
+									<p><?php echo $event['event']['title'];?></p>
+									<a href="<?php echo base_url();?>event/details/<?php echo $event['event']['id'];?>" class="get-ticket">View Event</a>
+								</div>
+							</li>
+							<?php } ?>
+							
+						</ul>
+					</div>
+					<?php } else { ?>
+						<span>Comming Soon</span>
+					<?php } ?>
+				</div>
+			</div>
+		</section>
+		<?php 
+		/*
 		<section class="section-upcoming-events">
 			<div class="container">
 				<div class="row">
@@ -114,7 +184,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				</div>
 			</div>
 		</section>
-
+		*/?>								
 		<section class="section-gallery">
 			<div class="container">
 				<div class="row">
@@ -297,3 +367,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				</div>
 			</div>
 		</section>
+<script>
+$('.autoplay').slick({
+  slidesToShow: 4,
+  slidesToScroll: 1,
+  autoplay: false,
+  autoplaySpeed: 2000,
+});
+</script>

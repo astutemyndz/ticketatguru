@@ -1,138 +1,255 @@
-(function(){
-    //Login/Signup modal window - by CodyHouse.co
-	function ModalSignin( element ) {
-		this.element = element;
-		this.blocks = this.element.getElementsByClassName('js-signin-modal-block');
-		this.switchers = this.element.getElementsByClassName('js-signin-modal-switcher')[0].getElementsByTagName('a'); 
-		this.triggers = document.getElementsByClassName('js-signin-modal-trigger');
-		this.hidePassword = this.element.getElementsByClassName('js-hide-password');
-		this.init();
-	};
+const messageBox = function(targetElement, props) {
+	$('.alert').alert();
+	return $(targetElement).html(
+		`<div class="alert ${props.className} alert-dismissible" role="alert">
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			<strong>${props.message.title}</strong> ${props.message.text}
+		</div>`
+	);
+}
+$("document").ready(function() {
 
-	ModalSignin.prototype.init = function() {
-		var self = this;
-		//open modal/switch form
-		for(var i =0; i < this.triggers.length; i++) {
-			(function(i){
-				self.triggers[i].addEventListener('click', function(event){
-					if( event.target.hasAttribute('data-signin') ) {
-						event.preventDefault();
-						self.showSigninForm(event.target.getAttribute('data-signin'));
-					}
-				});
-			})(i);
-		}
 
-		//close modal
-		this.element.addEventListener('click', function(event){
-			if( hasClass(event.target, 'js-signin-modal') || hasClass(event.target, 'js-close') ) {
-				event.preventDefault();
-				removeClass(self.element, 'cd-signin-modal--is-visible');
-			}
-		});
-		//close modal when clicking the esc keyboard button
-		document.addEventListener('keydown', function(event){
-			(event.which=='27') && removeClass(self.element, 'cd-signin-modal--is-visible');
-		});
-
-		//hide/show password
-		for(var i =0; i < this.hidePassword.length; i++) {
-			(function(i){
-				self.hidePassword[i].addEventListener('click', function(event){
-					self.togglePassword(self.hidePassword[i]);
-				});
-			})(i);
-		} 
-
-		//IMPORTANT - REMOVE THIS - it's just to show/hide error messages in the demo
-		// this.blocks[0].getElementsByTagName('form')[0].addEventListener('submit', function(event){
-		// 	event.preventDefault();
-		// 	self.toggleError(document.getElementById(''), true);
-		// });
-
-		// this.blocks[1].getElementsByTagName('form')[0].addEventListener('submit', function(event){
-		// 	event.preventDefault();
-		// 	self.toggleError(document.getElementById('first_name'), true);
-		// 	self.toggleError(document.getElementById('last_name'), true);
-		// });
-	};
-
-	ModalSignin.prototype.togglePassword = function(target) {
-		var password = target.previousElementSibling;
-		( 'password' == password.getAttribute('type') ) ? password.setAttribute('type', 'text') : password.setAttribute('type', 'password');
-		target.textContent = ( 'Hide' == target.textContent ) ? 'Show' : 'Hide';
-		putCursorAtEnd(password);
-	}
-
-	ModalSignin.prototype.showSigninForm = function(type) {
-		// show modal if not visible
-		!hasClass(this.element, 'cd-signin-modal--is-visible') && addClass(this.element, 'cd-signin-modal--is-visible');
-		// show selected form
-		for( var i=0; i < this.blocks.length; i++ ) {
-			this.blocks[i].getAttribute('data-type') == type ? addClass(this.blocks[i], 'cd-signin-modal__block--is-selected') : removeClass(this.blocks[i], 'cd-signin-modal__block--is-selected');
-		}
-		//update switcher appearance
-		var switcherType = (type == 'signup') ? 'signup' : 'login';
-		for( var i=0; i < this.switchers.length; i++ ) {
-			this.switchers[i].getAttribute('data-type') == switcherType ? addClass(this.switchers[i], 'cd-selected') : removeClass(this.switchers[i], 'cd-selected');
-		} 
-	};
-
-	ModalSignin.prototype.toggleError = function(input, bool) {
-		// used to show error messages in the form
-		toggleClass(input, 'cd-signin-modal__input--has-error', bool);
-		toggleClass(input.nextElementSibling, 'cd-signin-modal__error--is-visible', bool);
-	}
-
-	var signinModal = document.getElementsByClassName("js-signin-modal")[0];
-	if( signinModal ) {
-		new ModalSignin(signinModal);
-	}
-
-	// toggle main navigation on mobile
-	var mainNav = document.getElementsByClassName('js-main-nav')[0];
-	if(mainNav) {
-		mainNav.addEventListener('click', function(event){
-			if( hasClass(event.target, 'js-main-nav') ){
-				var navList = mainNav.getElementsByTagName('ul')[0];
-				toggleClass(navList, 'cd-main-nav__list--is-visible', !hasClass(navList, 'cd-main-nav__list--is-visible'));
-			} 
-		});
-	}
+	$('#loginLink').on('click', function() {
+		setTimeout(() => {
+			window.location.href = `${API_URL}auth/login`;
+		}, 300);
+	});
+	$('#logoutLink').on('click', function() {
+		setTimeout(() => {
+			window.location.href = `${API_URL}auth/logout`;
+		}, 300);
+	});
 	
-	//class manipulations - needed if classList is not supported
-	function hasClass(el, className) {
-	  	if (el.classList) return el.classList.contains(className);
-	  	else return !!el.className.match(new RegExp('(\\s|^)' + className + '(\\s|$)'));
-	}
-	function addClass(el, className) {
-		var classList = className.split(' ');
-	 	if (el.classList) el.classList.add(classList[0]);
-	 	else if (!hasClass(el, classList[0])) el.className += " " + classList[0];
-	 	if (classList.length > 1) addClass(el, classList.slice(1).join(' '));
-	}
-	function removeClass(el, className) {
-		var classList = className.split(' ');
-	  	if (el.classList) el.classList.remove(classList[0]);	
-	  	else if(hasClass(el, classList[0])) {
-	  		var reg = new RegExp('(\\s|^)' + classList[0] + '(\\s|$)');
-	  		el.className=el.className.replace(reg, ' ');
-	  	}
-	  	if (classList.length > 1) removeClass(el, classList.slice(1).join(' '));
-	}
-	function toggleClass(el, className, bool) {
-		if(bool) addClass(el, className);
-		else removeClass(el, className);
-	}
+	// validate signup form on keyup and submit
+	$("#registerForm").validate({
+		rules: {
+			firs_tname: "required",
+			last_name: "required",
+			main_password: {
+				required: true,
+				minlength: 5
+			},
+			password_confirm: {
+				required: true,
+				minlength: 5,
+				equalTo: "#main_password"
+			},
+			email: {
+				required: true,
+				email: true
+			},
+			registerIdentity: {
+				required: true,
+			},
+			confirm_email: {
+				required: true,
+				email: true,
+				equalTo: "#email"
+			},
+			agree: "required"
+		},
+		messages: {
+			firs_tname: "Please enter your firstname",
+			last_name: "Please enter your lastname",
+			main_password: {
+				required: "Please provide a password",
+				minlength: "Your password must be at least 5 characters long"
+			},
+			password_confirm: {
+				required: "Please provide a password",
+				minlength: "Your password must be at least 5 characters long",
+				equalTo: "Please enter the same password as above"
+			},
+			email: "Please enter a valid email address",
+			registerIdentity: "Please enter a valid username",
+			confirm_email: {
+				required: "Please provide a confirm email",
+				minlength: "Your email must be at least 5 characters long",
+				equalTo: "Please enter the same email as above"
+			},
+			//agree: "I agree with the Terms and Conditions",
+		},
+		submitHandler: function(form) {
+			$.ajax({
+				url: form.action,
+				type: form.method,
+				data: $(form).serialize(),
+				success: function(res) {
+					///console.log(res);
+					if(res.status) {
+						messageBox('.flash', {message: {title: 'MessageBox', text: res.message}, className: 'alert-success'});
+						setTimeout(function() {
+							window.location.href = `${API_URL}account`;
+						}, 2000);
+					} else {
+						messageBox('.flash', {message: {title: 'MessageBox', text: res.message}, className: 'alert-danger'});
+					}
+					
+				},
+				error: function(res) {
+					
+				}         
+			});
+		}
+	});
+	$("#loginForm").validate({
+		rules: {
+			password: {
+				required: true,
+				minlength: 5
+			},
+			identity: {
+				required: true,
+				email: true
+			},
+			agree: "required"
+		},
+		messages: {
+			email: "Please enter a valid email address",
+			password: {
+				required: "Please provide a password",
+				minlength: "Your password must be at least 5 characters long"
+			},
+			agree: "I agree with the Terms and Conditions",
+		},
+		submitHandler: function(form) {
+			$.ajax({
+				url: form.action,
+				type: form.method,
+				data: $(form).serialize(),
+				success: function(res) {
+					///console.log(res);
+					if(res.status) {
+						messageBox('.flash', {message: {title: 'MessageBox', text: res.message}, className: 'alert-success'});
+						setTimeout(function() {
+							window.location.href = `${API_URL}account`;
+						}, 2000);
+					} else {
+						messageBox('.flash', {message: {title: 'MessageBox', text: res.message}, className: 'alert-danger'});
+					}
+					
+				},
+				error: function(res) {
+					console.log(res);
+					//this.messageBox('.flash', {message: {title: res.message, text: res.message}, className: 'alert-danger'});
+				}         
+			});
+		}
+	});
 
-	//credits http://css-tricks.com/snippets/jquery/move-cursor-to-end-of-textarea-or-input/
-	function putCursorAtEnd(el) {
-    	if (el.setSelectionRange) {
-      		var len = el.value.length * 2;
-      		el.focus();
-      		el.setSelectionRange(len, len);
-    	} else {
-      		el.value = el.value;
-    	}
-	};
-})();
+    $(".pjCbDaysNav").on('click', function(event) {
+        //console.log('fetch times...');
+        $('.timesSection').html("");
+
+        let url = API_URL + '/EventController/pjEventsTimesDateWise';
+        /* Send the data using post with element id name and name2*/
+        var event = {
+            id: $(this).attr('data-event_id'), 
+            date: $(this).attr('data-date')
+        };
+
+        var posting = $.post(url, event);
+            // posting.beforeSend(function() {
+            //     //CradleLoader();
+            // });
+           
+            posting.done(function( res ) {
+                let status = res.status;
+                //console.log(res);
+                var props = {};
+                if(status) {
+                    $.each(res.time_arr, function( key, value ) {
+                        console.log(value);
+                         props = {
+                            id: event.id,
+                            date: event.date,
+                            time: value.time,
+                            key: event.id,
+                            value: value.show_time,
+                            className: "timeSlot",
+                            elementId: `timeSlot_${event.id}`
+                        };
+
+                        time_arr.push(TimeComponent(props))
+                    });
+                    //console.log(time_arr);
+
+                    $('.timesSection').html(time_arr);
+                    
+                    $(".timeSlot").on('click', function() {
+                        console.log('click');
+                        let data = props;
+                        //console.log(data);
+                        $.ajax({
+                            type: "POST",
+                            url: API_URL + 'event/pjActionSeatsAjax',
+                            data: data,
+                            success: function(res) {
+                                //console.log(res);
+                                let data = res.data;
+                                const STATUS = data.status;
+                                const status = res.status
+
+                                if(STATUS === "OK" && status === true) {
+                                    setTimeout(() => {
+                                        window.location.href = `${API_URL}event/seats`;
+                                    }, 500);
+
+                                } else {
+                                    console.log("ERR:",STATUS,"===",status);
+                                }
+                            },
+                            error: function(res) {
+                              console.log(res);
+                          }
+                      });
+                    });
+                }
+            });
+        var time_arr = [];
+        /* Alerts the results */
+       
+        
+     
+	});
+	
+	$(".pjCbDaysNav")[0].click();
+	
+    $(".getTicket").on('click', function() {
+       // console.log('getTicket');
+        var data = {
+            id: $(this).attr('data-id'), 
+            date: $(this).attr('data-date'),
+            time: $(this).attr('data-time'),
+        };
+       // console.log(data);
+        
+        $.ajax({
+            type: "POST",
+            url: API_URL + 'event/pjActionSeatsAjax',
+            data: data,
+            success: function(res) {
+                //console.log(res);
+                //return false;
+                let data = res.data;
+                const STATUS = data.status;
+                const status = res.status
+
+                if(STATUS === "OK" && status === true) {
+                    setTimeout(() => {
+                        window.location.href = `${API_URL}event/seats`;
+                    }, 500);
+
+                } else {
+                    console.log("ERR:",STATUS,"===",status);
+                }
+            },
+            error: function(res) {
+              //console.log(res);
+          }
+      
+        });
+        
+    });
+});

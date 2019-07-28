@@ -183,11 +183,16 @@
         <script src="<?php echo base_url();?>js/featherlight.gallery.min.js"></script>
         <script src="<?php echo base_url();?>js/bootstrap.offcanvas.min.js"></script>
         <script src="<?php echo base_url();?>js/main.js"></script>
+        <script src="<?php echo base_url();?>js/datepicker.js"></script>
         
         <script src="//jqueryvalidation.org/files/dist/jquery.validate.min.js"></script>
 		<script type="text/javascript">
 		var API_URL = '<?php echo base_url();?>';
+		
+			
+			
 			$("document").ready(function() {
+				
 				
 				
 				<?php if($set_country_id =='' && $set_city_id ==''){ ?>
@@ -218,15 +223,12 @@
 						}						
 					}
 				});
+				$('[data-toggle="datepicker"]').datepicker();
 			});
 		</script>		
+		<script src="<?php echo base_url();?>js/custom.js"></script>
 <script src="<?php echo base_url();?>js/auth/auth.js"></script>
-<!-- <script src="<?php echo base_url();?>js/auth/placeholder.min.js"></script> -->
-<script src="<?php echo base_url();?>js/custom.js"></script>
-<!-- <script src="<?php echo base_url();?>js/booking/ticketbooking.js"></script> -->
-
-
-
+<script src="<?php echo base_url();?>js/cart/Cart.js"></script>
 <script>
 	(function() {
 		var $section = $('.wrapper-image');
@@ -236,6 +238,25 @@
 		$zoomRange: $section.find(".zoom-range"),
 		$reset: $section.find(".reset")
 		});
+
+		
 	})();
+</script>
+
+<script>
+window.onscroll = function() {myFunction()};
+
+var header = document.getElementById("myHeader");
+var sticky = header.offsetTop;
+
+function myFunction() {
+  if (window.pageYOffset > sticky) {
+    header.classList.add("sticky");
+  } else {
+    header.classList.remove("sticky");
+  }
+}
+
+
 </script>
 	  

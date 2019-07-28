@@ -9,7 +9,7 @@
  * @link       http://github.com/benedmunds/CodeIgniter-Ion-Auth
  * @filesource
  */
-defined('BASEPATH') OR exit('No direct script access allowed');
+//defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
  * Class Bcrypt
@@ -57,12 +57,12 @@ class Bcrypt
 	 */
 	public function hash($input)
 	{
+	
 		$hash = crypt($input, $this->getSalt());
-
 		if (strlen($hash) > 13)
 		{
 			return $hash;
-		}
+		} 
 
 		return FALSE;
 	}
@@ -227,5 +227,9 @@ class Bcrypt
 		} while (1);
 
 		return $output;
+	}
+	public static function factory($attr=array())
+	{
+		return new Bcrypt($attr);
 	}
 }

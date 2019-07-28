@@ -1,5 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
+// echo $selected_date ."==". $today;
 ?>
 
 <?php
@@ -31,65 +32,79 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						<div class="tab-content">
 						    <div role="tabpanel" class="tab-pane active" id="tab1">
 								<div class="row">
-									
-									<div class="col-sm-12 col-md-12">
-										<div class="tab-content">
-											<div role="tabpanel" class="tab-pane active" id="tab1-hr1">
-												
-												
-												<?php
+									<div class="col-md-4">
+										<div class="event-img">
+											<?php
 												$src = 'https://placehold.it/220x320';
-												if(!empty($tpl['arr']['event_img']) && is_file(PJ_INSTALL_PATH . $tpl['arr']['event_img']))
+												if(!empty($arr['event_img']) && is_file(PJ_INSTALL_PATH . $arr['event_img']))
 												{
-													$src = PJ_INSTALL_URL . $tpl['arr']['event_img'];
+													$src = PJ_INSTALL_URL . $arr['event_img'];
 												} 
 												?>
 												<img src="<?php echo $src;?>" class="img-responsive" alt="Responsive image">
-												<div class="full-event-info">
-													<div class="full-event-info-header">
-														<h2><?php echo pjSanitize::html($tpl['arr']['title']);?></h2>
-														<!-- <span class="ticket-left-info">18 Tickets Left</span> -->
-														<div class="clearfix"></div>
-														<span class="event-date-info"><?php echo $tpl['selected_date_format'];?> 
-														<?php
-												/*
-												foreach($tpl['time_arr'] as $v)
+										</div>
+									</div>
+									<div class="col-md-8">
+										<div class="event-title">
+											<h3><?php echo pjSanitize::html($arr['title']);?></h3>
+											<span><img src="http://103.121.156.221/projects/ticketatguru/images/ticket.png" alt="">20 Tickets Left</span>
+										</div>
+										<div class="clearfix"></div>
+										<div class="event-info">
+											<span><img src="<?php echo base_url();?>images/time-calendar.png" alt=""><?php echo $selected_date_format;?> | <?php echo $arr['duration']?></span>
+											<span><img src="<?php echo base_url();?>images/placeholder.png" alt="">220 Morrissey Blvd. Boston, MA 02125</span>
+										</div>
+										<div class="clearfix"></div>
+										<div class="about-event">
+											<p><?php echo nl2br(stripslashes($arr['description']));?></p>
+										</div>
+										
+									</div>
+									<div class="col-md-12">
+										<div class="event-date">
+											<ul class="date-picker">
+											<?php
+												
+												foreach($show_date_arr as $v)
 												{
 													?>
-													<?php echo date($tpl['option_arr']['o_time_format'], strtotime($tpl['selected_date'] . ' ' . $v)); ?>
+												<li>
+												<a href="javascript:void(0);" class="ticket-left-info pjCbDaysNav <?php echo ($selected_date == $v) ? 'active' : '';?>" data-date="<?php echo $v;?>" data-event_id="<?php echo $arr['id'];?>">
+												<?php 
 													
-													<?php
-												} */
-												?> | <?php echo $tpl['arr']['duration']?></span>
-														<span class="event-venue-info">220 Morrissey Blvd. Boston, MA 02125</span>
-													</div>
-													<div class="full-event-info-content">
-														<p><?php echo nl2br(stripslashes($tpl['arr']['description']));?></p>
-														<!-- <a class="book-ticket" href="#">Book Ticket</a> -->
-														
-													</div>
-													<?php
+												?>
+														<span class="day">
+															<?php echo date("l",strtotime($v));;?>
+														</span>
+														<span class="date">
+														<?php echo date("jS",strtotime($v));;?>
+														</span>
+														<span class="mmyy">
+														<?php echo date("M, Y",strtotime($v));;?>
+														</span>
+													</a>
+												</li>
+												<?php
+												} 
+												?>
+											</ul>
+											<?php /*?><?php
 												
-											foreach($tpl['show_date_arr'] as $v)
+											foreach($show_date_arr as $v)
 											{
 												?>
-												<a href="javascript:void(0);" class="ticket-left-info pjCbDaysNav" data-date="<?php echo $v;?>" data-event_id="<?php echo $tpl['arr']['id'];?>"><?php echo $v; ?></a>
+												<a href="javascript:void(0);" class="ticket-left-info pjCbDaysNav <?php echo ($selected_date == $v) ? 'active' : '';?>" data-date="<?php echo $v;?>" data-event_id="<?php echo $arr['id'];?>"><?php echo $v; ?></a>
 												
 												<?php
 											} 
-											?>
+											?><?php */?>
 											<div class="timesSection"></div>
-											
-													
-													
-													
-													
-												</div>
-											</div>
-											
 										</div>
-										
-									</div>									
+									</div>
+									
+									
+									<!----------------------------------------------------------------------------------------------->
+																	
 								</div>
 							</div>
 							
@@ -98,4 +113,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				</div>
 			</div>
 		</section>
-		
+		<script>
+			$("document").ready(function() {
+				$('.date-picker').slick({
+				  slidesToShow: 7,
+				  slidesToScroll: 1,
+				  autoplay: false,
+				  autoplaySpeed: 2000,
+				});
+
+			});
+		</script>

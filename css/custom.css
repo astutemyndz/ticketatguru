@@ -61,7 +61,7 @@
 }
 
 .hero-content {
-    padding: 220px 0;
+    padding: 50px 0;
     background: url(../images/cover.jpg) no-repeat;
     background-size: cover;
 }
@@ -128,7 +128,7 @@
     padding: 50px;
     margin: 0;
     font-family: mountains;
-    font-size: 120px;
+    font-size: 100px;
     background: -webkit-linear-gradient(#00d0ff, #25ffbf);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -172,7 +172,7 @@
         display: none!important;
     }
     .hero-content .entry-header h2 {
-        font-size: 172px;
+        font-size: 132px;
     }
 
     .offset-lg-2 {

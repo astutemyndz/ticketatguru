@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Name:    Ion Auth
  * Author:  Ben Edmunds
@@ -61,6 +62,8 @@ class Ion_auth
 	 */
 	public function __construct()
 	{
+		
+		
 		$this->config->load('ion_auth', TRUE);
 		$this->load->library(array('email'));
 		$this->lang->load('ion_auth');
@@ -547,5 +550,7 @@ class Ion_auth
 		 */
 		return $check_all;
 	}
+
+	
 
 }

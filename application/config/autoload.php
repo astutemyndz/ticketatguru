@@ -122,7 +122,7 @@ $autoload['packages'] = array(APPPATH.'third_party', 'ion_auth', 'datamapper');
 
 
 
-$autoload['libraries'] = array('database','session');
+$autoload['libraries'] = array('database','session', 'cart');
 
 
 

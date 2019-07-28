@@ -12,6 +12,11 @@ class App_Controller extends CI_Controller
 
 	public 		$defaultLangMenu 		= 'pjTicketBooking_LangMenu';
 
+	protected 	$option_arr 			= array();
+    protected 	$optionArr 				= 'option_arr';
+	protected 	$locale_arr 			= 'locale_arr';
+	protected   $data					 = array();
+
 	public function __construct()
     {
 		parent::__construct();
