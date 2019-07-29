@@ -2,8 +2,8 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 (function ($, undefined) {
 	$(function () {
 		"use strict";
-		var $frmCreateArtist = $("#frmCreateArtist"),
-			$frmUpdateArtist = $("#frmUpdateArtist"),
+		var $frmCreateAdvertisement = $("#frmCreateAdvertisement"),
+			$frmUpdateAdvertisement = $("#frmUpdateAdvertisement"),
 			$dialogDelete = $("#dialogDeleteImage"),
 			$dialogShowStatus = $('#dialogShowStatus'),
 			dialog = ($.fn.dialog !== undefined),
@@ -44,14 +44,14 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 				buttons: {}
 			});
 		}
-		if ($frmCreateArtist.length > 0 || $frmUpdateArtist.length > 0) {
+		if ($frmCreateAdvertisement.length > 0 || $frmUpdateAdvertisement.length > 0) {
 			$.validator.addMethod('positiveNumber',
 				function (value) { 
 		        	return Number(value) > 0;
 		    	}, 
 		    myLabel.duration_greater_zero);
 		}
-		if ($frmCreateArtist.length > 0 && validate) {
+		if ($frmCreateAdvertisement.length > 0 && validate) {
 			tinymce.init({
 			    selector: "textarea.mceEditor",
 			    theme: "modern",
@@ -66,7 +66,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 				],
 				toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | l      ink image | print preview media fullpage | forecolor backcolor emoticons"
 			});
-			$frmCreateArtist.validate({
+			$frmCreateAdvertisement.validate({
 				rules:{
 					"duration": {
 						positiveNumber: true
@@ -117,7 +117,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 					
 					setPrices();
 					
-					$("#frmCreateArtist .fdRequired").each(function() {
+					$("#frmCreateAdvertisement .fdRequired").each(function() {
 						if($(this).val() == '')
 						{
 							valid = false;
@@ -179,7 +179,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 				}
 			}
 		}
-		if ($frmUpdateArtist.length > 0 && validate) {
+		if ($frmUpdateAdvertisement.length > 0 && validate) {
 			tinymce.init({
 			    selector: "textarea.mceEditor",
 			    theme: "modern",
@@ -194,7 +194,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 				],
 				toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | l      ink image | print preview media fullpage | forecolor backcolor emoticons"
 			});
-			$frmUpdateArtist.validate({
+			$frmUpdateAdvertisement.validate({
 				rules:{
 					"duration": {
 						positiveNumber: true
@@ -353,7 +353,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 			//console.log(datagrid);
 			var $grid = $("#grid").datagrid({
 				buttons: [{type: "edit", url: "admin.php?controller=pjAdminAdvertisements&action=pjActionUpdate&id={:id}"},
-				          {type: "delete", url: "admin.php?controller=pjAdminAdvertisements&action=pjActionDeleteArtist&id={:id}", beforeShow: onBeforeShow},
+				          {type: "delete", url: "admin.php?controller=pjAdminAdvertisements&action=pjActionDeleteAdvertisement&id={:id}", beforeShow: onBeforeShow},
 				          ],
 				columns: [
 					{text: myLabel.image, type: "text", sortable: false, editable: false, width: 100, renderer: formatImage},
@@ -364,19 +364,19 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 				            		{label: myLabel.inactive, value: "F"}
 								], applyClass: "pj-status"}
 				],
-				dataUrl: "admin.php?controller=pjAdminAdvertisements&action=pjActionGetArtists",
+				dataUrl: "admin.php?controller=pjAdminAdvertisements&action=pjActionGetAdvertisements",
 				dataType: "json",
 				fields: ['image', 'name', 'status'],
 				paginator: {
 					actions: [
-					   {text: myLabel.delete_selected, url: "admin.php?controller=pjAdminAdvertisements&action=pjActionDeleteArtistBulk", render: true, confirmation: myLabel.delete_confirmation}
+					   {text: myLabel.delete_selected, url: "admin.php?controller=pjAdminAdvertisements&action=pjActionDeleteAdvertisementBulk", render: true, confirmation: myLabel.delete_confirmation}
 					],
 					gotoPage: true,
 					paginate: true,
 					total: true,
 					rowCount: true
 				},
-				saveUrl: "admin.php?controller=pjAdminAdvertisements&action=pjActionSaveArtist&id={:id}",
+				saveUrl: "admin.php?controller=pjAdminAdvertisements&action=pjActionSaveAdvertisement&id={:id}",
 				select: {
 					field: "id",
 					name: "record[]"
@@ -400,7 +400,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 				q: ""
 			});
 			$grid.datagrid("option", "cache", cache);
-			$grid.datagrid("load", "admin.php?controller=pjAdminAdvertisements&action=pjActionGetArtists", "created", "DESC", content.page, content.rowCount);
+			$grid.datagrid("load", "admin.php?controller=pjAdminAdvertisements&action=pjActionGetAdvertisements", "created", "DESC", content.page, content.rowCount);
 			return false;
 		}).on("click", ".btn-filter", function (e) {
 			if (e && e.preventDefault) {
@@ -415,7 +415,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 			obj[$this.data("column")] = $this.data("value");
 			$.extend(cache, obj);
 			$grid.datagrid("option", "cache", cache);
-			$grid.datagrid("load", "admin.php?controller=pjAdminAdvertisements&action=pjActionGetArtists", "created", "DESC", content.page, content.rowCount);
+			$grid.datagrid("load", "admin.php?controller=pjAdminAdvertisements&action=pjActionGetAdvertisements", "created", "DESC", content.page, content.rowCount);
 			return false;
 		}).on("click", ".pj-status-1", function (e) {
 			if (e && e.preventDefault) {
@@ -429,7 +429,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 			$.post("admin.php?controller=pjAdminAdvertisements&action=pjActionSetActive", {
 				id: $(this).closest("tr").data("object")['id']
 			}).done(function (data) {
-				$grid.datagrid("load", "admin.php?controller=pjAdminAdvertisements&action=pjActionGetArtists");
+				$grid.datagrid("load", "admin.php?controller=pjAdminAdvertisements&action=pjActionGetAdvertisements");
 			});
 			return false;
 		}).on("submit", ".frm-filter", function (e) {
@@ -443,7 +443,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 				q: $this.find("input[name='q']").val()
 			});
 			$grid.datagrid("option", "cache", cache);
-			$grid.datagrid("load", "admin.php?controller=pjAdminAdvertisements&action=pjActionGetArtists", "created", "DESC", content.page, content.rowCount);
+			$grid.datagrid("load", "admin.php?controller=pjAdminAdvertisements&action=pjActionGetAdvertisements", "created", "DESC", content.page, content.rowCount);
 			return false;
 		}).on("click", '.pj-add-size', function(e){
 			if (e && e.preventDefault) {

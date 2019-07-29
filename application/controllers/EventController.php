@@ -11,19 +11,16 @@ class EventController extends App_Controller
 	public $cartItems = array();
 	public $defaultForm = 'pjTicketBooking_Form';
 	public $pjActionSeatsAjaxResponse = 'pjActionSeatsAjaxResponse';
-	public $data = array();
-
-
+	/*
 	protected 	$option_arr 			= array();
 	protected 	$optionArr 				= 'option_arr';
 	protected 	$locale_arr 			= 'locale_arr';
-	
+	*/
 	public function __construct() {
 		parent::__construct();
 		self::allowCORS();
 	}
 	
-
 	private function pjActionSetLocale($locale) {
 		if ((int) $locale > 0) {
 			$this->setSession($this->defaultLocale, (int) $locale);
@@ -43,7 +40,6 @@ class EventController extends App_Controller
 	 * Get all events
 	 * @return Array
 	 */
-
 	public function pjActionEvents()
 	{
 		$ts = time();
@@ -65,7 +61,6 @@ class EventController extends App_Controller
 		{
 			$hash_date = date('Y-m-d', $from_ts);
 		}
-
 		$pjEventModel = pjEventModel::factory();
         $pjShowModel = pjShowModel::factory();
      
@@ -87,11 +82,10 @@ class EventController extends App_Controller
 				->orderBy("t1.date_time ASC")
 				->findAll()
 				->getData();
-
 		$grid = $this->getShowsInGrid($show_arr);
-
 		
 		$time_arr = array();
+		$showTimes = array();
 		foreach($grid['show_arr'] as $eventId => $v)
 		{
 			for($l=0; $l < count($v); $l++) {
@@ -106,22 +100,21 @@ class EventController extends App_Controller
 						'dataTime' => $v[$l],
 						'event' => $this->pjGetEvent($eventId)
 					);
-				} 
+				}  else {
+					$showTimes = [];
+				}
 			}
 		}
 		
 		$events = array();
-
 		foreach($arr as $event) {
 			$events[] = array(
 				'event' => $event,
 				'shows' => $this->pjShowDatesByEventId($event['id'])
-
 			); 
 		}
-
 	
-		$this->data['showTimes'] 	= $showTimes;
+		$this->data['showTimes'] 	= (count($showTimes) > 0) ? $showTimes : [];
 		$this->data['events'] 		= $events;
 		$ts 						= time();
 		$today 						= date('Y-m-d', $ts);
@@ -135,7 +128,6 @@ class EventController extends App_Controller
         $this->load->view('frontend/pages/home', $this->data);
         $this->load->view('frontend/layout/footer');
 	}
-
 	private function pjGetEvent($id) {
 		$pjEventModel = pjEventModel::factory();
 		$arr = $pjEventModel
@@ -154,7 +146,6 @@ class EventController extends App_Controller
 					->orderBy("t1.date_time ASC")
 					->findAll()
 					->getData();
-
 	
 		$grid = $this->getShowsInGrid($show_arr);
 		$show_date_arr = array();
@@ -188,9 +179,7 @@ class EventController extends App_Controller
 		
 			$today = date($this->option_arr['o_date_format'], strtotime(date('Y-m-d')));
 		
-
 			$this->setSession('selected_date', $selected_date);
-
 			if($this->hasSession($this->defaultStore)['tickets'])
 			{
 				$this->unsetSession($this->getSession($this->defaultStore)['tickets']);
@@ -199,11 +188,8 @@ class EventController extends App_Controller
 			{
 				$this->unsetSession($this->getSession($this->defaultStore)['seat_id']);
 			}
-
-
 			$pjEventModel = pjEventModel::factory();
 			$pjShowModel = pjShowModel::factory();
-
 			//echo $this->getLocaleId();
 			//exit;
 			$arr = $pjEventModel
@@ -212,7 +198,6 @@ class EventController extends App_Controller
 				->select('t1.*, t2.content as title, t3.content as description')
 				->find($id)
 				->getData();
-
 			
 			
 			$show_arr = $pjShowModel
@@ -221,7 +206,6 @@ class EventController extends App_Controller
 				->orderBy("t1.date_time ASC")
 				->findAll()
 				->getData();
-
 				// echo "<pre>";
 				// print_r($show_arr);
 				// exit;
@@ -241,7 +225,6 @@ class EventController extends App_Controller
 					}
 				}
 			}
-
 			// echo "<pre>";
 			// print_r($time_arr);
 			// exit;
@@ -259,7 +242,6 @@ class EventController extends App_Controller
 				}
 			}
 			
-
 			$this->data['arr'] = $arr;
 			$this->data['all_show_arr'] =  $grid['all_show_arr'];
 			$this->data['selected_date'] = $selected_date;
@@ -269,11 +251,7 @@ class EventController extends App_Controller
 			$this->data['selected_date_format'] = date("jS M, Y", strtotime($selected_date));
 			$this->data['show_date_arr'] = $show_date_arr;
 			$this->data['show_arr'] = $grid['show_arr'];
-
-
 			$this->data['title'] = 'Ticket at Guru';
-
-
 			
 			$this->load->view('frontend/layout/head', $this->data);
 			$this->load->view('frontend/layout/header');
@@ -294,12 +272,10 @@ class EventController extends App_Controller
 			{
 				$hash_date = pjUtil::formatDate($this->post('date'), $this->option_arr['o_date_format']);
 			}
-
 			$pjEventModel = pjEventModel::factory();
 			$pjShowModel = pjShowModel::factory();
 			
 			$pjShowModel->where("(DATE_FORMAT(t1.date_time,'%Y-%m-%d') = '$hash_date') AND (t1.venue_id IN (SELECT TV.id FROM `".pjVenueModel::factory()->getTable()."` AS TV WHERE TV.status='T') )");
-
 			$show_arr = $pjShowModel
 						->where('t1.event_id', $id)
 						->where("t1.venue_id IN (SELECT TV.id FROM `".pjVenueModel::factory()->getTable()."` AS TV WHERE TV.status='T')")
@@ -343,7 +319,6 @@ class EventController extends App_Controller
 				$hash_date 		= ($this->has('date')) ? pjUtil::formatDate($this->post('date'), $this->option_arr['o_date_format']) : '';
 				$time 			= ($this->has('time')) ? $this->post('time') : '';
 				$id 			= ($this->has('id')) ? $this->post('id') : '';
-
 				$selected_date 	= $hash_date;
 				$selected_time = $time;
 				//$selected_date 	= $hash_date;
@@ -477,20 +452,18 @@ class EventController extends App_Controller
 	}
 
 
-
+	
+	
 	public function pjActionSeats() {
-		$this->data['tpl']['title'] = 'Ticket at Guru';
+		$this->data['title'] = 'Ticket at Guru';
 		$this->load->view('frontend/layout/head', $this->data);
 		$this->load->view('frontend/layout/header');
 		$this->load->view('frontend/pages/event/seats');
 		$this->load->view('frontend/layout/footer');
 	}
 	public function pjActionCart() {
-
-		$this->load->view('frontend/layout/head', $this->data);
-		$this->load->view('frontend/layout/header');
-		$this->load->view('frontend/pages/event/cart');
-		$this->load->view('frontend/layout/footer');
+		
+		
 	}
 	public function pjActionCheckout()
 	{
@@ -509,7 +482,6 @@ class EventController extends App_Controller
 					}
 						
 					$_SESSION[$this->defaultForm] = $_POST;
-
 					pjAppController::jsonResponse(array('status' => 'OK', 'code' => 211, 'text' => __('system_211', true)));
 				}else{
 					$hash_date = date('Y-m-d');
@@ -616,9 +588,7 @@ class EventController extends App_Controller
 						->where("t1.venue_id", $this->_get('venue_id'))
 						->findAll()
 						->getData();
-
 					$this->set('ticket_arr', $ticket_arr);
-
 					$price_arr = $this->calculatePrice($ticket_arr, $this->_get('tickets'));
 					$this->set('price_arr', $price_arr);
 					
@@ -755,39 +725,7 @@ class EventController extends App_Controller
 		}
 	}
 	
-	public function pjActionSaveSeats()
-	{
-		$this->setAjax(true);
 	
-		if ($this->isXHR())
-		{
-			
-			$response = array();
-			mt_srand();
-			$id = mt_rand(1, 9999);
-			$tickets = ($this->has('tickets')) ? $this->post('tickets') : [];
-			$seat_id = ($this->has('seat_id')) ? $this->post('seat_id') : [];
-			$price = ($this->has('price')) ? $this->post('price') : '';
-			$event = 	$this->getSession($this->defaultStore)['arr'];
-			
-			$data = array(
-				'id'		=>	$id,
-				'qty' 		=>	1,
-				'price' 	=>	$price,
-				'name'		=>	'Test',
-				'options' 	=> 	array('event' => $event, 'tickets' => $tickets, 'seat_id' => $seat_id)
-			);
-			if($this->cart->insert($data)){
-				$response['code'] = 200;
-				$response['carItems'] = $this->cart->contents();
-			}else{
-				$response['code'] = 200;
-				$response['carItems'] = [];
-			}
-			pjAppController::jsonResponse($response);
-			exit;
-		}
-	}
 	
 	public function pjActionSetVenue()
 	{
@@ -866,7 +804,6 @@ class EventController extends App_Controller
 				->where(sprintf("(t1.id IN(SELECT `TBS`.booking_id FROM `%s` AS `TBS` WHERE `TBS`.`seat_id` IN(SELECT `TS`.id FROM `%s` AS `TS` WHERE `TS`.venue_id='%u') ))", $pjBookingShowModel->getTable(), pjSeatModel::factory()->getTable(), $this->_get('venue_id')))
 				->findAll()
 				->getDataPair(null, 'id');
-
 			$all_seats_arr = pjSeatModel::factory()
 		        ->where('t1.venue_id', $this->_get('venue_id'))
 				->findAll()
@@ -1124,7 +1061,6 @@ class EventController extends App_Controller
 			$this->log('Invoice not found');
 		}
 	}
-
 	public function pjActionConfirmPaypal()
 	{
 		$this->setAjax(true);
@@ -1199,7 +1135,6 @@ class EventController extends App_Controller
 		}
 		pjUtil::redirect($this->option_arr['o_thankyou_page']);
 	}	
-
 	public function pjActionConfirmSend($option_arr, $booking_arr, $salt, $opt)
 	{
 		$Email = new pjEmail();

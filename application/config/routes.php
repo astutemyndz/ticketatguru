@@ -119,11 +119,15 @@ $route['job/(:any)'] = 'job/listings';
 $route['event/details/(:any)'] = 'EventController/pjActionDetails/$1';
 $route['event/pjActionSeatsAjax'] = 'EventController/pjActionSeatsAjax';
 $route['event/pjActionSaveSeats'] = 'EventController/pjActionSaveSeats';
+
 $route['event/cart'] = 'EventController/pjActionCart';
 
-$route['event/seats'] = 'EventController/pjActionSeats';
+
+
+
+$route['event/seats']           = 'EventController/pjActionSeats';
 //$route['event/(:any)'] = ''
-$route['welcome'] = 'welcome';
+$route['welcome']               = 'welcome';
 
 $route['set'] = 'EventController/setSessionData';
 $route['get'] = 'EventController/getSessionData';
@@ -140,4 +144,20 @@ $route['auth/logout'] = 'AuthController/logout';
 // Post Register
 $route['auth/register/post'] = 'AuthController/register';
 
-$route['account'] = 'AccountController/pjAccountForm';
+
+$route['account']           = 'AccountController/pjAccountForm';
+$route['cart']              = 'CartController';
+$route['pjActionCart']      = 'CartController/pjActionCart';
+$route['loadCartPage']      = 'CartController/loadCartPage';
+$route['updateCartPini']    = 'CartController/updateCartPini';
+$route['cart/empty']        = 'CartController/pjActionCartEmpty';
+
+/**
+ * @method GET
+ */
+$route['pjActionLoadMap']   = 'CartController/pjActionLoadMap';
+/**
+ * @method POST
+ */
+$route['pjActionCart']      = 'CartController/pjActionCart';
+

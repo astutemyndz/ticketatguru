@@ -82,6 +82,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						<h2>Today's Schedule</h2>
 						<span class="todays-date"><i class="fa fa-calendar" aria-hidden="true"></i> <strong><?php echo $newDate = date("jS M, Y", strtotime($today)); ?></strong></span>
 					</div>
+					<?php if(count($showTimes) > 0) {?>
 					<div class="section-content">
 						<ul class="clearfix autoplay">
 						<?php 
@@ -98,6 +99,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						</ul>
 						<!-- <strong class="event-list-label">Full Event <span>Schedules</span></strong> -->
 					</div>
+							<?php } else {?>
+								<span>Show not available</span>
+							<?php } ?>
 				</div>
 			</div>
 		</section>
@@ -109,6 +113,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						<!-- <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut.</p> -->
 						<a href="#">See all upcoming events</a>
 					</div>
+					<?php if(count($events) > 0) {?>
 					<div class="section-content">
 						<ul class="clearfix">
 							<?php foreach($events as $event) { $lastEventDate = end($event['shows']); ?>
@@ -132,6 +137,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							
 						</ul>
 					</div>
+					<?php } else { ?>
+						<span>Comming Soon</span>
+					<?php } ?>
 				</div>
 			</div>
 		</section>

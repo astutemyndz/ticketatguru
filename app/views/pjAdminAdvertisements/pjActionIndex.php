@@ -20,12 +20,12 @@ if (isset($tpl['status']))
 	?>
 	<div class="ui-tabs ui-widget ui-widget-content ui-corner-all b10">
 		<ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
-			<li class="ui-state-default ui-corner-top ui-tabs-active ui-state-active"><a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminAdvertisements&amp;action=pjActionIndex"><?php __('menuArtist'); ?></a></li>
+			<li class="ui-state-default ui-corner-top ui-tabs-active ui-state-active"><a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminAdvertisements&amp;action=pjActionIndex"><?php __('menuAdvertisement'); ?></a></li>
 			<!-- <li class="ui-state-default ui-corner-top"><a href="<?php //echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminAdvertisements&amp;action=pjActionExport"><?php //__('lblExport'); ?></a></li> -->
 		</ul>
 	</div>
 	<?php
-	pjUtil::printNotice(__('infoArtistTitle', true, false), __('infoArtistDesc', true, false)); 
+	pjUtil::printNotice(__('infoAdvertisementTitle', true, false), __('infoAdvertisementDesc', true, false)); 
 	?>
 	<div class="b10">
 		<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="get" class="float_left r5">

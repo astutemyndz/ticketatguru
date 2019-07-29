@@ -20,17 +20,17 @@ if (isset($tpl['status']))
 	?>
 	<div class="ui-tabs ui-widget ui-widget-content ui-corner-all b10">
 		<ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
-			<li class="ui-state-default ui-corner-top"><a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminAdvertisements&amp;action=pjActionIndex"><?php __('menuArtist'); ?></a></li>
+			<li class="ui-state-default ui-corner-top"><a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminAdvertisements&amp;action=pjActionIndex"><?php __('menuAdvertisement'); ?></a></li>
 		</ul>
 	</div>
 	
-	<form action="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminAdvertisements&amp;action=pjActionUpdate" method="post" id="frmUpdateArtist" class="pj-form form" enctype="multipart/form-data">
-		<input type="hidden" name="image_artist_update" value="1" />
+	<form action="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminAdvertisements&amp;action=pjActionUpdate" method="post" id="frmUpdateAdvertisement" class="pj-form form" enctype="multipart/form-data">
+		<input type="hidden" name="image_advertisement_update" value="1" />
 		<input type="hidden" id="index_arr" name="index_arr" value="" />
 		<input type="hidden" id="remove_arr" name="remove_arr" value="" />
 		<input type="hidden" name="id" value="<?php echo $tpl['arr']['id']?>" />
 		<?php
-		pjUtil::printNotice(__('infoEditArtist', true), __('infoEditArtistDesc', true)); 
+		pjUtil::printNotice(__('infoEditAdvertisement', true), __('infoEditAdvertisementDesc', true)); 
 		?>
 		<?php if ((int) $tpl['option_arr']['o_multi_lang'] === 1 && count($tpl['lp_arr']) > 1) : ?>
 		<div class="multilang"></div>

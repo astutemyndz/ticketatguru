@@ -164,9 +164,13 @@ $cartItemsCount = ($this->cart->contents()) ? count($this->cart->contents()) : 0
 										<li><a href="event-by-category.html">Theater</a></li>
 										<li><a href="gallery.html">Gallery</a></li>
 										<li><a href="select-seat-2.html">Ticekts</a></li>
-										<?php if($cartItemsCount > 0) {?>
-										<li class="cart"><a href="<?php echo base_url();?>event/cart"><?php echo $cartItemsCount;?></a></li>
-										<?php } ?>
+										
+										<li class="cart" id="plk-cart-pini-wrapper">
+											<a href="<?php echo base_url();?>cart">
+											<?php echo ($this->cart->contents()) ? count($this->cart->contents()) : 0 ?>
+											</a>
+										</li>
+										
 									</ul>
 									
 								</div>

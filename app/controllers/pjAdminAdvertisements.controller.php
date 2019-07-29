@@ -20,7 +20,7 @@ class pjAdminAdvertisements extends pjAdmin
 			{
 				pjUtil::redirect(PJ_INSTALL_URL . "admin.php?controller=pjAdminAdvertisements&action=pjActionIndex&err=ART05");
 			}
-			if (isset($_POST['image_artist_create']))
+			if (isset($_POST['image_advertisement_create']))
 			{
 					
 				
@@ -135,7 +135,7 @@ class pjAdminAdvertisements extends pjAdmin
 		}
 	}
 	/***********Ajax Fetching function*************/
-	public function pjActionGetArtists()
+	public function pjActionGetAdvertisements()
 	{
 		$this->setAjax(true);
 	
@@ -198,7 +198,7 @@ class pjAdminAdvertisements extends pjAdmin
 		}
 	}
 	/***********Ajax Change Status function*************/
-	public function pjActionSaveArtist()
+	public function pjActionSaveAdvertisement()
 	{
 		$this->setAjax(true);
 	
@@ -228,7 +228,7 @@ class pjAdminAdvertisements extends pjAdmin
 			{
 				pjUtil::redirect(PJ_INSTALL_URL . "admin.php?controller=pjAdminAdvertisements&action=pjActionIndex&err=ART06");
 			}	
-			if (isset($_POST['image_artist_update']))
+			if (isset($_POST['image_advertisement_update']))
 			{
 				$pjAdvertisementsModel = pjAdvertisementsModel::factory();
 				//$pjSeatModel = pjSeatModel::factory();
@@ -420,7 +420,7 @@ class pjAdminAdvertisements extends pjAdmin
 		}
 	}
 	/***********Single Delete function*************/
-	public function pjActionDeleteArtist()
+	public function pjActionDeleteAdvertisement()
 	{
 		$this->setAjax(true);
 	
@@ -442,7 +442,7 @@ class pjAdminAdvertisements extends pjAdmin
 		exit;
 	}
 	/***********Multi Delete function*************/
-	public function pjActionDeleteArtistBulk()
+	public function pjActionDeleteAdvertisementBulk()
 	{
 		$this->setAjax(true);
 	

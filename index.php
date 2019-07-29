@@ -328,6 +328,7 @@ switch (ENVIRONMENT)
 	if (!defined("PJ_INVOICE_PLUGIN")) define("PJ_INVOICE_PLUGIN", 'index.php?controller=pjAdminBookings&action=pjActionUpdate&uuid={ORDER_ID}');
 	if (!defined("PJ_INSTALL_URL")) define("PJ_INSTALL_URL", "http://103.121.156.221/projects/ticketatguru/");
 	if (!defined("PJ_INSTALL_PATH")) define("PJ_INSTALL_PATH", "E:/xampp/htdocs/projects/ticketatguru/");
+	
 	$CONFIG = array();
 	$CONFIG['plugins'] = array('pjLocale', 'pjBackup', 'pjLog', 'pjInstaller', 'pjOneAdmin', 'pjPaypal', 'pjAuthorize', 'pjCountry', 'pjInvoice', 'pjSms');
 

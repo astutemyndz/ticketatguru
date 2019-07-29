@@ -188,7 +188,11 @@
         <script src="//jqueryvalidation.org/files/dist/jquery.validate.min.js"></script>
 		<script type="text/javascript">
 		var API_URL = '<?php echo base_url();?>';
+		
+			
+			
 			$("document").ready(function() {
+				
 				
 				
 				<?php if($set_country_id =='' && $set_city_id ==''){ ?>
@@ -224,7 +228,7 @@
 		</script>		
 		<script src="<?php echo base_url();?>js/custom.js"></script>
 <script src="<?php echo base_url();?>js/auth/auth.js"></script>
-
+<script src="<?php echo base_url();?>js/cart/Cart.js"></script>
 <script>
 	(function() {
 		var $section = $('.wrapper-image');
@@ -234,6 +238,8 @@
 		$zoomRange: $section.find(".zoom-range"),
 		$reset: $section.find(".reset")
 		});
+
+		
 	})();
 </script>
 
@@ -250,5 +256,7 @@ function myFunction() {
     header.classList.remove("sticky");
   }
 }
+
+
 </script>
 	  

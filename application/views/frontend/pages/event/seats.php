@@ -1,7 +1,5 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-// echo "<pre>";
-// print_r($this->session->userdata('defaultStore'));
 // exit;
 mt_srand();
 $index = mt_rand(1, 9999);
@@ -9,9 +7,6 @@ $validate = str_replace(array('"', "'"), array('\"', "\'"), __('validate', true,
 
 
 $defaultStore = ($this->session->userdata('pjTicketBooking_Store')) ? $this->session->userdata('pjTicketBooking_Store') : [];
-// echo "<pre>";
-// print_r($defaultStore);
-// exit;
 $option_arr = ($this->session->userdata('option_arr')) ? $this->session->userdata('option_arr') : [];
 $layout = ($this->input->get('layout')) ? $this->input->get('layout') : $option_arr['o_theme'];
 
@@ -44,7 +39,7 @@ if($defaultStore['ticket_arr'] && count($defaultStore['ticket_arr']) > 0)
 			<div class="container ">
 				<div class="row pjCbBody">
 				
-					<div id="primary" class="col-md-8">
+					<div id="primary" class="col-md-12">
 						<div class="stage-name">
 							<h3><?php echo pjSanitize::html($defaultStore['arr']['title']);?></h3>
 							<p><?php __('front_date')?>: <?php echo date($option_arr['o_date_format'], strtotime($defaultStore['selected_date'])); ?></p>
@@ -58,51 +53,13 @@ if($defaultStore['ticket_arr'] && count($defaultStore['ticket_arr']) > 0)
 										$size = getimagesize($map);
 										?>
 										<div class="wrapper-image">
-											
 												<div id="tbMapHolder_<?php echo $index;?>" class="tbMapHolder pjCbCinema">
 													<div style="height: 100%;width:100%" class="panzoom">
 														<!-- <img id="stadium-seat-plan"  src="<?php echo base_url();?>images/stadium2-bg.jpg" alt="stadium" usemap="#map" /> -->
 														<img usemap="#map" id="tbMap_1" src="<?php echo PJ_INSTALL_URL . $defaultStore['venue_arr']['map_path']; ?>" alt="" style="margin: 0; border: none; position: absolute; top: 0; left: 0; z-index: 500;" />
 														
-														<map name="map" class="seatmap">
-														<?php
-															$seatName = NULL;
-															foreach ($defaultStore['seat_arr'] as $seat)
-															{
-																$seatName = $seat['name'];
-																$is_selected = false;
-																$is_available = true;
-																$_arr = explode("~:~", $seat['price_id']);
-																
-																
-																$tooltip = array();
-																$dataPrice = NULL;
-																$dataCurrency = NULL;
-																foreach($_arr as $pid)
-																{
-																	
-																	if(isset($defaultStore['seat_id'][$pid][$seat['id']]))
-																	{
-																		//echo "is_selected= true";
-																		$is_selected = true;
-																		if($seat['seats'] == $defaultStore['seat_id'][$pid][$seat['id']])
-																		{
-																			$is_available = false;
-																		}
-																	} else {
-																		//echo "is_selected = false";
-																	}
-																	$tooltip[] = $seatName;//$ticket_tooltip_arr['tooltip'][$pid];
-																	$dataPrice = $ticket_tooltip_arr['tooltip']['price'][$pid];
-																	$dataCurrency = $ticket_tooltip_arr['tooltip']['price']['currency'][$pid];
-																}
-																
-																$avail_seats = $seat['seats'] - $seat['cnt_booked'];
-															
-																?>
-															
-															<span data-seat="<?php echo $seatName;?>" data-price="<?php echo $dataPrice;?>" data-currency="<?php echo $dataCurrency;?>" class="tbSeatRect<?php echo $avail_seats <= 0 ? ' tbSeatBlocked' : ($is_available == true ? ' tbSeatAvailable' : null); ?><?php echo $is_selected == true ? ' tbSeatSelected' : null;?>" data-id="<?php echo $seat['id']; ?>" data-price-id="<?php echo $seat['price_id']; ?>" data-name="<?php echo $seat['name']; ?>" data-count="<?php echo $avail_seats; ?>" style="width: <?php echo $seat['width']; ?>px; height: <?php echo $seat['height']; ?>px; left: <?php echo $seat['left']; ?>px; top: <?php echo $seat['top']; ?>px; line-height: <?php echo $seat['height']; ?>px" data-toggle="tooltip" data-placement="top" data-html="true" title="<?php echo join('<br/>', $tooltip);?>"><?php echo stripslashes($seat['name']); ?></span>
-															<?php } ?>
+														<map id="plk-map-seat-points-wrapper" name="map" class="seatmap">
+														
 														</map>
 													</div>
 												</div>
@@ -174,115 +131,7 @@ if($defaultStore['ticket_arr'] && count($defaultStore['ticket_arr']) > 0)
 						
 						
 					</div>
-				
-					<div id="secondary" class="col-md-4">
-						<div class="ticket-price">
-							<div class="tickets">
-							<!--alert alert-info-->
-							<label>Available seats: <?php echo $defaultStore['total_remaining_avaliable_seats'];?></label>
-								<div class="well">
-									<div class="row">
-										<?php 
-											if($defaultStore['ticket_arr'] && count($defaultStore['ticket_arr']) > 0)
-											{
-												foreach($defaultStore['ticket_arr'] as $v)
-												{
-													if($v['cnt_tickets'] > 0 && $defaultStore['seats_available'] == true)
-													{
-														?>
-														<label for=""><?php echo pjSanitize::html($v['ticket']);?>:</label>
-															<?php echo pjUtil::formatCurrencySign($v['price'], $option_arr['o_currency']);?>
-																<select id="tbTicket_<?php echo $v['price_id'];?>" name="tickets[<?php echo $v['id'];?>][<?php echo $v['price_id'];?>]" class="selectpicker dropdown tbTicketSelector" data-id="<?php echo $v['price_id'];?>" data-ticket="<?php echo pjSanitize::html($v['ticket']);?>" data-price="<?php echo pjUtil::formatCurrencySign($v['price'], $option_arr['o_currency']);?>">
-																	<?php
-																	for($i = 0; $i <= $v['cnt_tickets']; $i++)
-																	{
-																		?><option value="<?php echo $i;?>"<?php echo isset($defaultStore['tickets'][$v['id']][$v['price_id']]) ? ($defaultStore['tickets'][$v['id']][$v['price_id']] == $i ? ' selected="selected"' : null) : null;?>><?php echo $i?></option><?php
-																	} 
-																	?>
-																</select>
-													<?php
-												} else {
-											?>
-														<div class="col-md-12 col-sm-12 col-xs-12">
-															<p class="text-muted"><?php echo pjSanitize::html($v['ticket']);?>:</p>
-															<p class="lead"><strong><?php __('front_na');?></strong></p>
-														</div>
-											<?php
-												}
-											}
-										} 
-										?>
-									</div>
-										<?php if(count($defaultStore['hall_arr']) > 1) {?>
-											<label>Choose Hall</label>
-													<select class="selectpicker dropdown pjCbSeatVenue" id="venue_id_<?php echo $defaultStore['index'];?>" name="venue_id">
-													<option>choose hall</option>
-														<?php
-														foreach($defaultStore['hall_arr'] as $hall)
-														{
-															?><option value="<?php echo $hall['venue_id'];?>"<?php echo ($defaultStore['venue_id']) ? ($defaultStore['venue_id'] == $hall['venue_id'] ? ' selected="selected"' : NULL) : NULL;?>><?php echo pjSanitize::html($hall['venue_name']);?></option><?php
-														} 
-														?>
-													</select>
-										<?php  } ?>
-										<div class="row">
-											<div claa="col-xs-12">
-											<div class="tbAskToSelectTickets alert alert-info" role="alert" style="display: <?php echo isset($defaultStore['tickets']) ? 'none': 'block';?>"><?php $defaultStore['seats_available'] == true ? __('front_select_ticket_types_above') : __('front_no_seats_available');?></div>
-											
-												<div style="display: <?php echo isset($defaultStore['tickets']) ? 'block': 'none';?>">
-													<div class="tbSelectSeatGuide alert alert-info" role="alert"></div>
-														<label for="" class="tbSelectedSeatsLabel"><?php __('front_selected_seats');?>:</label>
-														<?php
-														if($class == 'tbAssignedSeats')
-														{ 
-															?>
-															<div class="tbAskToSelectSeats pjCbSeatsMessage" style="display: <?php echo isset($defaultStore['seat_id']) ? 'none': 'block';?>"><?php __('front_select_available_seats');?></div>
-															<?php
-														} 
-														?>
-														<div id="tbSelectedSeats_<?php echo $index;?>">
-															<?php
-															if(isset($defaultStore['seat_id']))
-															{
-																$seat_label_arr = $defaultStore['seat_id'];
-																foreach($seat_label_arr as $price_id => $seat_arr)
-																{
-																	foreach($seat_arr as $seat_id => $cnt)
-																	{
-																		for($i = 1; $i <= $cnt; $i++)
-																		{
-																			?><span class="<?php echo $class;?> tbAssignedSeats_<?php echo $price_id;?>" data_seat_id="<?php echo $seat_id;?>" data_price_id="<?php echo $price_id;?>"><?php echo $ticket_name_arr[$price_id]; ?> #<?php echo $defaultStore['seat_name_arr'][$seat_id];?></span><?php
-																		}	
-																	}
-																}
-															} 
-															?>
-														</div>
-														<?php
-														if($class == 'tbAssignedSeats')
-														{ 
-															?>
-															<div class="tbTipToRemoveSeats pjCbSeatsMessage" style="display: <?php echo isset($defaultStore['seat_id']) ? 'block': 'none';?>"><?php __('front_how_to_remove_seats');?><br/></div>
-															<?php
-														} 
-														?>
-														</div>
-								</div>
-											</div>
-								<!--alert alert-info-->	
-								
-													</div>
-
-								
-								
-								
-								
-							</div>
-							</div>
-						</div>
-						
-					</div>
-
+					
 				
 				</div>
 			</div>

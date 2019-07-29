@@ -190,57 +190,8 @@
 						$dp.trigger("focusin").datepicker("show");
 					}
 				}
-			}).on("focusin.tb", ".tbSelectorDatepick", function (e) {
-				if (datepicker) {
-					var $this = $(this),
-						dOpts = {
-							dateFormat: $this.data("dformat"),
-							firstDay: $this.data("fday"),
-							dayNames: ($this.data("day")).split(","),
-						    monthNames: ($this.data("months")).split(","),
-						    monthNamesShort: ($this.data("shortmonths")).split(","),
-						    dayNamesMin: ($this.data("daymin")).split(","),
-							minDate: 0,
-							beforeShow: function(input, inst) {
-								$('#ui-datepicker-div').addClass("pjCbjQueryUI");
-							},
-							onClose: function(dateText)
-							{
-								if($(this).attr('data-list') == '1')
-								{
-									hashBang("#!/Events/from_date:" + dateText + "/date:" + dateText);
-								}else{
-									self.disableButtons.call(self);
-									$.get([self.opts.folder, "admin.php?controller=pjFront&action=pjActionGetTime"].join(""), {"session_id": self.opts.session_id, "id" : $(this).attr('data-id'), "date": dateText}).done(function (data) {
-										$('#tbTimeContainer_' + self.opts.index).html(data);
-										if(data.indexOf("<select") > -1)
-										{
-											$('.tbSelectorButtonPurchase').show();
-										}else{
-											$('.tbSelectorButtonPurchase').hide();
-										}
-										self.enableButtons.call(self);
-									}).fail(function () {
-										self.enableButtons.call(self);
-									});
-								}
-							}
-						};
-					$this.datepicker(dOpts);
-				}
-			}).on("click.tb", ".pjCbDaysNav", function (e) {
-				if (e && e.preventDefault) {
-					e.preventDefault();
-				}
-				hashBang("#!/Events/from_date:" + $(this).attr('data-from_date') + "/date:" + $(this).attr('data-date'));
-			}).on("click.tb", ".tbMovieLink", function (e) {
-				if (e && e.preventDefault) {
-					e.preventDefault();
-				}
-				self.from_date = $(this).attr('data-from_date');
-				self.date = $(this).attr('data-date');
-				hashBang("#!/EventDetails/id:" + $(this).attr('data-id') + "/date:"+ $(this).attr('data-date'));
-			}).on("click.tb", ".tbBackToEvents", function (e) {
+			})
+			.on("click.tb", ".tbBackToEvents", function (e) {
 				if (e && e.preventDefault) {
 					e.preventDefault();
 				}
@@ -302,7 +253,9 @@
 					});
 				}
 				
-			}).on("click.tb", ".tbSeatAvailable", function (e) {
+			})
+			/*
+			.on("click.tb", ".tbSeatAvailable", function (e) {
 				
 				if (e && e.preventDefault) {
 					e.preventDefault();
@@ -378,7 +331,14 @@
 								//increment += 1
 								//console.log(`After Increment: ${increment}`); 
 								//$.post()
-								var params = $('#tbSeatsForm_'+self.opts.index+', .tbTicketSelector').serialize();
+								var formData = $('#tbSeatsForm_'+self.opts.index+', .tbTicketSelector').serialize();
+								var dataPrice  = $(this).attr('data-price');
+								var seatName  = $(this).attr('data-seat');
+								var params = {
+									formData,
+									price: dataPrice,
+									seatName: seatName
+								}
 								self.disableButtons.call(self);
 								//console.log(params);
 								$.post(`${self.opts.folder}event/pjActionSaveSeats`,params).done(function (data) {
@@ -401,7 +361,9 @@
 				} 
 				
 								
-			}).on("change.tb", ".tbTicketSelector", function (e) {
+			})
+			*/
+			.on("change.tb", ".tbTicketSelector", function (e) {
 				var $frm = $('#tbSeatsForm_' + self.opts.index),
 					$mapHolder = $('#tbMapHolder_' + self.opts.index),
 					$seatContainer = $('#tbSelectedSeats_' + self.opts.index),
@@ -625,363 +587,25 @@
 					e.preventDefault();
 				}
 				$('.tbContinueButton').trigger('click');
+			});
+			
+			$(window).on('loadCartPage', function(e) {
+				console.log('loadCartPage');
+				//self.loadCartPage.call(self);
 			})
-			/*
-			.on("change.tb", "select[name='payment_method']", function () {
-				self.$container.find(".tbCcWrap").hide();
-				self.$container.find(".tbBankWrap").hide();
-				switch ($("option:selected", this).val()) {
-				case 'creditcard':
-					self.$container.find(".tbCcWrap").show();
-					break;
-				case 'bank':
-					self.$container.find(".tbBankWrap").show();
-					break;
-				}
-			}).on("click.tb", ".tbCancelToSeats", function (e) {
-				if (e && e.preventDefault) {
-					e.preventDefault();
-				}
-				self.disableButtons.call(self);
-				hashBang("#!/Seats/date:" + $(this).attr('data-date'));
-			}).on("click.tb", ".tbCancelToCheckout", function (e) {
-				if (e && e.preventDefault) {
-					e.preventDefault();
-				}
-				self.disableButtons.call(self);
-				hashBang("#!/Checkout/date:" + $(this).attr('data-date'));
-			}).on("click.tb", ".tbStartOverButton", function (e) {
-				if (e && e.preventDefault) {
-					e.preventDefault();
-				}
-				self.date = null;
-				self.disableButtons.call(self);
-				hashBang("#!/Events");
-			}).on("change.tb", ".pjCbSeatVenue", function (e) {
+			
+		},
+		
+		loadCartPage: function () {
+			var self = this;
+			$.get(`${self.opts.folder}loadCartPage`).done(function (res) {
+				console.log(res);
 				
-				self.disableButtons.call(self);
-				$.get([self.opts.folder, "admin.php?controller=pjFront&action=pjActionSetVenue", "&session_id=", self.opts.session_id, "&venue_id=", $(this).val()].join("")).done(function (data) {
-					self.loadSeats.call(self);
-				}).fail(function () {
-					self.enableButtons.call(self);
-				});
-			}).on("click.tb", "#pjCbsCaptchaImage", function (e) {
-				if (e && e.preventDefault) {
-					e.preventDefault();
-				}
-				var $captchaImg = $(this);
-				if($captchaImg.length > 0){
-					var rand = Math.floor((Math.random()*999999)+1); 
-					$captchaImg.attr("src", self.opts.folder + 'admin.php?controller=pjFront&action=pjActionCaptcha&rand=' + rand);
-					$('#pjCbsCaptchaField').val("").removeData("previousValue");
-				}
-			})
-			*/
-			;
-			
-			$(window)
-			/*
-			.on("loadEvents", this.container, function (e) {
-				if(arguments.length == 3)
-				{
-					self.from_date = arguments[1];
-					self.date = arguments[2];
-				}
-				self.loadEvents.call(self);
-			}).on("loadEventDetails", this.container, function (e) {
-				if(arguments.length == 3)
-				{
-					self.event_id = arguments[1];
-					self.date = arguments[2];
-				}
-				self.loadEventDetails.call(self);
-			})
-			
-			.on("loadSeats", this.container, function (e) {
-				if(arguments.length == 2)
-				{
-					self.date = arguments[1];
-				}
-				self.loadSeats.call(self);
-			}).on("loadCheckout", this.container, function (e) {
-				if(arguments.length == 2)
-				{
-					self.date = arguments[1];
-				}
-				self.loadCheckout.call(self);
-			}).on("loadPreview", this.container, function (e) {
-				if(arguments.length == 2)
-				{
-					self.date = arguments[1];
-				}
-				self.loadPreview.call(self);
-			});
-			
-			if (window.location.hash.length === 0) {
-				this.loadEvents.call(this);
-			} else {
-				onHashChange.call(null);
-			}
-			*/
-		},
-		/*
-		loadEvents: function () {
-			var self = this,
-				index = this.opts.index,
-				params = 	{
-								"locale": this.opts.locale,
-								"layout": this.opts.layout,
-								"hide": this.opts.hide,
-								"index": this.opts.index,
-								"from_date": this.from_date,
-								"date": this.date
-							};
-			$.get([this.opts.folder, "admin.php?controller=pjFront&action=pjActionEvents", "&session_id=", self.opts.session_id].join(""), params).done(function (data) {
-				self.$container.html(data);
-				$('html, body').animate({
-			        scrollTop: self.$container.offset().top
-			    }, 500);
-				var fnReplaceDatePickers = function(container, elementLarge, elementSmall, benchmark) {
-					var $containerWidth = container.outerWidth();
-
-					if ($containerWidth <= benchmark) {
-						elementLarge.hide();
-						elementSmall.show();
-					} else {
-						elementLarge.show();
-						elementSmall.hide();
-					};
-				};
-
-				if (self.$container.find('.pjCbWeekPanelDatePicker').length) {
-					var $scriptHeader = self.$container.find('.pjCbHeading');
-					var $weekPanel = self.$container.find('.pjCbWeekPanel');
-					var $weekPanelPicker = self.$container.find('.pjCbWeekPanelDatePicker');
-					var $allWeekLinks = $weekPanel.find('.pjCbDaysNav');
-					
-					var allWeekLinksWidth = 130;
-					
-					$allWeekLinks.each(function() {
-						allWeekLinksWidth += $(this).outerWidth();
-					});
-
-					fnReplaceDatePickers($scriptHeader, $weekPanel, $weekPanelPicker, allWeekLinksWidth);
-
-					$(window).off('.tb').on('resize.tb', function() {
-						fnReplaceDatePickers($scriptHeader, $weekPanel, $weekPanelPicker, allWeekLinksWidth);
-					});
-				};
-			}).fail(function () {
-				self.enableButtons.call(self);
-			});
-		},
-		loadEventDetails: function () {
-			var self = this,
-				index = this.opts.index,
-				params = 	{
-								"locale": this.opts.locale,
-								"layout": this.opts.layout,
-								"hide": this.opts.hide,
-								"index": this.opts.index,
-								"id": self.event_id,
-								"date": this.date
-							};
-			$.get([this.opts.folder, "admin.php?controller=pjFront&action=pjActionDetails", "&session_id=", self.opts.session_id].join(""), params).done(function (data) {
-				self.$container.html(data);
-				$('html, body').animate({
-			        scrollTop: self.$container.offset().top
-			    }, 500);
-			}).fail(function () {
-				self.enableButtons.call(self);
+			}).fail(function (res) {
+				console.log(res);
 			});
 		},
 		
-		loadSeats: function () {
-			var self = this,
-				index = this.opts.index,
-				params = 	{
-								"locale": this.opts.locale,
-								"layout": this.opts.layout,
-								"hide": this.opts.hide,
-								"index": this.opts.index,
-								"date": this.date
-							};
-			$.get([this.opts.folder, "admin.php?controller=pjFront&action=pjActionSeats", "&session_id=", self.opts.session_id].join(""), params).done(function (data) {
-				self.$container.html(data);
-				$('html, body').animate({
-			        scrollTop: self.$container.offset().top
-			    }, 500);
-				if($('#tbMap_' + self.opts.index).length > 0)
-				{
-					$('[data-toggle="tooltip"]').tooltip({container:'#pjWrapperTicketBooking_' + self.opts.layout});
-				}
-			}).fail(function () {
-				self.enableButtons.call(self);
-			});
-		},
-		loadCheckout: function () {
-			var self = this,
-				index = this.opts.index,
-				params = 	{
-							"locale": this.opts.locale,
-							"layout": this.opts.layout,
-							"hide": this.opts.hide,
-							"index": this.opts.index,
-							"date": this.date
-						};
-			$.get([this.opts.folder, "admin.php?controller=pjFront&action=pjActionCheckout", "&session_id=", self.opts.session_id].join(""), params).done(function (data) {
-				self.$container.html(data);
-				$('html, body').animate({
-			        scrollTop: self.$container.offset().top
-			    }, 500);
-				$('.modal-dialog').css("z-index", "9999"); 
-				if (validate) 
-				{
-					$('#frmCheckoutForm_'+ self.opts.index).validate({
-						rules: {
-							"captcha" : {
-								remote: self.opts.folder + "admin.php?controller=pjFront&action=pjActionCheckCaptcha&session_id=" + self.opts.session_id,
-								required: true,
-								minlength: 6,
-								maxlength: 6
-							}
-						},
-						onkeyup: false,
-						errorPlacement: function (error, element) {
-							var $parent = element.parent(),
-								$input_group = $parent.parent();
-							if(element.attr('name') == 'terms')
-							{
-								error.insertAfter(element.parent());
-							}else{
-								error.insertAfter(element);
-							}
-							if(element.attr('name') == 'captcha')
-							{
-								$input_group.parent().addClass('has-error');
-							}else{
-								$parent.addClass('has-error');
-							}
-						},
-						success: function (label) {
-							var $parent = $(label).parent(),
-								$sibling = $(label).siblings();
-							if($sibling.attr('name') == 'captcha')
-							{
-								$parent.parent().parent().removeClass('has-error').addClass('has-success');
-							}else{
-								$parent.removeClass('has-error').addClass('has-success');
-							}
-							$(label).remove();
-						},
-						submitHandler: function (form) {
-							self.disableButtons.call(self);
-							var $form = $(form);
-							$.post([self.opts.folder, "admin.php?controller=pjFront&action=pjActionCheckout", "&session_id=", self.opts.session_id].join(""), $form.serialize()).done(function (data) {
-								if (data.status == "OK") {
-									hashBang("#!/Preview/date:" + self.date);
-								} else if (data.status == "ERR" && data.code == '110') {
-									$('#pjCbsCaptchaMessage').html(data.text);
-									$('#pjCbsCaptchaModal').modal('show');
-									$('#pjCbsCaptchaImage').trigger('click');
-									self.enableButtons.call(self);
-								}else if (data.status == "ERR") {
-										$form
-										.find(".tdSelectorNoticeMsg")
-										.html(data.text)
-										.removeClass("alert-success")
-										.addClass("alert-warning")
-										.show();
-									self.enableButtons.call(self);
-								}
-							}).fail(function () {
-								self.enableButtons.call(self);
-							});
-							return false;
-						}
-					});
-				}
-			});
-		},
-		loadPreview: function () {
-			var self = this,
-				index = this.opts.index,
-				params = 	{
-					"locale": this.opts.locale,
-					"layout": this.opts.layout,
-					"hide": this.opts.hide,
-					"index": this.opts.index,
-					"date": this.date
-				};
-			$.get([this.opts.folder, "admin.php?controller=pjFront&action=pjActionPreview", "&session_id=", self.opts.session_id].join(""), params).done(function (data) {
-				self.$container.html(data);
-				$('html, body').animate({
-			        scrollTop: self.$container.offset().top
-			    }, 500);
-				if (validate) {
-					$('#frmPreviewForm_'+ self.opts.index).validate({
-						rules: {},
-						onkeyup: false,
-						onclick: false,
-						onfocusout: false,
-						submitHandler: function (form) {
-							self.disableButtons.call(self);
-							var $form = $(form);
-							$.post([self.opts.folder, "admin.php?controller=pjFront&action=pjActionSaveBooking", "&session_id=", self.opts.session_id].join(""), $form.serialize()).done(function (data) {
-								if (data.code == "200") {
-									self.getPaymentForm.call(self, data);
-								} else {
-									$form
-										.find(".tdSelectorNoticeMsg")
-										.html(data.text)
-										.removeClass("alert-success")
-										.addClass("alert-warning")
-										.show();
-									self.enableButtons.call(self);
-								}
-							}).fail(function () {
-								self.enableButtons.call(self);
-							});
-							return false;
-						}
-					});
-				}
-			});
-		},
-		getPaymentForm: function(obj){
-			var self = this,
-				index = this.opts.index;
-			var qs = {
-					"cid": this.opts.cid,
-					"locale": this.opts.locale,
-					"hide": this.opts.hide,
-					"index": this.opts.index,
-					"booking_id": obj.booking_id, 
-					"payment_method": obj.payment,
-					"layout": this.opts.layout,
-				};
-			$.get([this.opts.folder, "admin.php?controller=pjFront&action=pjActionGetPaymentForm", "&session_id=", self.opts.session_id].join(""), qs).done(function (data) {
-				self.$container.html(data);
-				$('html, body').animate({
-			        scrollTop: self.$container.offset().top
-			    }, 500);
-				switch (obj.payment) {
-					case 'paypal':
-						self.$container.find("form[name='tbPaypal']").trigger('submit');
-						break;
-					case 'authorize':
-						self.$container.find("form[name='tbAuthorize']").trigger('submit');
-						break;
-					case 'creditcard':
-					case 'bank':
-					case 'cash':
-						break;
-				}
-			}).fail(function () {
-				log("Deferred is rejected");
-			});
-		}
-		*/
 	};
 	//console.log(TicketBooking);
 	window.TicketBooking = TicketBooking;	

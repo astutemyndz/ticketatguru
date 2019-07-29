@@ -16,49 +16,51 @@ print_r($this->cart->contents());
 							<table class="table">
 								<thead class="table-head">
 									<tr>
-										<th>Event</th>
-										<th>Time</th>
-										<th>Section</th>
-										<th class="text-center">Seats</th>
+										<th>Description</th>
 										<th class="text-right">Price</th>
-										<th class="text-right">Delete</th>
+										<th class="text-right">Sub Total</th>
+										<th class="text-right">Action</th>
 									</tr>
 								</thead>
 								<tbody  class="table-list">
-									<tr>
-										<td><img src="https://dummyimage.com/50x50/55595c/fff"> </td>
-										<td>02:30 PM</td>
-										<td>A-5, A-6, A-7</td>
-										<td><input type="text" value="3"></td>
-										<td class="text-right">124,90 €</td>
-										<td class="text-right"><button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> </button> </td>
-									</tr>
-									<tr>
-										<td><img src="https://dummyimage.com/50x50/55595c/fff"> </td>
-										<td>2:45 PM</td>
-										<td>C-5, F-2, D-7</td>
-										<td><input type="text" value="3"></td>
-										<td class="text-right">33,90 €</td>
-										<td class="text-right"><button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> </button> </td>
-									</tr>
-									<tr>
-										<td><img src="https://dummyimage.com/50x50/55595c/fff"> </td>
-										<td>7:30 PM</td>
-										<td>B-2, B-5, B-6, B-8</td>
-										<td><input type="text" value="4"></td>
-										<td class="text-right">70,00 €</td>
-										<td class="text-right"><button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> </button> </td>
-									</tr>
-									<tr>
-										<td colspan="4"></td>
-										<td class="text-right">Number of tickets</td>
-										<td class="text-right">Total Price</td>
-									</tr>
-									<tr>
-										<td colspan="4"></td>
-										<td class="text-right">5</td>
-										<td class="text-right">6,90 €</td>
-									</tr>
+									
+									<?php $i = 1; ?>
+<?php if(count($this->cart->contents()) > 0){?>
+<?php foreach ($this->cart->contents() as $items): ?>
+
+        <?php echo form_hidden($i.'[rowid]', $items['rowid']); ?>
+
+        <tr>
+               
+                <td>
+                        <?php echo $items['name']; ?>
+
+						<?php 
+						/*
+						if ($this->cart->has_options($items['rowid']) == TRUE): ?>
+
+                                <p>
+                                        <?php foreach ($this->cart->product_options($items['rowid']) as $option_name => $option_value): ?>
+
+                                                <strong><?php echo $option_name; ?>:</strong> <?php echo $option_value; ?><br />
+
+                                        <?php endforeach; ?>
+                                </p>
+
+                        <?php endif; */?>
+
+                </td>
+                <td class="text-right"><?php echo $this->cart->format_number($items['price']); ?></td>
+				<td class="text-right">$<?php echo $this->cart->format_number($items['subtotal']); ?></td>
+				<td class="text-right"><button id="removeCartButton" data-id="<?php echo $items['rowid'];?>" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> </button> </td>
+        </tr>
+
+<?php $i++; ?>
+
+<?php endforeach; ?>
+<?php } else { ?>
+<span> Oops! Cart is empty </span>
+<?php } ?>
 								</tbody>
 							</table>
 						</div>
