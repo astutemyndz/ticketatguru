@@ -1,80 +1,56 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-echo "<pre>";
-print_r($this->cart->contents());
 ?>
 <section class="section-page-header">
-			<div class="container">
-				<h1 class="entry-title">Order Details</h1>
+			<section class="page-banner">
+			<img src="<?php echo base_url() ?>/images/banner.jpg" alt="">
+			<div class="black-layer"></div>
+			<div class="caption">
+				<h3>Tickets for Camp Nou Experience</h3>
 			</div>
 		</section>
-		<div class="cart-list">
-			<div class="container">
-				<div class="row">
-					<div class="col-md-12">
-						<div class="table-responsive">
-							<table class="table">
-								<thead class="table-head">
-									<tr>
-										<th>Description</th>
-										<th class="text-right">Price</th>
-										<th class="text-right">Sub Total</th>
-										<th class="text-right">Action</th>
-									</tr>
-								</thead>
-								<tbody  class="table-list">
-									
-									<?php $i = 1; ?>
-<?php if(count($this->cart->contents()) > 0){?>
-<?php foreach ($this->cart->contents() as $items): ?>
-
-        <?php echo form_hidden($i.'[rowid]', $items['rowid']); ?>
-
-        <tr>
-               
-                <td>
-                        <?php echo $items['name']; ?>
-
-						<?php 
-						/*
-						if ($this->cart->has_options($items['rowid']) == TRUE): ?>
-
-                                <p>
-                                        <?php foreach ($this->cart->product_options($items['rowid']) as $option_name => $option_value): ?>
-
-                                                <strong><?php echo $option_name; ?>:</strong> <?php echo $option_value; ?><br />
-
-                                        <?php endforeach; ?>
-                                </p>
-
-                        <?php endif; */?>
-
-                </td>
-                <td class="text-right"><?php echo $this->cart->format_number($items['price']); ?></td>
-				<td class="text-right">$<?php echo $this->cart->format_number($items['subtotal']); ?></td>
-				<td class="text-right"><button id="removeCartButton" data-id="<?php echo $items['rowid'];?>" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> </button> </td>
-        </tr>
-
-<?php $i++; ?>
-
-<?php endforeach; ?>
-<?php } else { ?>
-<span> Oops! Cart is empty </span>
-<?php } ?>
-								</tbody>
-							</table>
-						</div>
+		</section>
+		<div class="cart-list"  >
+			<div class="container" >
+				
+				<div class="row"  id="cartTable">
+					<div class="col-md-12" >
+					<table class="table cart-table" >
+						<thead class="table-head">
+							<tr>
+								<th>Title</th>
+								<th>Quantity</th>
+								<th>Price</th>
+								<th class="text-center">Action</th>
+							</tr>
+						</thead>
+						<tbody class="table-list" id="loadCart">
+						</tbody>
+						<tbody class="subtotal">
+							<tr>
+								<td colspan="2">
+									Subtotal
+								</td>
+								<td colspan="2">
+									&euro; 2000
+								</td>
+							</tr>
+						</tbody>
+						
+					</table>
 					</div>
-					<div class="col-md-12">
+					<div class="col-md-12 cart-btn">
 						<div class="row">
-							<div class="col-sm-12  col-md-6">
-								<a class="secondary-link" href="#">Continue Booking</a>
-							</div>
-							<div class="col-sm-12 col-md-6 text-right">
-								<a class="primary-link" href="#">Check Out</a>
+							<a id="continueLink" class="secondary-link" href="#">Continue Booking</a>
+							<a id="checkoutLink" class="primary-link" href="javascript:void(0);">Check Out</a>							
 							</div>
 						</div>
 					</div>
+				</div>
+			</div>
+			
+				<div class="row">
+					<h3 id="cartEmpty"></h3>
 				</div>
 			</div>
 		</div>

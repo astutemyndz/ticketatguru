@@ -11,8 +11,8 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 			$boxMap = $("#boxMap"),
 			datagrid = ($.fn.datagrid !== undefined),
 			validate = ($.fn.validate !== undefined),
-			hotspot_width = 25,
-			hotspot_height = 25,
+			hotspot_width = 5,
+			hotspot_height = 5,
 			vOpts = {
 				rules:{
 					seat_number: {
@@ -258,6 +258,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 			});
 			
 			$("#mapHolder").click(function (e) {
+				console.log('clicked');
 				var px = $('.bsMapHolder').scrollLeft();
 				var $this = $(this),
 				index = getMax(),

@@ -61,9 +61,9 @@
 }
 
 .hero-content {
-    padding: 50px 0;
-    background: url(../images/cover.jpg) no-repeat;
-    background-size: cover;
+    
+    /*background: url(../images/cover.jpg) no-repeat;
+    background-size: cover;*/
 }
 
 .hero-content .entry-header {
@@ -82,6 +82,67 @@
     color: hsl(0, 0%, 90%);
     text-align: center;
 }
+.banner i{
+	color: #fff;
+    font-size: 60px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 43%;
+}
+.banner .carousel-caption h2{
+	font-size: 70px !important;
+	margin: 0;
+    font-family: mountains;
+    font-size: 100px;
+    background: -webkit-linear-gradient(#00d0ff, #25ffbf);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.banner .carousel-caption{
+	text-shadow: none;
+	top: 10%;
+}
+.banner .carousel-control.right, .banner .carousel-control.left{
+	background-image: none;
+}
+.banner-btn .btn{
+    display: inline-block;
+    width: 250px;
+    height: 45px;
+    background-color: #ff6600;
+    text-align: center;
+    color: #fff;
+    font-size: 16px;
+    text-transform: uppercase;
+    padding: 12px 0;
+    border: 1px solid #ff6600;
+    outline: none;
+	margin: 30px 0;
+	border-radius: 30px;
+}
+.banner-btn .btn:hover{
+    background-color: #fff;
+    text-align: center;
+    color: #ff6600;
+}
+
+@media all and (transform-3d),(-webkit-transform-3d){
+	.carousel-inner>.item {
+		-webkit-transition:-webkit-transform .6s ease-in-out;
+		-o-transition:-o-transform .6s ease-in-out;
+		transition:transform .6s ease-in-out;
+}
+.banner .carousel-inner .item img{
+	height: 520px;
+	width: 100%;
+}
+.sticky + .hero-content {
+    padding-top: 90px;
+}
+
+
+
 
 .site-navigation {
     position: absolute;
@@ -225,7 +286,7 @@
 
 .countdown-holder {
     min-width: 150px;
-    margin-bottom: 30px;
+    margin: 20px 0 30px;
 }
 
 .countdown-holder .dday, 
@@ -233,8 +294,8 @@
 .countdown-holder .dmin, 
 .countdown-holder .dsec {
     display: block;
-    font-size: 72px;
-    font-weight: 600;
+    font-size: 50px;
+    font-weight: 500;
     line-height: 1;
     color: hsl(0, 0%, 100%);
 }
@@ -242,7 +303,7 @@
 .countdown-holder label {
     display: block;
     font-size: 18px;
-    font-weight: 600;
+    font-weight: 500;
     color: hsl(0, 0%, 100%);
 }
 

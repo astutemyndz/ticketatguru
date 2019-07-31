@@ -1,10 +1,10 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 
 
-<div class="login-sec">
+<div class="login-sec" id="auth">
 			
 			
-			<div class="container">
+			<div class="container" >
 				<div class="login-inner col-md-6 col-md-offset-3">
 				<ul class="nav nav-tabs">
 					<li class="active left-radius"><a data-toggle="tab" href="#login">Login</a></li>

@@ -27,6 +27,7 @@
     <link rel="stylesheet" href="<?php echo base_url();?>css/style.css" >
     <link rel="stylesheet" href="<?php echo base_url();?>css/responsive.css" >
     <link rel="stylesheet" href="<?php echo base_url();?>css/datepicker.css" >
+    <link rel="stylesheet" href="<?php echo base_url();?>css/jquery.loading.css" >
 
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>

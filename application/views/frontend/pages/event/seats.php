@@ -98,7 +98,7 @@ if($defaultStore['ticket_arr'] && count($defaultStore['ticket_arr']) > 0)
 						?>
 					</form>
 					
-					<div class="row">
+					<!-- <div class="row">
 						<div class="col-md-12 col-sm-12 col-xs-12">
 							<br />
 							<div class="col-xs-12 tbErrorMessage pjCbSeatsMessage"></div>
@@ -107,8 +107,8 @@ if($defaultStore['ticket_arr'] && count($defaultStore['ticket_arr']) > 0)
 							
 							<button class="btn btn-default pull-right tbSelectorButton tbContinueButton pjCbBtn pjCbBtnPrimary" data-date="<?php echo date($option_arr['o_date_format'], strtotime($defaultStore['hash_date'])); ?>"><?php __('front_button_continue')?></button>
 		
-						</div><!-- /.col-md-12 col-sm-12 col-xs-12 -->
-					</div>
+						</div>
+					</div> -->
 					
 						
 				</div><!-- /.panel-footer text-center pjCbFoot -->

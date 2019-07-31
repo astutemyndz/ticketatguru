@@ -1,6 +1,7 @@
 <?php
 return array(
 	'jquery' => '>=1.11.3',
+	'panzoom' => '>=1.0.0',
 	'jquery_migrate' => '>=1.3.0',
 	'jquery_ui' => '>=1.10.4',
 	'tipsy' => '>=1.0.0',

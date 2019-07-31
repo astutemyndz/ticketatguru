@@ -533,31 +533,50 @@ if (isset($tpl['status']))
 				<label><span class="tb-booked-seats"></span><?php __('lblBookedSeats');?></label>
 			</div>
 			<div class="clear_both"></div>
-			<div id="boxMap">
-				<div id="tbMapHolder" class="tbMapHolder" style="position: relative; overflow: hidden; width: <?php echo $size[0]; ?>px; height: <?php echo $size[1]; ?>px; margin: 0 auto;">
-					<img id="map" src="<?php echo $map; ?>" alt="" style="margin: 0; border: none; position: absolute; top: 0; left: 0; z-index: 500" />
-					<?php
-					foreach ($tpl['seat_arr'] as $seat)
-					{
-						$is_selected = false;
-						$is_available = true;
-						$_arr = explode("~:~", $seat['price_id']);
-						$tooltip = array();
-						foreach($_arr as $pid)
+			<div class="wrapper-image">
+				<div id="boxMap">
+					<div id="tbMapHolder" class="tbMapHolder panzoom" style="position: relative; overflow: hidden; width: 800px; height: 600px; margin: 0 auto;">
+						<img id="map" src="<?php echo $map; ?>" alt="" style="margin: 0; border: none; position: absolute; top: 0; left: 0; z-index: 500; width:100% ";/>
+						<?php
+						foreach ($tpl['seat_arr'] as $seat)
 						{
-							if(isset($tpl['seat_id_arr'][$pid][$seat['id']]))
+							$is_selected = false;
+							$is_available = true;
+							$_arr = explode("~:~", $seat['price_id']);
+							$tooltip = array();
+							foreach($_arr as $pid)
 							{
-								$is_selected = true;
-								if($seat['seats'] == $tpl['seat_id_arr'][$pid][$seat['id']])
+								if(isset($tpl['seat_id_arr'][$pid][$seat['id']]))
 								{
-									$is_available = false;
+									$is_selected = true;
+									if($seat['seats'] == $tpl['seat_id_arr'][$pid][$seat['id']])
+									{
+										$is_available = false;
+									}
 								}
 							}
+							?><span class="tbSeatRect<?php echo $seat['seats'] - $seat['cnt_booked'] <= 0 ? ' tbSeatBlocked' : ($is_available == true ? ' tbSeatAvailable' : null); ?><?php echo $is_selected == true ? ' tbSeatSelected' : null;?>" data-id="<?php echo $seat['id']; ?>" data-price-id="<?php echo $seat['price_id']; ?>" data-name="<?php echo $seat['name']; ?>" data-count="<?php echo $seat['seats']; ?>" style="width: <?php echo $seat['width']; ?>px; height: <?php echo $seat['height']; ?>px; left: <?php echo $seat['left']; ?>px; top: <?php echo $seat['top']; ?>px; line-height: <?php echo $seat['height']; ?>px"><?php echo stripslashes($seat['name']); ?></span><?php
 						}
-						?><span class="tbSeatRect<?php echo $seat['seats'] - $seat['cnt_booked'] <= 0 ? ' tbSeatBlocked' : ($is_available == true ? ' tbSeatAvailable' : null); ?><?php echo $is_selected == true ? ' tbSeatSelected' : null;?>" data-id="<?php echo $seat['id']; ?>" data-price-id="<?php echo $seat['price_id']; ?>" data-name="<?php echo $seat['name']; ?>" data-count="<?php echo $seat['seats']; ?>" style="width: <?php echo $seat['width']; ?>px; height: <?php echo $seat['height']; ?>px; left: <?php echo $seat['left']; ?>px; top: <?php echo $seat['top']; ?>px; line-height: <?php echo $seat['height']; ?>px"><?php echo stripslashes($seat['name']); ?></span><?php
-					}
-					?>
+						?>
+					</div>
 				</div>
+				<script>
+								(function() {
+								var $section = $('.mapHolder').first();
+								$section.find('.panzoom').panzoom({
+									$zoomIn: $section.find("#PLKZOOMBTNWRAPPER"),
+									$zoomOut: $section.find(".zoom-out"),
+									$zoomRange: $section.find(".zoom-range"),
+									$reset: $section.find(".reset")
+								});
+								})();
+							</script>
+				<div id="PLKZOOMBTNWRAPPER" style="clear:both;" class="show-for-large zoom-buttons-wrapper">
+													<!-- <button class="button print" alt="Print Map" title="Print Map" onclick="printGalaMap('72', '64')"><i class="fa fa-print" alt="Print Map"></i></button> -->
+													<button class="button reset" alt="Reset" title="Reset"><i class="fa fa-times-circle" alt="Reset"></i></button>
+													<button class="button zoom-out" alt="Zoom Out" title="Zoom Out"><i class="fa fa-minus-circle" alt="Zoom Out"></i></button>
+													<button class="button zoom-in" alt="Zoom In" title="Zoom In"><i class="fa fa-plus-circle" alt="Zoom In"></i></button>
+											</div>
 			</div>
 			<?php
 		} 

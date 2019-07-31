@@ -2,18 +2,16 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
 <div class="hero-content">
-		<div class="container">
-			<div class="row">
-				<div class="col-12 offset-lg-2 col-lg-10">
-					<div class="entry-header">
-						<h2>Welcome to Ticket at Guru</h2>
+	<div class="banner">
+		<div id="myCarousel" class="carousel slide" data-ride="carousel" >
 
-						<!--<div class="entry-meta-date">
-							06.28.018
-						</div>--><!-- .entry-meta-date -->
-					</div><!-- .entry-header -->
-
-					<div class="countdown flex flex-wrap justify-content-between" data-date="2019/08/06">
+			<!-- Wrapper for slides -->
+			<div class="carousel-inner">
+			  <div class="item active">
+				<img src="<?php echo base_url() ?>/images/cover.jpg" alt="Slide1">
+				  <div class="carousel-caption">
+					  <h2>Welcome to Ticket at Guru</h2>
+					  <div class="countdown flex flex-wrap justify-content-between" data-date="2019/08/06">
 						<div class="countdown-holder">
 							<div class="dday">20</div>
 							<label>Days</label>
@@ -33,18 +31,80 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							<div class="dsec">20</div>
 							<label>Seconds</label>
 						</div><!-- .countdown-holder -->
-					</div><!-- .countdown -->
-				</div><!-- .col-12 -->
-			</div><!-- row -->
-
-			<div class="row">
-				<div class="col-12 ">
-					<div class="entry-footer">
-						<a href="#" class="btn">Buy Tickets</a>
-						<a href="#" class="btn current">See Lineup</a>
 					</div>
-				</div>
+					<div class="banner-btn">
+						<a href="#" class="btn">Buy Tickets</a>
+					</div>
+            	  </div>
+			  </div>
+
+			  <div class="item">
+				<img src="<?php echo base_url() ?>/images/cover.jpg" alt="Slide1">
+				  <div class="carousel-caption">
+					  <h2>Welcome to Ticket at Guru</h2>
+					  <div class="countdown flex flex-wrap justify-content-between" data-date="2019/08/06">
+						<div class="countdown-holder">
+							<div class="dday">20</div>
+							<label>Days</label>
+						</div><!-- .countdown-holder -->
+
+						<div class="countdown-holder">
+							<div class="dhour">20</div>
+							<label>Hours</label>
+						</div><!-- .countdown-holder -->
+
+						<div class="countdown-holder">
+							<div class="dmin">20</div>
+							<label>Minutes</label>
+						</div><!-- .countdown-holder -->
+
+						<div class="countdown-holder">
+							<div class="dsec">20</div>
+							<label>Seconds</label>
+						</div><!-- .countdown-holder -->
+					</div>
+					<div class="banner-btn">
+						<a href="#" class="btn">Buy Tickets</a>
+					</div>
+            	  </div>
+			  </div>
+
+			  <div class="item">
+				<img src="<?php echo base_url() ?>/images/cover.jpg" alt="Slide1">
+				  <div class="carousel-caption">
+					  <h2>Welcome to Ticket at Guru</h2>
+					  <div class="countdown flex flex-wrap justify-content-between" data-date="2019/08/06">
+						<div class="countdown-holder">
+							<div class="dday">20</div>
+							<label>Days</label>
+						</div><!-- .countdown-holder -->
+
+						<div class="countdown-holder">
+							<div class="dhour">20</div>
+							<label>Hours</label>
+						</div><!-- .countdown-holder -->
+
+						<div class="countdown-holder">
+							<div class="dmin">20</div>
+							<label>Minutes</label>
+						</div><!-- .countdown-holder -->
+
+						<div class="countdown-holder">
+							<div class="dsec">20</div>
+							<label>Seconds</label>
+						</div><!-- .countdown-holder -->
+					</div>
+					<div class="banner-btn">
+						<a href="#" class="btn">Buy Tickets</a>
+					</div>
+            	  </div>
+			  </div>
 			</div>
+
+			<!-- Left and right controls -->
+			
+		  </div>
+	</div>
 		</div><!-- .container -->
 	</div><!-- .hero-content -->
 	<?php 
@@ -312,11 +372,30 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		</section>
 		
 		<section class="section-video-parallax">
-			<div class="container">
-				<div class="section-content">
+			<div class="">
+				<!--<div class="section-content">
 					<h2>LIVE THERE</h2>
 					<p>Book events from anywhere in 191+ countries and get awesome experience Lorem ipsum dolor sit amet, consectetuer adipiscing elit,</p>
 					<a href="#"><img src="images/play-btn.png" alt="image"></a>
+				</div>-->
+				<div class="pop-vid">
+					<video controls poster="images/vid-cover.jpg">
+						<source src="images/globalgala.mp4" type="video/mp4">
+					</video>
+				</div>
+			</div>
+		</section>
+		<section class="section-about">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+						<h1>About Global Gala</h1>
+						<p>Global Gala is a festival of concerts by Six Stars Events. Global Gala is an established name in the music industry with over 15 years of experience in delivering concerts and high-end gala functions. We have traditionally hosted all our world-class galas at the Grosvenor House 5-star hotel at Park Lane in Central London.</p>
+
+						<p>Our galas always attract the crème de la crème of the Arabian music fraternity who are always more than happy to perform and join our prestigious hall of fame. In addition, celebrities and assorted dignitaries are invariably in attendance at our events. The musicians continually perform live music on stage with their full bands and this gives our guests that authentic experience that we have become synonymous with. On top of great music, we also offer a tantalizing dining experiences that will leave all your gastronomical senses completely satisfied.</p>
+
+						<p>Since we have been organizing events for two almost two decades, we wanted to begin something special this year, we are taking Six Stars Events a notch higher.</p>
+						</div>
 				</div>
 			</div>
 		</section>
@@ -324,7 +403,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<section class="section-sponsors">
 			<div class="container">
 				<div class="section-content">
-					<ul class="row">
+					<h1>Our Sponsors</h1>
+					<ul class="row autoplay">
 						<li class="col-sm-3">
 							<a href="#">
 								<img src="images/sponers/01.jpg" alt="image">
@@ -345,11 +425,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<img src="images/sponers/04.png" alt="image">
 							</a>
 						</li>
-						<!-- <li class="col-sm-3">
+						<li class="col-sm-3">
 							<a href="#">
-								<img src="images/sponers/05.jpg" alt="image">
+								<img src="images/sponers/02.jpg" alt="image">
 							</a>
-						</li> -->
+						</li>
 					</ul>
 				</div>
 			</div>
@@ -367,11 +447,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				</div>
 			</div>
 		</section>
-<script>
+<!--<script>
 $('.autoplay').slick({
   slidesToShow: 4,
   slidesToScroll: 1,
   autoplay: false,
   autoplaySpeed: 2000,
 });
-</script>
+</script>-->

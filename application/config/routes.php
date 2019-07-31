@@ -160,4 +160,8 @@ $route['pjActionLoadMap']   = 'CartController/pjActionLoadMap';
  * @method POST
  */
 $route['pjActionCart']      = 'CartController/pjActionCart';
+$route['loadCart']      = 'CartController/loadCart';
+$route['cart/remove']      = 'CartController/removeCartItemOnClickEventListener';
+
+$route['cart/checkout'] = 'CartController/checkout';
 

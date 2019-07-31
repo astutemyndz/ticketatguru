@@ -95,7 +95,7 @@ $cartItemsCount = ($this->cart->contents()) ? count($this->cart->contents()) : 0
 				<div class="container">
 					<div class="row">
 						<div class="top-left">
-							<ul>
+							<!--<ul>
 								<li>
 									<a href="#">
 										<i class="fa fa-phone"></i>
@@ -108,9 +108,63 @@ $cartItemsCount = ($this->cart->contents()) ? count($this->cart->contents()) : 0
 										hello@myticket.com
 									</a>
 								</li>
-							</ul>
+							</ul>-->
+							<div class="contact" id="contact">
+								<p class="call">
+									<i class="fa fa-phone" aria-hidden="true"></i> 
+									<span>+62274 889767</span>
+									<i class="fa fa-caret-down" aria-hidden="true"></i>
+								</p>
+								<ul id="selectNo" style="display: none;">
+									<li>
+										<img src="<?php echo base_url();?>/images/egypt.png" alt="Egypt">
+										<a href="tel:+62274889767">
+											+62274 889767
+										</a>
+									</li>
+									<li>
+										<img src="<?php echo base_url();?>/images/united-kingdom.png" alt="UK">
+										<a href="tel:+62274889767">
+											+62274 889767
+										</a>
+									</li>
+								</ul>
+							</div>
+							<div class="email"> 
+								<i class="fa fa-envelope" aria-hidden="true"></i>
+								<a href="mailto:hello@myticket.com">hello@myticket.com</a>
+							</div>
+							<div class="social">
+								<ul>
+									<li>
+										<a href="https://www.facebook.com/globalgalashow" target="_blank">
+											<img src="<?php echo base_url(); ?>/images/facebook.png" alt="Facebook">
+										</a>
+									</li>
+									<li>
+										<a href="https://www.instagram.com/globalgalashow/" target="_blank">
+											<img src="<?php echo base_url(); ?>/images/instagram.png" alt="Instagram">
+										</a>
+									</li>
+									<li>
+										<a href="https://www.instagram.com/globalgalashow/" target="_blank">
+											<img src="<?php echo base_url(); ?>/images/twitter.png" alt="Twitter">
+										</a>
+									</li>
+								</ul>
+							</div>
 						</div>
 						<div class="top-right js-main-nav">
+							<div class="lang">
+								<ul>
+									<li>
+										<a href="#"><img src="<?php echo base_url() ?>/images/united-kingdom.png" alt=""></a>
+									</li>
+									<li>
+										<a href="#"><img src="<?php echo base_url() ?>/images/egypt.png" alt=""></a>
+									</li>
+								</ul>
+							</div>
 							<ul class="js-signin-modal">
 							<?php if(!empty($_SESSION['loggedIn']) && $_SESSION['loggedIn'] === TRUE) { ?>
 								<li>
@@ -127,6 +181,7 @@ $cartItemsCount = ($this->cart->contents()) ? count($this->cart->contents()) : 0
 					</div>
 				</div>
 			</div>
+	</header>
 			<div class="main-header main-header-bg" id="myHeader">
 				<div class="container">
 					<div class="row">
@@ -157,13 +212,13 @@ $cartItemsCount = ($this->cart->contents()) ? count($this->cart->contents()) : 0
 									</button>
 							
 									<ul class="nav navbar-nav navbar-right">
-										<li class="active"><a href="full-event-schedule.html">Schedule</a></li>
-										<li><a href="artist-page.html">Concerts</a></li>
-										<li><a href="upcoming-events.html">Sports</a></li>
+										<li class="active"><a href="full-event-schedule.html">Home</a></li>
+										<li><a href="artist-page.html">Events</a></li>
+										<li><a href="upcoming-events.html">Tickets Cart</a></li>
 										<li><a href="order-ticket-without-seat.html">Parties</a></li>
-										<li><a href="event-by-category.html">Theater</a></li>
 										<li><a href="gallery.html">Gallery</a></li>
-										<li><a href="select-seat-2.html">Ticekts</a></li>
+										<li><a href="event-by-category.html">Partners</a></li>
+										<li><a href="select-seat-2.html">Contact</a></li>
 										
 										<li class="cart" id="plk-cart-pini-wrapper">
 											<a href="<?php echo base_url();?>cart">
@@ -179,7 +234,8 @@ $cartItemsCount = ($this->cart->contents()) ? count($this->cart->contents()) : 0
 					</div>
 				</div>
 			</div>
-		</header>
+		
+		
 <?php
 /*
 <header class="cd-main-header">

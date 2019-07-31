@@ -5,10 +5,13 @@ class CartController extends App_Controller {
 
     public $defaultStore = 'pjTicketBooking_Store';
 	public $cartItems = array();
-
+    private $isCart = false;
     function __construct() {
         parent::__construct();
+        $this->isCart = (count($this->cart->contents()) > 0) ? true : false;
     }
+
+   
     /**
      * List of cart items or Cart page
      * @return view
@@ -20,10 +23,7 @@ class CartController extends App_Controller {
 		$this->load->view('frontend/pages/event/cart');
 		$this->load->view('frontend/layout/footer');
     }
-    public function isCart() {
-		return (count($this->cart->contents()) > 0) ? true : false;
-	}	
-
+   
     
     public function pjActionLoadMap() {
        
@@ -31,21 +31,128 @@ class CartController extends App_Controller {
         pjAppController::jsonResponse($seatComponents);
         exit;
     }
-	
+    /*
+	public function TableComponent($props = array()) {
+        return '<div class="table-responsive">
+					<table class="table">
+							'.$this->TableTheadComponent($props).'		
+                            '.$this->TableTbodyComponent($props).'
+					</table>
+				</div>';
+    }
+    private function TableTbodyComponent($props = array()) {
+        $tbody = '<tbody id="'.$props['tbody']['id'].'" class="'.$props['tbody']['className'].'">';
+        $tr = '';
+            $counter = 0;
+            if(isset($props['tbody']['body']) && is_array($props['tbody']['body']) && count($props['tbody']['body']) > 0 ) {
+                foreach($props['tbody']['body'] as $th) {
+                    $tr .= $this->TableBodyRowComponent($props, $counter);//<th>
+                    $counter++;
+                }
+            }
+        $tbody .= $tr; 
+        $tbody .= '</tbody>';	
+        return $tbody;
+
+    }
+    private function TableBodyRowComponent($props = array(), $counter) {
+        return '<tr id='.$props['tbody']['tr']['id'].' class='.$props['tbody']['tr']['className'].'>'.$this->TableTdComponent($props, $counter).'</tr>';
+    }
+    private function TableTdComponent($props, $counter) {
+        return '<td id="'.$props['tbody']['td']['id'].'" class="'.$props['tbody']['td']['className'].'">'.$props['tbody']['td']['component'].$props['tbody']['body'][$counter].'</td>';
+    }
+   
+   
+    private function TableTheadComponent($props = array()) {
+        $thead = '<thead id="'.$props['thead']['id'].'" class="'.$props['thead']['className'].'"><tr>';
+        $th = '';
+            if(isset($props['thead']['th']) && is_array($props['thead']['th']) && count($props['thead']['th']) > 0 ) {
+                $counter = 0;
+                foreach($props['thead']['th']['columns'] as $ths) {
+                    $th .= $this->TableThComponent($props, $counter);
+                    $counter++;
+                }
+            }
+
+        $thead .= $th.'</tr></thead>';	
+        return $thead;
+
+    }
+    // private function TableTheadRowComponent($props = array()) {
+    //     return '<tr id="'.$props['thead']['tr']['id'].'" class="'.$props['thead']['tr']['className'].'">'.$this->TableThComponent($props).'</tr>';
+    // }
+    private function TableThComponent($props, $counter) {
+        return '<th id="'.$props['thead']['th']['id'].'" class="'.$props['thead']['th']['className'].'">'.$props['thead']['th']['component'].$props['thead']['th']['columns'][$counter].'</th>';
+    }
+   */
     
     /**
      * Load 
      */
-    public function loadCartPage() {
-        $cartItems = $this->cart->contents();
-        $inCartItem = (count($cartItems) > 0) ? TRUE : FALSE;
+    public function loadCart() {
+        $rows = array();
+        if($this->isCart) {
+            $items = $this->cart->contents();
+           
+            if(count($items) > 0) {
+                foreach($items as $rowid => $item) {
+                    $rows[] = '<tr class="cartTr" data-id="'.$rowid.'">
+                                    <td>'.$item['name'].'</td>
+                                    <td>'.$item['qty'].'</td>
+                                    <td>'.$item['price'].'</td>
+                                    <td class="text-right"><button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> </button> </td>
+                                </tr>';
+                   
+                }
+                
+            } else {
+                $rows = [];
+            }
 
-        if($inCartItem) {
-            pjAppController::jsonResponse($cartItems);
-			exit;
+            /*
+            $props = array(
+                'thead' => array(
+                    'id' => '',
+                    'className' => '"table-head',
+                    'tr' => array(
+                        'id' => '',
+                        'className' => ''
+                    ),
+                    'th' => array(
+                        'columns' => array('Title','Quantity','Price','Action'),
+                        'id' => 'th',
+                        'className' => 'th',
+                        'component' => NULL
+
+                    )
+                ),
+                'tbody' => array(
+                    'id' => '',
+                    'className' => 'table-list',
+                    'tr' => array(
+                        'id' => '',
+                        'className' => ''
+                    ),
+                    'body' => $rows,
+                    'td' => array(
+                        'id' => '',
+                        'className' => '',
+                        'component' => NULL
+                    )
+                ),
+            );
+            */
+
+            
         }
-
-        return false;
+            $this->data['rows'] = $rows;
+            $this->data['cart'] = ($this->cart->contents()) ? count($this->cart->contents()) : 0;
+            $this->data['li'] = $this->LIComponent();
+            // echo "<pre>";
+            // print_r($this->data);
+            pjAppController::jsonResponse($this->data);
+			exit;
+        //return false;
     }
     /**
      * @method GET
@@ -83,7 +190,7 @@ class CartController extends App_Controller {
             // print_r($ticket_tooltip_arr);
 			$seatComponents = array();
 
-			if($this->isCart()) {
+			if($this->isCart) {
 				$cartItems = array();
 				$cartItems = $this->cart->contents();
 
@@ -220,21 +327,41 @@ class CartController extends App_Controller {
         if($inCartItem) {
             $c = ($this->cart->contents()) ? count($this->cart->contents()) : 0;
             $li = '<a href="'.base_url().'cart">'.$c.'</a>';
-            return $li;
+            //return $li;
+        } else {
+            $li = '<a href="'.base_url().'cart">0</a>';
         }
-        return false;
+        return $li;
     }
     /**
      * @return array of span
      */
     private static function SeatComponent($args = array()) {
-		return "<span title=".$args['props']['tooltip']." data-id=".$args['props']['id']." data-name=test data-price_id=".$args['props']['price_id']." data-price=".$args['props']['price']." class='".$args['props']['className']."' style='".$args['props']['style']."'>".stripslashes($args['props']['name'])."</span>";
+		return "<span title=".$args['props']['tooltip']." data-id=".$args['props']['id']." data-name=".$args['props']['name']." data-price_id=".$args['props']['price_id']." data-price=".$args['props']['price']." class='".$args['props']['className']."' style='".$args['props']['style']."'>".stripslashes($args['props']['name'])."</span>";
 	}
     public function pjActionCartEmpty() {
         $this->cart->destroy();
         return 1;
     }
 
+    public function removeCartItemOnClickEventListener() {
+        $this->setAjax(true);
+		if ($this->isXHR())
+		{
+            $rowid = ($this->input->post('rowId')) ? $this->input->post('rowId') : '';
+            $this->cart->update(['rowid' => $rowid, 'qty' => 0]);
+            $this->loadCart();
+        }
+        return false;
+    }
 
+    public function checkout() {
+        $this->load->library(array('ion_auth'));
+        if (!$this->ion_auth->logged_in())
+        {
+          redirect('auth/login');
+        }
+      
+    }
 	
 }

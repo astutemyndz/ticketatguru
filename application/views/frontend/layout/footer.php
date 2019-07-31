@@ -1,75 +1,54 @@
 <footer id="colophon" class="site-footer">
-			<div class="top-footer">
-				<div class="container">
-					<div class="row">
-						
-						<div class="col-md-8">
-							<a href="#"><img src="<?php echo base_url();?>/images/ticketGuruLogo.png" alt="logo"></a>
-						</div>
-						<div class="col-md-4">
-						
-						<p>&copy; 2016 globalgala.COM. ALL RIGHTS RESEVED</p>
-						</div>
-					</div>
-					
-				</div>
-			</div>
+			
 			<div class="main-footer">
 				<div class="container">
 					<div class="row">
-						<div class="footer-1 col-md-9">
+						<div class="footer-1 col-md-4">
 							<div class="about clearfix">
 								<h3>About</h3>
-								<ul>
-									<li><a href="#">Our Company</a></li>
-									<li><a href="#">Careers</a></li>
-									<li><a href="#">Advertising</a></li>
-									<li><a href="#">Press Room</a></li>
-									<li><a href="#">Trademarks</a></li>
-									<li><a href="#">Terms of Service</a></li>
-									<li><a href="#">Privacy Policy</a></li>
-								</ul>
+								<p>
+									Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+								</p>
 							</div>
-							<div class="support clearfix">
-								<h3>Support and Contact</h3>
+						</div>
+						<div class="footer-1 col-md-4">
+							<div class="about clearfix">
+								<h3>Site Map</h3>
 								<ul>
-									<li><a href="#">Customer Support Contacts</a></li>
-									<li><a href="#">Feedback</a></li>
-									<li><a href="#">Help</a></li>
-									<li><a href="#">Sitemap</a></li>
-								</ul>
+										<li><a href="#">Home</a></li>
+										<li><a href="#">Events</a></li>
+										<li><a href="#">Tickets Cart</a></li>
+										<li><a href="#">Parties</a></li>
+										<li><a href="#">Gallery</a></li>
+										<li><a href="#">Partners</a></li>
+										<li><a href="#">Contact</a></li>
+									</ul>
 							</div>
-							<div class="social clearfix">
-								<h3>Stay Connected</h3>
-								<ul>
-									<li class="facebook">
-										<a href="#">
-											<i class="fa fa-facebook" aria-hidden="true"></i>
-											Facebook
+						</div>
+						<div class="footer-2 col-md-4">
+							<div class="about clearfix">
+								<h3>News Letter</h3>
+								<form class="foo-email" action="mailto:youremail@youremail.com">
+									<label>
+										<input type="email" placeholder="Email">
+										<button type="button"><img src="<?php echo base_url() ?>/images/sent-mail.png" alt="submit"></button></span>
+									</label>
+								</form>
+								<ul class="foo-social">
+									<span>Find us on :</span>
+									<li>
+										<a href="https://www.facebook.com/globalgalashow" target="_blank">
+											<img src="<?php echo base_url(); ?>/images/facebook.png" alt="Facebook">
 										</a>
 									</li>
-									<li class="twitter">
-										<a href="#">
-											<i class="fa fa-twitter" aria-hidden="true"></i>
-											Twitter
+									<li>
+										<a href="https://www.instagram.com/globalgalashow/" target="_blank">
+											<img src="<?php echo base_url(); ?>/images/instagram.png" alt="Instagram">
 										</a>
 									</li>
-									<li class="linkedin">
-										<a href="#">
-											<i class="fa fa-linkedin-square" aria-hidden="true"></i>
-											LinkedIn
-										</a>
-									</li>
-									<li class="google">
-										<a href="#">
-											<i class="fa fa-google-plus-square" aria-hidden="true"></i>
-											Google+
-										</a>
-									</li>
-									<li class="rss">
-										<a href="#">
-											<i class="fa fa-rss-square" aria-hidden="true"></i>
-											RSS
+									<li>
+										<a href="https://www.instagram.com/globalgalashow/" target="_blank">
+											<img src="<?php echo base_url(); ?>/images/twitter.png" alt="Twitter">
 										</a>
 									</li>
 								</ul>
@@ -84,6 +63,20 @@
 								</ul>
 							</div>
 						</div> -->
+					</div>
+				</div>
+			</div>
+			<div class="top-footer">
+				<div class="container">
+					<div class="row">
+						
+						<div class="col-md-8">
+							<a href="#"><img src="<?php echo base_url();?>/images/ticketGuruLogo.png" alt="logo"></a>
+						</div>
+						<div class="col-md-4">
+						
+						<p>&copy; 2016 globalgala.COM. ALL RIGHTS RESEVED</p>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -226,7 +219,10 @@
 				$('[data-toggle="datepicker"]').datepicker();
 			});
 		</script>		
-		<script src="<?php echo base_url();?>js/custom.js"></script>
+<script src="<?php echo base_url();?>js/custom.js"></script>
+
+<script src="<?php echo base_url();?>js/jquery.loading.js"></script>
+<script src="<?php echo base_url();?>js/event/Event.js"></script>
 <script src="<?php echo base_url();?>js/auth/auth.js"></script>
 <script src="<?php echo base_url();?>js/cart/Cart.js"></script>
 <script>
@@ -256,7 +252,22 @@ function myFunction() {
     header.classList.remove("sticky");
   }
 }
-
-
 </script>
+<script>
+$('.autoplay').slick({
+  slidesToShow: 4,
+  slidesToScroll: 1,
+  autoplay: false,
+  autoplaySpeed: 2000,
+});
+</script>
+<script>
+			$(document).ready(function(){
+				$('#contact').hover(function(){
+					$('#selectNo').show(100);
+				},function(){
+					$('#selectNo').hide(100);
+				});
+			});
+		</script>
 	  

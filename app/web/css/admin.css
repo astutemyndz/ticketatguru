@@ -941,11 +941,11 @@ span.title-tooltip{
     z-index: 1000;
 }
 .empty {
-    background-color: #135E8D;
+    background-color: #ffffff;
     color: #ffffff;
 }
 .rect-selected{
-	background-color: #be8329;
+	background-color: #135E8D;
     color: #ffffff;
 }
 .ui-resizable-se {
@@ -1362,3 +1362,16 @@ label.check-ticket-error{
 	margin-top: 15px;
 	font-weight: bold;
 }
+
+.wrapper-image{
+	width:100%;
+	display:block;
+	overflow-x:hidden;
+	overflow-y:hidden;
+	margin:0 0 30px;
+}
+.zoom-buttons-wrapper{position:relative;margin-top:1px;text-align:right;}
+.zoom-buttons-wrapper .button{padding:0;border-radius:2px; width: 35px;}
+.zoom-buttons-wrapper .button:hover{background:#636363;}
+
+.panzoom-parent, .map-wrapper-column-mob{border: 1px solid #636363;}

@@ -24,14 +24,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				</div>
 			</div>
 		</section> -->
-<section class="section-full-events-schedule">
+<section class="section-full-events-schedule" id="eventDetails">
 			<div class="container">
 				<div class="row">
 					
 					<div class="section-content">
 						<div class="tab-content">
 						    <div role="tabpanel" class="tab-pane active" id="tab1">
-								<div class="row">
+								<div class="row" >
 									<div class="col-md-4">
 										<div class="event-img">
 											<?php

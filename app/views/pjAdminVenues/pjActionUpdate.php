@@ -78,18 +78,42 @@ if (isset($tpl['status']))
 							<input type="button" value="<?php __('btnDeleteMap'); ?>" class="pj-button pj-delete-map" lang="<?php echo $tpl['arr']['id']?>"/>
 						</span>
 					</p>
-					<div class="bsMapHolder">
-						<div id="mapHolder" style="position: relative; overflow: hidden; width: <?php echo $size[0]; ?>px; height: <?php echo $size[1]; ?>px; margin: 0 auto;">
-							<img id="map" src="<?php echo $map; ?>" alt="" style="margin: 0; border: none; position: absolute; top: 0; left: 0; z-index: 500" />
-							<?php
-							foreach ($tpl['seat_arr'] as $seat)
-							{
-								?><span rel="hi_<?php echo $seat['id']; ?>" title="<?php echo $seat['name']; ?>" class="rect empty" style="width: <?php echo $seat['width']; ?>px; height: <?php echo $seat['height']; ?>px; left: <?php echo $seat['left']; ?>px; top: <?php echo $seat['top']; ?>px; line-height: <?php echo $seat['height']; ?>px"><span class="bsInnerRect" data-name="hi_<?php echo $seat['id']; ?>"><?php echo stripslashes($seat['name']); ?></span></span><?php
-							}
-							?>
+					<div class="wrapper-image">
+				
+						<div class="bsMapHolder">
+							<div id="mapHolder" class="panzoom" style="">
+								<img id="map" src="<?php echo $map; ?>" alt=""  width="100%" height="auto"/>
+								<?php
+								foreach ($tpl['seat_arr'] as $seat)
+								{
+									?><span rel="hi_<?php echo $seat['id']; ?>" title="<?php echo $seat['name']; ?>" class="rect empty" style="width: <?php echo $seat['width']; ?>px; height: <?php echo $seat['height']; ?>px; left: <?php echo $seat['left']; ?>px; top: <?php echo $seat['top']; ?>px; line-height: <?php echo $seat['height']; ?>px"><span class="bsInnerRect" data-name="hi_<?php echo $seat['id']; ?>"><?php echo stripslashes($seat['name']); ?></span></span><?php
+								}
+								?>
+							</div>
+							<input type="hidden" id="number_of_seats" name="number_of_seats" value=""/>
+							
+							<script>
+								(function() {
+								var $section = $('.mapHolder').first();
+								$section.find('.panzoom').panzoom({
+									$zoomIn: $section.find("#PLKZOOMBTNWRAPPER"),
+									$zoomOut: $section.find(".zoom-out"),
+									$zoomRange: $section.find(".zoom-range"),
+									$reset: $section.find(".reset")
+								});
+								})();
+							</script>
+							
+						
+							</div>
+						<div id="PLKZOOMBTNWRAPPER" style="clear:both;" class="show-for-large zoom-buttons-wrapper">
+													<!-- <button class="button print" alt="Print Map" title="Print Map" onclick="printGalaMap('72', '64')"><i class="fa fa-print" alt="Print Map"></i></button> -->
+													<button class="button reset" alt="Reset" title="Reset"><i class="fa fa-times-circle" alt="Reset"></i></button>
+													<button class="button zoom-out" alt="Zoom Out" title="Zoom Out"><i class="fa fa-minus-circle" alt="Zoom Out"></i></button>
+													<button class="button zoom-in" alt="Zoom In" title="Zoom In"><i class="fa fa-plus-circle" alt="Zoom In"></i></button>
+											</div>
 						</div>
-						<input type="hidden" id="number_of_seats" name="number_of_seats" value=""/>
-					</div>
+						
 					<div id="hiddenHolder">
 						<?php
 						foreach ($tpl['seat_arr'] as $seat)
