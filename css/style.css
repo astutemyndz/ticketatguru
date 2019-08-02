@@ -130,30 +130,40 @@ body{
 	list-style:none;
 	float: left;
 }	
-
-/*.top-header ul li{
-	float:left
+.showLang{
+	cursor: pointer;
 }
-
-.top-header .top-left ul li{
-	margin: 0 20px 0 0
+.showLang img{
+	width: 24px;
+    height: auto;
+	margin-right: 5px;
 }
-
-.top-header .top-left ul li a{
-	color:#b3b3b3;
-	font-size:12px;
-	text-decoration:none;
-	display:block;
-	font-family: 'Open Sans', sans-serif;
+.showLang span{
+	font-size: 14px;
+    color: #b3b3b3;
+    font-weight: bold;
 }
-
-.top-header .top-left ul li a i{
+.showLang i{
 	color: #ff6600;
-    margin: 0 10px 0 0;
-    font-size: 16px;
-    vertical-align: middle;	
-}*/
-
+	font-size: 16px;
+}
+.chooseLang{
+	position: absolute;
+	z-index: 99;
+}
+.top-right .chooseLang{
+	background-color: #fff;
+	padding: 10px;
+}
+.top-right .chooseLang li{
+	display: list-item;
+	border: none !important;
+}
+.top-right .chooseLang li a{
+	padding: 0 !important;
+	color: #242424 !important;
+	font-weight: 500 !important;
+}
 .top-header .top-right{
 	float:right;
 	padding: 3px 0 0;
@@ -297,7 +307,7 @@ body{
 	-moz-box-shadow: 0px 5px 5px 0px rgba(0,0,0,0.46);
 	box-shadow: 0px 5px 5px 0px rgba(0,0,0,0.46);
 	position:relative;
-	z-index:999;
+	z-index:9;
 	border-bottom:none
 }
 
@@ -384,7 +394,9 @@ body{
 }
 
 #site-navigation .nav li a{
-	font-size:15px;
+	font-family: 'Open Sans', sans-serif;
+    font-weight: 500;
+	font-size:16px;
 	text-transform:uppercase;
 	color:#fff;
 	padding:18px 15px 15px 15px;
@@ -451,12 +463,16 @@ body{
   position: fixed;
   top: 0;
   width: 100%;
+  z-index: 9;
 }
 .sticky + .hero-content {
-  padding-top: 102px;
+  padding-top: 90px;
 }
 .sticky + .section-page-header {
   padding-top: 90px;
+}
+.sticky + .section-full-events-schedule {
+  padding-top: 150px;
 }
 
 .sticky:before, .sticky:after{
@@ -847,7 +863,7 @@ body{
 	line-height:22px;
 	color:#ff6600;
 	text-transform:uppercase;
-	font-family: font-family: 'Open Sans', sans-serif;
+	font-family: 'Open Sans', sans-serif;
 	position:relative;
 	padding:0 0 0 25px;
 	display:inline-block;
@@ -1143,8 +1159,7 @@ body{
 	font-size:15px;
 	font-family: "Montserrat-Regular";
 	color:#fff;
-	width:65%;
-	float:left;
+	width:100%;
 	margin:0;
 }
 
@@ -1159,7 +1174,8 @@ body{
 	font-size: 12px;
 	line-height: 12px;
 	color:#fff;
-	padding:10px 15px;
+	padding:11px 0 10px 0;
+	margin:15px 0 0;
 	background:#ff6600;
 	text-transform:uppercase;
 	font-family: 'Open Sans', sans-serif;
@@ -1167,8 +1183,7 @@ body{
 	border-radius:20px;
 	font-weight:700;
 	display:inline-block;
-	width:30%;
-	float:right;
+	width:50%;
 	text-align:center
 }
 
@@ -4335,7 +4350,7 @@ body{
 }
 
 .section-gallery  .gallery-list .gallery-img{
-	margin:0 0 30px;
+	/*margin:0 0 30px;*/
 }
 
 .section-gallery  .gallery-list .gallery-img a{
@@ -5056,7 +5071,7 @@ a.ticket-left-info.pjCbDaysNav:hover {
 --------------------------------------------------------------*/
 .top-footer{
 	background:#1f1f1f;
-	padding:30px 0;
+	padding:10px 0;
 	/*border-top:8px solid #4e4e4e;*/
 	border-bottom:1px solid #111;
 }
@@ -5067,7 +5082,7 @@ a.ticket-left-info.pjCbDaysNav:hover {
 }
 
 .top-footer p{
-	margin:10px 30px 10px 0;
+	margin:20px 0;
 	color:#ccc;
 	font-size:10px;
 }
@@ -5085,9 +5100,10 @@ a.ticket-left-info.pjCbDaysNav:hover {
 }
 
 .footer-1 > div > h3{
+	font-family: 'Open Sans', sans-serif;
 	margin:0 10px 15px 0;
 	font-weight:700;
-	font-size:14px;
+	font-size:16px;
 	color:#fff;
 	text-transform:uppercase
 }
@@ -5134,9 +5150,10 @@ a.ticket-left-info.pjCbDaysNav:hover {
 }
 
 .footer-2 > div > h3{
+	font-family: 'Open Sans', sans-serif;
 	margin:0 0 15px;
 	font-weight:700;
-	font-size:12px;
+	font-size:16px;
 	color:#fff;
 	text-transform:uppercase
 }
@@ -5252,12 +5269,43 @@ a.ticket-left-info.pjCbDaysNav:hover {
     padding: 10px 5px;
 }
 .foo-social span{
-	    color: #bdbdbd;
+	color: #bdbdbd;
     font-weight: 600;
     display: inline-block;
 }
+.foo-adrs{
+	font-size: 14px;
+    color: #bdbdbd;
+    display: block;
+	    
+}
+.foo-adrs, .foo-call{
+	padding: 5px 0;
+}
+.foo-call a, .foo-mail{
+	color: #bdbdbd;
+    font-size: 14px;
+    padding: 0 0 0 10px;
+}
+.foo-adrs img{
+	width: 24px;
+    display: inline-block;
+    float: left;
+	margin-right: 10px;
+}
+.foo-call {
+    display: block;
+}
 
-
+.black-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    max-height: 550px;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+}
 
 
 /* Auth  **/
@@ -5277,7 +5325,7 @@ Primary style
   
   body {
 	font-size: 1.6rem;
-	font-family: "PT Sans", sans-serif;
+	font-family: 'Open Sans', sans-serif;
 	color: #505260;
 	background-color: white;
   }
@@ -6692,6 +6740,7 @@ a.ticket-left-info.active {
 *****************************************************************/
 .cart-table{
 	border: none;
+	margin: 70px 0 20px;
 }
 .cart-table .table-head{
 	background-color: #ff6600;
@@ -6751,7 +6800,7 @@ a.ticket-left-info.active {
     margin: 40px 15px 0;
 }
 .cart-list {
-    padding: 70px 0;
+    padding: 0;
 }
 .subtotal{
 	
@@ -6773,7 +6822,29 @@ a.ticket-left-info.active {
 	font-weight: bold;
 	border: none;
 }
-
+.cartEmpty{
+	text-align: center;
+    font-size: 50px;
+    font-family: 'Open Sans', sans-serif;
+    color: #ff6600;
+    padding: 150px 0;
+	position:relative;
+}
+.cartEmpty:before{
+	content: "";
+    display: block;
+    background-image: url(../images/empty-cart.png);
+    background-repeat: no-repeat;
+    width: 70px;
+    height: 65px;
+    background-size: contain;
+    position: absolute;
+    bottom: 0;
+    top: 0;
+    left: 35%;
+    right: 0px;
+    margin: auto;
+}
 
 
 .page-banner{

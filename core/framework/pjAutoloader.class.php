@@ -20,7 +20,7 @@ class pjAutoloader
 			PJ_APPLICATION_PATH . 'libraries/'. $className . '.php',
 			
 		);
-
+		///echo PJ_CONTROLLERS_PATH . $className . '.controller.php'."<br>";
 		// echo "<pre>";
 		// print_r($paths);
 		//exit();
@@ -36,6 +36,7 @@ class pjAutoloader
 		{
 			if (file_exists($filename))
 			{
+				//echo $filename."<br>";
 				require $filename;
 				return;
 			}

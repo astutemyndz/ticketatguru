@@ -5,24 +5,40 @@
 					<div class="row">
 						<div class="footer-1 col-md-4">
 							<div class="about clearfix">
-								<h3>About</h3>
-								<p>
-									Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-								</p>
+								<h3>Site Map</h3>
+								<ul>
+										<li><a href="#home">Home</a></li>
+										<li><a href="#events">Events</a></li>
+										<li><a href="#">Tickets Cart</a></li>
+										<li><a href="#gallery">Gallery</a></li>
+										<li><a href="#partners">Partners</a></li>
+										<li><a href="#">Contact</a></li>
+									</ul>
 							</div>
 						</div>
 						<div class="footer-1 col-md-4">
 							<div class="about clearfix">
-								<h3>Site Map</h3>
-								<ul>
-										<li><a href="#">Home</a></li>
-										<li><a href="#">Events</a></li>
-										<li><a href="#">Tickets Cart</a></li>
-										<li><a href="#">Parties</a></li>
-										<li><a href="#">Gallery</a></li>
-										<li><a href="#">Partners</a></li>
-										<li><a href="#">Contact</a></li>
-									</ul>
+								<h3>Contact Us</h3>
+								<span class="foo-adrs">
+									<img src="<?php echo base_url() ?>/images/location.png" alt="">
+									3 Park Road, Crouch End, London N8 8TE</span>
+								<span class="foo-call">
+									<img src="<?php echo base_url() ?>/images/united-kingdom.png" alt="">
+									<a href="tel:+447718286666">+44 771 828 6666</a>
+								</span>
+								<span class="foo-adrs">
+									<img src="<?php echo base_url() ?>/images/location.png" alt="">
+									34 El-Hassan Street, Ad Doqi Giza Governorate
+								</span>
+								<span class="foo-call">
+									<img src="<?php echo base_url() ?>/images/united-kingdom.png" alt="">
+									<a href="tel:+447718286666">+44 771 828 6666</a>
+								</span>
+								<span class="foo-call">
+									<img src="<?php echo base_url() ?>/images/foo-mail.png" alt="">
+									<a class="foo-mail" href="mailto:info@globalgala.co.uk">info@globalgala.co.uk</a>
+								</span>
+								
 							</div>
 						</div>
 						<div class="footer-2 col-md-4">
@@ -38,17 +54,17 @@
 									<span>Find us on :</span>
 									<li>
 										<a href="https://www.facebook.com/globalgalashow" target="_blank">
-											<img src="<?php echo base_url(); ?>/images/facebook.png" alt="Facebook">
+											<img src="<?php echo base_url(); ?>/images/foo-facebook.png" alt="Facebook">
 										</a>
 									</li>
 									<li>
 										<a href="https://www.instagram.com/globalgalashow/" target="_blank">
-											<img src="<?php echo base_url(); ?>/images/instagram.png" alt="Instagram">
+											<img src="<?php echo base_url(); ?>/images/foo-insta.png" alt="Instagram">
 										</a>
 									</li>
 									<li>
 										<a href="https://www.instagram.com/globalgalashow/" target="_blank">
-											<img src="<?php echo base_url(); ?>/images/twitter.png" alt="Twitter">
+											<img src="<?php echo base_url(); ?>/images/foo-twitter.png" alt="Twitter">
 										</a>
 									</li>
 								</ul>
@@ -220,7 +236,6 @@
 			});
 		</script>		
 <script src="<?php echo base_url();?>js/custom.js"></script>
-
 <script src="<?php echo base_url();?>js/jquery.loading.js"></script>
 <script src="<?php echo base_url();?>js/event/Event.js"></script>
 <script src="<?php echo base_url();?>js/auth/auth.js"></script>
@@ -270,4 +285,32 @@ $('.autoplay').slick({
 				});
 			});
 		</script>
-	  
+<script>
+$(document).ready(function(){
+  $("#selectLang").click(function(){
+    $("#chooseLang").toggle(100);
+  });
+});
+</script>
+
+
+<script>
+$(document).ready(function(){
+  $(".navBar ul li a").on('click', function(event) {
+
+    if (this.hash !== "") {
+      event.preventDefault();
+
+      var hash = this.hash;
+	  var padTop = 90;
+		
+      $('html, body').animate({
+        scrollTop: $( $(this).attr('href') ).offset().top - padTop
+      }, 500, function(){
+   
+        window.location.hash = hash;
+      });
+    } 
+  });
+});
+</script>	  

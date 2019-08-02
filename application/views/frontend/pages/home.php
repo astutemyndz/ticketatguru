@@ -1,14 +1,15 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
-<div class="hero-content">
+<div class="hero-content" id="home">
 	<div class="banner">
 		<div id="myCarousel" class="carousel slide" data-ride="carousel" >
 
 			<!-- Wrapper for slides -->
 			<div class="carousel-inner">
 			  <div class="item active">
-				<img src="<?php echo base_url() ?>/images/cover.jpg" alt="Slide1">
+				<img src="<?php echo base_url() ?>/images/cover-1.jpg" alt="Slide1">
+				<div class="black-layer"></div>
 				  <div class="carousel-caption">
 					  <h2>Welcome to Ticket at Guru</h2>
 					  <div class="countdown flex flex-wrap justify-content-between" data-date="2019/08/06">
@@ -39,7 +40,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			  </div>
 
 			  <div class="item">
-				<img src="<?php echo base_url() ?>/images/cover.jpg" alt="Slide1">
+				<img src="<?php echo base_url() ?>/images/cover-2.jpg" alt="Slide1">
+				<div class="black-layer"></div>
 				  <div class="carousel-caption">
 					  <h2>Welcome to Ticket at Guru</h2>
 					  <div class="countdown flex flex-wrap justify-content-between" data-date="2019/08/06">
@@ -70,7 +72,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			  </div>
 
 			  <div class="item">
-				<img src="<?php echo base_url() ?>/images/cover.jpg" alt="Slide1">
+				<img src="<?php echo base_url() ?>/images/cover-3.jpg" alt="Slide1">
 				  <div class="carousel-caption">
 					  <h2>Welcome to Ticket at Guru</h2>
 					  <div class="countdown flex flex-wrap justify-content-between" data-date="2019/08/06">
@@ -165,7 +167,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				</div>
 			</div>
 		</section>
-		<section class="section-upcoming-events">
+		<section class="section-upcoming-events" id="events">
 			<div class="container">
 				<div class="row">
 					<div class="section-header">
@@ -245,107 +247,147 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			</div>
 		</section>
 		*/?>								
-		<section class="section-gallery">
+		<section class="section-gallery" id="gallery">
 			<div class="container">
 				<div class="row">
 					<h1>GALLERY PICTURES</h1>
 					<div class="gallery-list row">
-						<div class="gallery-img col-xs-6 col-sm-3">
-							<a href="#" data-featherlight="#content-1">
-								<img src="images/gallery/01.jpg" alt="image">
-							</a>
-							<div id="content-1" class="gallery-lightbox">
-								<img src="images/gallery/01.jpg" alt="image">
-								<!-- <div class="gallery-lightbox-content">
-									<h3>WORLD CUP 2014 FINAL: BRAZIL V CHILE</h3>
-									<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
-								</div> -->
+						<div class="col-md-12 row">
+							<div class="col-md-6">
+								<div class="gallery-img col-md-12">
+									<a href="#" data-featherlight="#content-1">
+										<img src="images/gallery/cover_1.jpg" alt="image">
+									</a>
+									<div id="content-1" class="gallery-lightbox">
+										<img src="images/gallery/cover_1.jpg" alt="image">
+										<!-- <div class="gallery-lightbox-content">
+											<h3>WORLD CUP 2014 FINAL: BRAZIL V CHILE</h3>
+											<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
+										</div> -->
+									</div>
+								</div>
+								<div class="gallery-img col-md-6 row">
+									<a href="#" data-featherlight="#content-1">
+										<img src="images/gallery/01.jpg" alt="image">
+									</a>
+									<div id="content-1" class="gallery-lightbox">
+										<img src="images/gallery/01.jpg" alt="image">
+										<!-- <div class="gallery-lightbox-content">
+											<h3>WORLD CUP 2014 FINAL: BRAZIL V CHILE</h3>
+											<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
+										</div> -->
+									</div>
+								</div>
+								<div class="gallery-img col-md-6 row">
+									<a href="#" data-featherlight="#content-1">
+										<img src="images/gallery/01.jpg" alt="image">
+									</a>
+									<div id="content-1" class="gallery-lightbox">
+										<img src="images/gallery/01.jpg" alt="image">
+										<!-- <div class="gallery-lightbox-content">
+											<h3>WORLD CUP 2014 FINAL: BRAZIL V CHILE</h3>
+											<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
+										</div> -->
+									</div>
+								</div>
+								<div class="gallery-img col-md-6 row">
+									<a href="#" data-featherlight="#content-1">
+										<img src="images/gallery/01.jpg" alt="image">
+									</a>
+									<div id="content-1" class="gallery-lightbox">
+										<img src="images/gallery/01.jpg" alt="image">
+										<!-- <div class="gallery-lightbox-content">
+											<h3>WORLD CUP 2014 FINAL: BRAZIL V CHILE</h3>
+											<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
+										</div> -->
+									</div>
+								</div>
+								<div class="gallery-img col-md-6 row">
+									<a href="#" data-featherlight="#content-1">
+										<img src="images/gallery/01.jpg" alt="image">
+									</a>
+									<div id="content-1" class="gallery-lightbox">
+										<img src="images/gallery/01.jpg" alt="image">
+										<!-- <div class="gallery-lightbox-content">
+											<h3>WORLD CUP 2014 FINAL: BRAZIL V CHILE</h3>
+											<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
+										</div> -->
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="gallery-img col-md-6 row">
+									<a href="#" data-featherlight="#content-1">
+										<img src="images/gallery/cover_2.jpg" alt="image">
+									</a>
+									<div id="content-1" class="gallery-lightbox">
+										<img src="images/gallery/01.jpg" alt="image">
+										<!-- <div class="gallery-lightbox-content">
+											<h3>WORLD CUP 2014 FINAL: BRAZIL V CHILE</h3>
+											<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
+										</div> -->
+									</div>
+								</div>
+								<div class="gallery-img col-md-6 row">
+									<a href="#" data-featherlight="#content-1">
+										<img src="images/gallery/01.jpg" alt="image">
+									</a>
+									<div id="content-1" class="gallery-lightbox">
+										<img src="images/gallery/01.jpg" alt="image">
+										<!-- <div class="gallery-lightbox-content">
+											<h3>WORLD CUP 2014 FINAL: BRAZIL V CHILE</h3>
+											<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
+										</div> -->
+									</div>
+								</div>
+								<div class="gallery-img col-md-6 row">
+									<a href="#" data-featherlight="#content-1">
+										<img src="images/gallery/01.jpg" alt="image">
+									</a>
+									<div id="content-1" class="gallery-lightbox">
+										<img src="images/gallery/01.jpg" alt="image">
+										<!-- <div class="gallery-lightbox-content">
+											<h3>WORLD CUP 2014 FINAL: BRAZIL V CHILE</h3>
+											<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
+										</div> -->
+									</div>
+								</div>
+								<div class="gallery-img col-md-6 row">
+									<a href="#" data-featherlight="#content-1">
+										<img src="images/gallery/01.jpg" alt="image">
+									</a>
+									<div id="content-1" class="gallery-lightbox">
+										<img src="images/gallery/01.jpg" alt="image">
+										<!-- <div class="gallery-lightbox-content">
+											<h3>WORLD CUP 2014 FINAL: BRAZIL V CHILE</h3>
+											<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
+										</div> -->
+									</div>
+								</div>
+								<div class="gallery-img col-md-12">
+									<a href="#" data-featherlight="#content-1">
+										<img src="images/gallery/cover-3.jpg" alt="image">
+									</a>
+									<div id="content-1" class="gallery-lightbox">
+										<img src="images/gallery/cover-3.jpg" alt="image">
+										<!-- <div class="gallery-lightbox-content">
+											<h3>WORLD CUP 2014 FINAL: BRAZIL V CHILE</h3>
+											<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
+										</div> -->
+									</div>
+								</div>
 							</div>
 						</div>
-						<div class="gallery-img col-xs-6 col-sm-3">
-							<a href="#" data-featherlight="#content-2">
-								<img src="images/gallery/02.jpg" alt="image">
-							</a>
-							<div id="content-2" class="gallery-lightbox">
-								<img src="images/gallery/02.jpg" alt="image">
-								<!-- <div class="gallery-lightbox-content">
-									<h3>WORLD CUP 2014 FINAL: BRAZIL V CHILE</h3>
-									<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
-								</div> -->
-							</div>
-						</div>
-						<div class="gallery-img col-xs-6 col-sm-3">
-							<a href="#" data-featherlight="#content-3">
-								<img src="images/gallery/03.jpg" alt="image">
-							</a>
-							<div id="content-3" class="gallery-lightbox">
-								<img src="images/gallery/03.jpg" alt="image">
-								<!-- <div class="gallery-lightbox-content">
-									<h3>WORLD CUP 2014 FINAL: BRAZIL V CHILE</h3>
-									<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
-								</div> -->
-							</div>
-						</div>
-						<div class="gallery-img col-xs-6 col-sm-3">
-							<a href="#" data-featherlight="#content-4">
-								<img src="images/gallery/04.jpg" alt="image">
-							</a>
-							<div id="content-4" class="gallery-lightbox">
-								<img src="images/gallery/04.jpg" alt="image">
-								<!-- <div class="gallery-lightbox-content">
-									<h3>WORLD CUP 2014 FINAL: BRAZIL V CHILE</h3>
-									<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
-								</div> -->
-							</div>
-						</div>
-						<div class="gallery-img col-xs-6 col-sm-3">
-							<a href="#" data-featherlight="#content-5">
-								<img src="images/gallery/05.jpg" alt="image">
-							</a>
-							<div id="content-5" class="gallery-lightbox">
-								<img src="images/gallery/05.jpg" alt="image">
-								<!-- <div class="gallery-lightbox-content">
-									<h3>WORLD CUP 2014 FINAL: BRAZIL V CHILE</h3>
-									<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
-								</div> -->
-							</div>
-						</div>
-						<div class="gallery-img col-xs-6 col-sm-3">
-							<a href="#" data-featherlight="#content-6">
-								<img src="images/gallery/06.jpg" alt="image">
-							</a>
-							<div id="content-6" class="gallery-lightbox">
-								<img src="images/gallery/06.jpg" alt="image">
-								<!-- <div class="gallery-lightbox-content">
-									<h3>WORLD CUP 2014 FINAL: BRAZIL V CHILE</h3>
-									<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
-								</div> -->
-							</div>
-						</div>
-						<div class="gallery-img col-xs-6 col-sm-3">
-							<a href="#" data-featherlight="#content-7">
-								<img src="images/gallery/07.jpg" alt="image">
-							</a>
-							<div id="content-7" class="gallery-lightbox">
-								<img src="images/gallery/07.jpg" alt="image">
-								<!-- <div class="gallery-lightbox-content">
-									<h3>WORLD CUP 2014 FINAL: BRAZIL V CHILE</h3>
-									<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
-								</div> -->
-							</div>
-						</div>
-						<div class="gallery-img col-xs-6 col-sm-3">
-							<a href="#" data-featherlight="#content-8">
-								<img src="images/gallery/08.jpg" alt="image">
-							</a>
-							<div id="content-8" class="gallery-lightbox">
-								<img src="images/gallery/08.jpg" alt="image">
-								<!-- <div class="gallery-lightbox-content">
-									<h3>WORLD CUP 2014 FINAL: BRAZIL V CHILE</h3>
-									<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
-								</div> -->
-							</div>
-						</div>
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
 						
 					</div>
 					<!-- <div class="gallery-pagination">
@@ -400,7 +442,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			</div>
 		</section>
 		
-		<section class="section-sponsors">
+		<section class="section-sponsors" id="partners">
 			<div class="container">
 				<div class="section-content">
 					<h1>Our Sponsors</h1>

@@ -53,10 +53,10 @@ if($defaultStore['ticket_arr'] && count($defaultStore['ticket_arr']) > 0)
 										$size = getimagesize($map);
 										?>
 										<div class="wrapper-image">
-												<div id="tbMapHolder_<?php echo $index;?>" class="tbMapHolder pjCbCinema">
-													<div style="height: 100%;width:100%" class="panzoom">
+												<div id="tbMapHolder_<?php echo $index;?>" class="tbMapHolder pjCbCinema" style="height: <?php echo $size[1];?>px;">
+													<div style="height: <?php echo $size[1];?>px;width:<?php echo $size[0];?>px;margin-left: 0px;margin:0 auto;position: relative;" class="panzoom">
 														<!-- <img id="stadium-seat-plan"  src="<?php echo base_url();?>images/stadium2-bg.jpg" alt="stadium" usemap="#map" /> -->
-														<img usemap="#map" id="tbMap_1" src="<?php echo PJ_INSTALL_URL . $defaultStore['venue_arr']['map_path']; ?>" alt="" style="margin: 0; border: none; position: absolute; top: 0; left: 0; z-index: 500;" />
+														<img usemap="#map" id="tbMap_1" src="<?php echo PJ_INSTALL_URL . $defaultStore['venue_arr']['map_path']; ?>" alt="" style="margin: 0; border: none; position: absolute; top: 0; left: 0; z-index: 1;" />
 														
 														<map id="plk-map-seat-points-wrapper" name="map" class="seatmap">
 														

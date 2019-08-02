@@ -95,7 +95,8 @@
 	margin: 0;
     font-family: mountains;
     font-size: 100px;
-    background: -webkit-linear-gradient(#00d0ff, #25ffbf);
+    /*background: -webkit-linear-gradient(#00d0ff, #25ffbf);*/
+	background: -webkit-linear-gradient(#ff6600, #e4b300);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -110,7 +111,7 @@
     display: inline-block;
     width: 250px;
     height: 45px;
-    background-color: #ff6600;
+    background: -webkit-linear-gradient(#ff6600, #e49e00);
     text-align: center;
     color: #fff;
     font-size: 16px;
@@ -122,9 +123,9 @@
 	border-radius: 30px;
 }
 .banner-btn .btn:hover{
-    background-color: #fff;
+    background: -webkit-linear-gradient(#e49e00, #ff6600);
     text-align: center;
-    color: #ff6600;
+    color: #fff;
 }
 
 @media all and (transform-3d),(-webkit-transform-3d){

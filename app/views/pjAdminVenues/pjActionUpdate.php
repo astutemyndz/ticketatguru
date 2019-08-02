@@ -81,7 +81,7 @@ if (isset($tpl['status']))
 					<div class="wrapper-image">
 				
 						<div class="bsMapHolder">
-							<div id="mapHolder" class="panzoom" style="">
+							<div id="mapHolder" class="panzoom" style="position: relative; overflow: hidden; width: <?php echo $size[0]; ?>px; height: <?php echo $size[1]; ?>px; margin: 0 auto;">
 								<img id="map" src="<?php echo $map; ?>" alt=""  width="100%" height="auto"/>
 								<?php
 								foreach ($tpl['seat_arr'] as $seat)
@@ -92,17 +92,7 @@ if (isset($tpl['status']))
 							</div>
 							<input type="hidden" id="number_of_seats" name="number_of_seats" value=""/>
 							
-							<script>
-								(function() {
-								var $section = $('.mapHolder').first();
-								$section.find('.panzoom').panzoom({
-									$zoomIn: $section.find("#PLKZOOMBTNWRAPPER"),
-									$zoomOut: $section.find(".zoom-out"),
-									$zoomRange: $section.find(".zoom-range"),
-									$reset: $section.find(".reset")
-								});
-								})();
-							</script>
+							
 							
 						
 							</div>
@@ -237,7 +227,9 @@ if (isset($tpl['status']))
 			});
 		});
 	})(jQuery_1_8_2);
+	
 	</script>
+	
 	<?php
 }
 ?>

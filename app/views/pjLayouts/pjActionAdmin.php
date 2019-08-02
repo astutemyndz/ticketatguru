@@ -21,6 +21,7 @@
 		
 		</style>
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+		<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.1/jquery-ui.min.js"></script>
 		<script src="<?php echo PJ_INSTALL_URL;?>core/third-party/panzoom/1.0.0/jquery.panzoom.js"></script>
 		<script src="<?php echo PJ_INSTALL_URL;?>core/third-party/panzoom/1.0.0/jquery.mousewheel.js"></script>
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -57,15 +58,35 @@
 	        </div>
 		</div>
 		<script>
-			(function() {
-				var $section = $('.wrapper-image');
-				$section.find('.panzoom').panzoom({
-				$zoomIn: $section.find(".zoom-in"),
-				$zoomOut: $section.find(".zoom-out"),
-				$zoomRange: $section.find(".zoom-range"),
-				$reset: $section.find(".reset")
+			// (function() {
+			// 	var $section = $('.wrapper-image');
+			// 	$section.find('.panzoom').panzoom({
+			// 	$zoomIn: $section.find(".zoom-in"),
+			// 	$zoomOut: $section.find(".zoom-out"),
+			// 	$zoomRange: $section.find(".zoom-range"),
+			// 	$reset: $section.find(".reset")
+			// 	});
+			// })();
+/*
+			var $pz2 = $("#mapHolder");
+			var $buttons = $('#PLKZOOMBTNWRAPPER');
+			$pz2.panzoom({
+				$zoomIn: $buttons.find(".zoom-in"),
+				$zoomOut: $buttons.find(".zoom-out"),
+				$reset: $buttons.find(".reset"),
+				cursor: "grab",
+				minScale: 1
+			});
+			$pz2.parent().on('mousewheel.focal', function(e) {
+				e.preventDefault();
+				var delta = e.delta || e.originalEvent.wheelDelta;
+				var zoomOut = delta ? delta < 0 : e.originalEvent.deltaY > 0;
+				$pz2.panzoom('zoom', zoomOut, {
+					increment: 0.1,
+					focal: e
 				});
-			})();
+			});
+			*/
 		</script>
 	</body>
 </html>

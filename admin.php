@@ -58,7 +58,60 @@ if (!isset($_GET['controller']) || empty($_GET['controller']))
 
 if (isset($_GET['controller']))
 {
+	$controller = (isset($_GET['controller'])) ? $_GET['controller'] : '';
+	
+	$pjMM = pjModuleModel::factory();
+	$pjMM = $pjMM->findAll()->getData();
+
+	$data['controller'] = $_GET['controller'];
+
+	$explodeController = explode('pj', $controller);
+	$c = (count($explodeController) > 0) ? count($explodeController) : 0;
+
+	switch ($c) {
+		case '2':
+			$data['name'] = $explodeController[1];
+			break;
+		default:
+		$data['name'] = $explodeController[1]." ". $data['name'] = $explodeController[2];
+			break;
+	}
+	
+	
+	$data['path'] = $_SERVER['QUERY_STRING'];
+
+	$isExists = false;
+	for($i = 0; $i <= count($pjMM); $i++) {
+		if($pjMM[$i]['controller'] == $controller) {
+			$isExists = true;
+			break;
+		} else {
+			$isExists = false;
+			//$data['table_name'] = '';
+			if($pjMM[$i]['controller'] == 'pjAdmin') {
+				$isExists = true;
+			}
+			
+			
+		}
+	}
+
+	if(!$isExists) {
+		$id = pjModuleModel::factory($data)->insert()->getInsertId();
+	}
 	$pjObserver = pjObserver::factory();
 	$pjObserver->init();
+	
+
+	
+	// echo "<pre>";
+	// print_r($pjMM);
+	//exit;			
+
+	
+
+	
+
+	
 }
 ?>

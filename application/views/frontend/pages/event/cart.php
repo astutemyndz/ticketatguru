@@ -48,9 +48,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					</div>
 				</div>
 			</div>
-			
+			<div class="container">
 				<div class="row">
-					<h3 id="cartEmpty"></h3>
+					<h3 id="cartEmpty" class="cartEmpty"></h3>
 				</div>
+			</div>
 			</div>
 		</div>

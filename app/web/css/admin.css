@@ -941,8 +941,8 @@ span.title-tooltip{
     z-index: 1000;
 }
 .empty {
-    background-color: #ffffff;
-    color: #ffffff;
+    background-color: #ff0000;
+    color: #ff0000;
 }
 .rect-selected{
 	background-color: #135E8D;

@@ -127,6 +127,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 			var i, pos, horizontalMatch, verticalMatch, collision = false;
 			$("#mapHolder").children("span").each(function (i) {
 				pos = getPositions(this);
+				//console.log('width:'+pos[0],'height:'+pos[1]);
 				horizontalMatch = comparePositions([o.left, o.left + o.width], pos[0]);
 				verticalMatch = comparePositions([o.top, o.top + o.height], pos[1]);			
 				if (horizontalMatch && verticalMatch) {
@@ -258,7 +259,8 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 			});
 			
 			$("#mapHolder").click(function (e) {
-				console.log('clicked');
+				console.log(`pageX:${e.pageX},pageY:${e.pageY},`);
+				//console.log('clicked');
 				var px = $('.bsMapHolder').scrollLeft();
 				var $this = $(this),
 				index = getMax(),
@@ -270,6 +272,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 				var o = {top: t, left: l, width: w, height: h};
 				
 				if (!collisionDetect(o)) {
+				//	console.log(`box=top${t},left=${l}`);
 					index++;
 					$("<span>", {
 						css: {
