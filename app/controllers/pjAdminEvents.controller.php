@@ -11,10 +11,7 @@ class pjAdminEvents extends pjAdmin
 	
 	public function pjActionCreate()
 	{
-		$this->checkLogin();
 		
-		if ($this->isAdmin() || $this->isEditor())
-		{
 			$post_max_size = pjUtil::getPostMaxSize();
 			if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_SERVER['CONTENT_LENGTH']) && (int) $_SERVER['CONTENT_LENGTH'] > $post_max_size)
 			{
@@ -140,9 +137,7 @@ class pjAdminEvents extends pjAdmin
 				$this->appendJs('tinymce.min.js', PJ_THIRD_PARTY_PATH . 'tinymce/');
 				$this->appendJs('pjAdminEvents.js');
 			}
-		} else {
-			$this->set('status', 2);
-		}
+		
 	}
 	
 	public function pjActionDeleteEvent()
@@ -203,7 +198,7 @@ class pjAdminEvents extends pjAdmin
 	
 	public function pjActionExportEvent()
 	{
-		$this->checkLogin();
+		
 		
 		if (isset($_POST['record']) && is_array($_POST['record']))
 		{
@@ -275,15 +270,10 @@ class pjAdminEvents extends pjAdmin
 	
 	public function pjActionIndex()
 	{
-		$this->checkLogin();
 		
-		if ($this->isAdmin() || $this->isEditor())
-		{
 			$this->appendJs('jquery.datagrid.js', PJ_FRAMEWORK_LIBS_PATH . 'pj/js/');
 			$this->appendJs('pjAdminEvents.js');
-		} else {
-			$this->set('status', 2);
-		}
+		
 	}
 	
 	public function pjActionSaveEvent()
@@ -307,10 +297,7 @@ class pjAdminEvents extends pjAdmin
 	
 	public function pjActionUpdate()
 	{
-		$this->checkLogin();
 		
-		if ($this->isAdmin() || $this->isEditor())
-		{
 			$post_max_size = pjUtil::getPostMaxSize();
 			if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_SERVER['CONTENT_LENGTH']) && (int) $_SERVER['CONTENT_LENGTH'] > $post_max_size)
 			{
@@ -492,17 +479,12 @@ class pjAdminEvents extends pjAdmin
 				$this->appendJs('tinymce.min.js', PJ_THIRD_PARTY_PATH . 'tinymce/');
 				$this->appendJs('pjAdminEvents.js');
 			}
-		} else {
-			$this->set('status', 2);
-		}
+		
 	}
 	
 	public function pjActionShow()
 	{
-		$this->checkLogin();
-	
-		if ($this->isAdmin() || $this->isEditor())
-		{
+		
 			if (isset($_POST['show_update']))
 			{
 				
@@ -609,17 +591,12 @@ class pjAdminEvents extends pjAdmin
 				$this->appendCss('jquery.multiselect.css', PJ_THIRD_PARTY_PATH . 'multiselect/');
 				$this->appendJs('pjAdminEvents.js');
 			}
-		} else {
-			$this->set('status', 2);
-		}
+		
 	}
 	
 	public function pjActionBooking()
 	{
-		$this->checkLogin();
-	
-		if ($this->isAdmin() || $this->isEditor())
-		{
+		
 			$arr = pjEventModel::factory()
 				->join('pjMultiLang', "t2.model='pjEvent' AND t2.foreign_id=t1.id AND t2.field='title' AND t2.locale='".$this->getLocaleId()."'", 'left outer')
 				->select('t1.*, t2.content as title')
@@ -698,19 +675,14 @@ class pjAdminEvents extends pjAdmin
 			$this->set('total_seats', $total_seats);
 			
 			$this->appendJs('pjAdminEvents.js');
-		} else {
-			$this->set('status', 2);
-		}
+		
 	}
 	
 	public function pjActionPrint()
 	{
 		$this->setLayout('pjActionEmpty');
 		
-		$this->checkLogin();
-	
-		if ($this->isAdmin() || $this->isEditor())
-		{
+		
 			$arr = pjEventModel::factory()
 				->join('pjMultiLang', "t2.model='pjEvent' AND t2.foreign_id=t1.id AND t2.field='title' AND t2.locale='".$this->getLocaleId()."'", 'left outer')
 				->select('t1.*, t2.content as title')
@@ -762,9 +734,7 @@ class pjAdminEvents extends pjAdmin
 			$this->set('cnt_bookings', count($booking_id_arr));
 			$this->set('total_seats', $total_seats);
 				
-		} else {
-			$this->set('status', 2);
-		}
+		
 	}
 	
 	public function pjActionDeleteMap()
@@ -1133,10 +1103,7 @@ class pjAdminEvents extends pjAdmin
 	
 	public function pjActionExport()
 	{
-		$this->checkLogin();
-	
-		if ($this->isAdmin() || $this->isEditor())
-		{
+		
 			if(isset($_POST['movie_export']))
 			{
 				$pjShowModel = pjShowModel::factory()
@@ -1239,9 +1206,7 @@ class pjAdminEvents extends pjAdmin
 				
 			$this->appendJs('jquery.validate.min.js', PJ_THIRD_PARTY_PATH . 'validate/');
 			$this->appendJs('pjAdminEvents.js');
-		} else {
-			$this->set('status', 2);
-		}
+		
 	}
 	
 	public function pjActionExportFeed()

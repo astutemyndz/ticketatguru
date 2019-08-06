@@ -50,14 +50,9 @@ class pjAdminSchedule extends pjAdmin
 	
 	public function pjActionIndex()
 	{
-		$this->checkLogin();
 		
-		if ($this->isAdmin() || $this->isEditor())
-		{
 			$this->appendJs('pjAdminSchedule.js');
-		} else {
-			$this->set('status', 2);
-		}
+		
 	}
 	
 	public function pjActionGetSchedule()
@@ -86,10 +81,7 @@ class pjAdminSchedule extends pjAdmin
 	{
 		$this->setLayout('pjActionEmpty');
 	
-		$this->checkLogin();
-	
-		if ($this->isAdmin())
-		{
+		
 			if(pjUtil::checkFormatDate($_GET['date'], $this->option_arr['o_date_format']) == TRUE)
 			{
 				$date = pjUtil::formatDate($_GET['date'], $this->option_arr['o_date_format']);
@@ -103,9 +95,7 @@ class pjAdminSchedule extends pjAdmin
 				$this->set('venue_arr', $result['venue_arr']);
 				$this->set('booking_cnt_arr', $result['booking_cnt_arr']);	
 			}
-		} else {
-			$this->set('status', 2);
-		}
+		
 	}
 }
 ?>

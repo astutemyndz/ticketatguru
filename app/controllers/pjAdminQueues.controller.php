@@ -13,15 +13,14 @@ class pjAdminQueues extends pjAdmin
 		if ($this->isXHR())
 		{
 			$response = array();
-			if ($this->isAdmin())
-			{
+			
 				if (pjQueueModel::factory()->setAttributes(array('id' => $_GET['id']))->erase()->getAffectedRows() == 1)
 				{
 					$response['code'] = 200;
 				} else {
 					$response['code'] = 100;
 				}
-			}
+			
 			pjAppController::jsonResponse($response);
 		}
 		exit;
@@ -33,13 +32,12 @@ class pjAdminQueues extends pjAdmin
 	
 		if ($this->isXHR())
 		{
-			if ($this->isAdmin())
-			{
+			
 				if (isset($_POST['record']) && count($_POST['record']) > 0)
 				{
 					pjQueueModel::factory()->reset()->whereIn('id', $_POST['record'])->eraseAll();
 				}
-			}
+			
 		}
 		exit;
 	}
@@ -128,16 +126,11 @@ class pjAdminQueues extends pjAdmin
 	
 	public function pjActionIndex()
 	{
-		$this->checkLogin();
 		
-		if ($this->isAdmin())
-		{
 			$this->appendJs('jquery.datagrid.js', PJ_FRAMEWORK_LIBS_PATH . 'pj/js/');
 			$this->appendJs('pjAdminQueues.js');
 			$this->appendJs('admin.php?controller=pjAdmin&action=pjActionMessages&page=queue', PJ_INSTALL_URL, true);
-		} else {
-			$this->set('status', 2);
-		}
+		
 	}
 }
 ?>

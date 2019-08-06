@@ -1,15 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
-<section class="section-page-header">
-			<section class="page-banner">
-			<img src="<?php echo base_url() ?>/images/banner.jpg" alt="">
-			<div class="black-layer"></div>
-			<div class="caption">
-				<h3>Tickets for Camp Nou Experience</h3>
-			</div>
-		</section>
-		</section>
+		
 		<div class="cart-list"  >
 			<div class="container" >
 				

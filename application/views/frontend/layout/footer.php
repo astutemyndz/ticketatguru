@@ -43,13 +43,6 @@
 						</div>
 						<div class="footer-2 col-md-4">
 							<div class="about clearfix">
-								<h3>News Letter</h3>
-								<form class="foo-email" action="mailto:youremail@youremail.com">
-									<label>
-										<input type="email" placeholder="Email">
-										<button type="button"><img src="<?php echo base_url() ?>/images/sent-mail.png" alt="submit"></button></span>
-									</label>
-								</form>
 								<ul class="foo-social">
 									<span>Find us on :</span>
 									<li>
@@ -68,17 +61,9 @@
 										</a>
 									</li>
 								</ul>
+								<div><img src="<?php echo base_url(); ?>/images/sage_logos2.png" alt="payment"></div>
 							</div>
 						</div>
-					<!-- 	<div class="footer-2 col-md-3">
-							<div class="footer-dashboard">
-								<h3>globalgala Dashboard</h3>
-								<ul>
-									<li><a href="#">Professional</a></li>
-									<li><a href="#">Subscriber Login</a></li>
-								</ul>
-							</div>
-						</div> -->
 					</div>
 				</div>
 			</div>
@@ -90,8 +75,7 @@
 							<a href="#"><img src="<?php echo base_url();?>/images/ticketGuruLogo.png" alt="logo"></a>
 						</div>
 						<div class="col-md-4">
-						
-						<p>&copy; 2016 globalgala.COM. ALL RIGHTS RESEVED</p>
+						<p>Copyright &copy; <?php date('Y');?>  Ticketatguru.com. Design And Develop By <a href="https://astutemynzd.com/" target="_blank" rel="nofollow" class="MSI_ext_nofollow">Astutemynzd</a></p>
 						</div>
 					</div>
 				</div>
@@ -314,3 +298,5 @@ $(document).ready(function(){
   });
 });
 </script>	  
+</body>
+</html>

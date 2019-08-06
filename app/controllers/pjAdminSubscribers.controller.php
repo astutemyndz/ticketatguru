@@ -30,10 +30,7 @@ class pjAdminSubscribers extends pjAdmin
 	
 	public function pjActionCreate()
 	{
-		$this->checkLogin();
-		
-		if ($this->isAdmin())
-		{
+	
 			if (isset($_POST['subscriber_create']))
 			{
 				$pjSubscriberModel = pjSubscriberModel::factory();
@@ -87,18 +84,13 @@ class pjAdminSubscribers extends pjAdmin
 				$this->appendJs('additional-methods.js', PJ_THIRD_PARTY_PATH . 'validate/');
 				$this->appendJs('pjAdminSubscribers.js');
 			}
-		} else {
-			$this->set('status', 2);
-		}
+		
 	}
 	
 	
 	public function pjActionImport()
 	{
-		$this->checkLogin();
 		
-		if ($this->isAdmin())
-		{
 			if (isset($_POST['subscriber_import']))
 			{
 				$map = array('first_name', 'last_name', 'email', 'phone', 'website', 'gender', 'age', 'birthday', 'address', 'city', 'state', 'country_id', 'zip', 'company_name', 'subscribed');
@@ -331,9 +323,7 @@ class pjAdminSubscribers extends pjAdmin
 				$this->appendJs('additional-methods.min.js', PJ_THIRD_PARTY_PATH . 'validate/');
 				$this->appendJs('pjAdminSubscribers.js');
 			}
-		} else {
-			$this->set('status', 2);
-		}
+	
 	}
 	
 	public function pjActionDeleteSubscriber()
@@ -343,8 +333,7 @@ class pjAdminSubscribers extends pjAdmin
 		if ($this->isXHR())
 		{
 			$response = array();
-			if ($this->isAdmin())
-			{
+			
 				if (pjSubscriberModel::factory()->reset()->setAttributes(array('id' => $_GET['id']))->erase()->getAffectedRows() == 1)
 				{
 					pjGroupSubscriberModel::factory()->where('subscriber_id', $_GET['id'])->eraseAll();
@@ -353,7 +342,7 @@ class pjAdminSubscribers extends pjAdmin
 				} else {
 					$response['code'] = 100;
 				}
-			}
+			
 			pjAppController::jsonResponse($response);
 		}
 		exit;
@@ -365,21 +354,20 @@ class pjAdminSubscribers extends pjAdmin
 	
 		if ($this->isXHR())
 		{
-			if ($this->isAdmin() || $this->isEditor())
-			{
+		
 				if (isset($_POST['record']) && count($_POST['record']) > 0)
 				{
 					pjSubscriberModel::factory()->reset()->whereIn('id', $_POST['record'])->eraseAll();
 					pjGroupSubscriberModel::factory()->whereIn('subscriber_id', $_POST['record'])->eraseAll();
 				}
-			}
+			
 		}
 		exit;
 	}
 	
 	public function pjActionExportSubscriber()
 	{
-		$this->checkLogin();
+		
 		
 		if (isset($_POST['record']) && is_array($_POST['record']))
 		{
@@ -410,7 +398,7 @@ class pjAdminSubscribers extends pjAdmin
 	
 	public function pjActionExportAllSubscribers()
 	{
-		$this->checkLogin();
+		
 	
 		$arr = pjSubscriberModel::factory()->select("t1.*")->findAll()->getData();
 		$pair = pjCountryModel::factory()->findAll()->getDataPair('id', 'alpha_2');
@@ -584,10 +572,9 @@ class pjAdminSubscribers extends pjAdmin
 	
 	public function pjActionIndex()
 	{
-		$this->checkLogin();
 		
-		if ($this->isAdmin())
-		{
+		
+		
 			$group_arr = pjGroupModel::factory()->where('status', 'T')->orderBy('group_title ASC')->findAll()->getData();
 			$country_arr = pjCountryModel::factory()
 						->select('t1.id, t2.content AS country_title')
@@ -605,9 +592,7 @@ class pjAdminSubscribers extends pjAdmin
 			$this->appendJs('jquery.datagrid.js', PJ_FRAMEWORK_LIBS_PATH . 'pj/js/');
 			$this->appendJs('pjAdminSubscribers.js');
 			$this->appendJs('admin.php?controller=pjAdmin&action=pjActionMessages&page=subscriber', PJ_INSTALL_URL, true);
-		} else {
-			$this->set('status', 2);
-		}
+		
 	}
 	
 	public function pjActionSaveSubscriber()
@@ -647,10 +632,7 @@ class pjAdminSubscribers extends pjAdmin
 	
 	public function pjActionUpdate()
 	{
-		$this->checkLogin();
 		
-		if ($this->isAdmin())
-		{
 			$pjSubscriberModel = pjSubscriberModel::factory();
 			if (isset($_POST['subscriber_update']))
 			{
@@ -726,9 +708,7 @@ class pjAdminSubscribers extends pjAdmin
 				$this->appendJs('additional-methods.js', PJ_THIRD_PARTY_PATH . 'validate/');
 				$this->appendJs('pjAdminSubscribers.js');
 			}
-		} else {
-			$this->set('status', 2);
-		}
+	
 	}
 	public function pjActionSend()
 	{

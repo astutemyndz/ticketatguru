@@ -60,8 +60,7 @@ class pjAdminUsers extends pjAdmin
 	{
 		$this->checkLogin();
 		
-		if ($this->isAdmin())
-		{
+		
 			if (isset($_POST['user_create']))
 			{
 				$data = array();
@@ -82,9 +81,7 @@ class pjAdminUsers extends pjAdmin
 				$this->appendJs('jquery.validate.min.js', PJ_THIRD_PARTY_PATH . 'validate/');
 				$this->appendJs('pjAdminUsers.js');
 			}
-		} else {
-			$this->set('status', 2);
-		}
+		
 	}
 	
 	public function pjActionDeleteUser()
@@ -201,13 +198,9 @@ class pjAdminUsers extends pjAdmin
 	{
 		$this->checkLogin();
 		
-		if ($this->isAdmin())
-		{
-			$this->appendJs('jquery.datagrid.js', PJ_FRAMEWORK_LIBS_PATH . 'pj/js/');
-			$this->appendJs('pjAdminUsers.js');
-		} else {
-			$this->set('status', 2);
-		}
+		$this->appendJs('jquery.datagrid.js', PJ_FRAMEWORK_LIBS_PATH . 'pj/js/');
+		$this->appendJs('pjAdminUsers.js');
+		
 	}
 	
 	public function pjActionSetActive()
@@ -287,8 +280,6 @@ class pjAdminUsers extends pjAdmin
 	{
 		$this->checkLogin();
 		
-		if ($this->isAdmin())
-		{
 				
 			if (isset($_POST['user_update']))
 			{
@@ -309,9 +300,7 @@ class pjAdminUsers extends pjAdmin
 				$this->appendJs('jquery.validate.min.js', PJ_THIRD_PARTY_PATH . 'validate/');
 				$this->appendJs('pjAdminUsers.js');
 			}
-		} else {
-			$this->set('status', 2);
-		}
+		
 	}
 }
 ?>

@@ -1,114 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
-<div class="hero-content" id="home">
-	<div class="banner">
-		<div id="myCarousel" class="carousel slide" data-ride="carousel" >
-
-			<!-- Wrapper for slides -->
-			<div class="carousel-inner">
-			  <div class="item active">
-				<img src="<?php echo base_url() ?>/images/cover-1.jpg" alt="Slide1">
-				<div class="black-layer"></div>
-				  <div class="carousel-caption">
-					  <h2>Welcome to Ticket at Guru</h2>
-					  <div class="countdown flex flex-wrap justify-content-between" data-date="2019/08/06">
-						<div class="countdown-holder">
-							<div class="dday">20</div>
-							<label>Days</label>
-						</div><!-- .countdown-holder -->
-
-						<div class="countdown-holder">
-							<div class="dhour">20</div>
-							<label>Hours</label>
-						</div><!-- .countdown-holder -->
-
-						<div class="countdown-holder">
-							<div class="dmin">20</div>
-							<label>Minutes</label>
-						</div><!-- .countdown-holder -->
-
-						<div class="countdown-holder">
-							<div class="dsec">20</div>
-							<label>Seconds</label>
-						</div><!-- .countdown-holder -->
-					</div>
-					<div class="banner-btn">
-						<a href="#" class="btn">Buy Tickets</a>
-					</div>
-            	  </div>
-			  </div>
-
-			  <div class="item">
-				<img src="<?php echo base_url() ?>/images/cover-2.jpg" alt="Slide1">
-				<div class="black-layer"></div>
-				  <div class="carousel-caption">
-					  <h2>Welcome to Ticket at Guru</h2>
-					  <div class="countdown flex flex-wrap justify-content-between" data-date="2019/08/06">
-						<div class="countdown-holder">
-							<div class="dday">20</div>
-							<label>Days</label>
-						</div><!-- .countdown-holder -->
-
-						<div class="countdown-holder">
-							<div class="dhour">20</div>
-							<label>Hours</label>
-						</div><!-- .countdown-holder -->
-
-						<div class="countdown-holder">
-							<div class="dmin">20</div>
-							<label>Minutes</label>
-						</div><!-- .countdown-holder -->
-
-						<div class="countdown-holder">
-							<div class="dsec">20</div>
-							<label>Seconds</label>
-						</div><!-- .countdown-holder -->
-					</div>
-					<div class="banner-btn">
-						<a href="#" class="btn">Buy Tickets</a>
-					</div>
-            	  </div>
-			  </div>
-
-			  <div class="item">
-				<img src="<?php echo base_url() ?>/images/cover-3.jpg" alt="Slide1">
-				  <div class="carousel-caption">
-					  <h2>Welcome to Ticket at Guru</h2>
-					  <div class="countdown flex flex-wrap justify-content-between" data-date="2019/08/06">
-						<div class="countdown-holder">
-							<div class="dday">20</div>
-							<label>Days</label>
-						</div><!-- .countdown-holder -->
-
-						<div class="countdown-holder">
-							<div class="dhour">20</div>
-							<label>Hours</label>
-						</div><!-- .countdown-holder -->
-
-						<div class="countdown-holder">
-							<div class="dmin">20</div>
-							<label>Minutes</label>
-						</div><!-- .countdown-holder -->
-
-						<div class="countdown-holder">
-							<div class="dsec">20</div>
-							<label>Seconds</label>
-						</div><!-- .countdown-holder -->
-					</div>
-					<div class="banner-btn">
-						<a href="#" class="btn">Buy Tickets</a>
-					</div>
-            	  </div>
-			  </div>
-			</div>
-
-			<!-- Left and right controls -->
-			
-		  </div>
-	</div>
-		</div><!-- .container -->
-	</div><!-- .hero-content -->
+<!-- .container -->
 	<?php 
 	/*
 		<section class="section-todays-schedule">
@@ -251,144 +144,92 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<div class="container">
 				<div class="row">
 					<h1>GALLERY PICTURES</h1>
-					<div class="gallery-list row">
-						<div class="col-md-12 row">
-							<div class="col-md-6">
-								<div class="gallery-img col-md-12">
-									<a href="#" data-featherlight="#content-1">
-										<img src="images/gallery/cover_1.jpg" alt="image">
-									</a>
-									<div id="content-1" class="gallery-lightbox">
-										<img src="images/gallery/cover_1.jpg" alt="image">
-										<!-- <div class="gallery-lightbox-content">
-											<h3>WORLD CUP 2014 FINAL: BRAZIL V CHILE</h3>
-											<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
-										</div> -->
-									</div>
-								</div>
-								<div class="gallery-img col-md-6 row">
-									<a href="#" data-featherlight="#content-1">
-										<img src="images/gallery/01.jpg" alt="image">
-									</a>
-									<div id="content-1" class="gallery-lightbox">
-										<img src="images/gallery/01.jpg" alt="image">
-										<!-- <div class="gallery-lightbox-content">
-											<h3>WORLD CUP 2014 FINAL: BRAZIL V CHILE</h3>
-											<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
-										</div> -->
-									</div>
-								</div>
-								<div class="gallery-img col-md-6 row">
-									<a href="#" data-featherlight="#content-1">
-										<img src="images/gallery/01.jpg" alt="image">
-									</a>
-									<div id="content-1" class="gallery-lightbox">
-										<img src="images/gallery/01.jpg" alt="image">
-										<!-- <div class="gallery-lightbox-content">
-											<h3>WORLD CUP 2014 FINAL: BRAZIL V CHILE</h3>
-											<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
-										</div> -->
-									</div>
-								</div>
-								<div class="gallery-img col-md-6 row">
-									<a href="#" data-featherlight="#content-1">
-										<img src="images/gallery/01.jpg" alt="image">
-									</a>
-									<div id="content-1" class="gallery-lightbox">
-										<img src="images/gallery/01.jpg" alt="image">
-										<!-- <div class="gallery-lightbox-content">
-											<h3>WORLD CUP 2014 FINAL: BRAZIL V CHILE</h3>
-											<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
-										</div> -->
-									</div>
-								</div>
-								<div class="gallery-img col-md-6 row">
-									<a href="#" data-featherlight="#content-1">
-										<img src="images/gallery/01.jpg" alt="image">
-									</a>
-									<div id="content-1" class="gallery-lightbox">
-										<img src="images/gallery/01.jpg" alt="image">
-										<!-- <div class="gallery-lightbox-content">
-											<h3>WORLD CUP 2014 FINAL: BRAZIL V CHILE</h3>
-											<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
-										</div> -->
-									</div>
+					<div class="gallery-list">
+						<div class="col-md-6">
+							<div class="gallery-block gallery-img col-md-12">
+								<a href="#" data-featherlight="#content-1">
+									<img src="images/gallery/01.jpg" alt="image">
+								</a>
+								<div id="content-1" class="gallery-lightbox">
+									<img src="images/gallery/01.jpg" alt="image">
 								</div>
 							</div>
-							<div class="col-md-6">
-								<div class="gallery-img col-md-6 row">
-									<a href="#" data-featherlight="#content-1">
-										<img src="images/gallery/cover_2.jpg" alt="image">
-									</a>
-									<div id="content-1" class="gallery-lightbox">
-										<img src="images/gallery/01.jpg" alt="image">
-										<!-- <div class="gallery-lightbox-content">
-											<h3>WORLD CUP 2014 FINAL: BRAZIL V CHILE</h3>
-											<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
-										</div> -->
-									</div>
+							<div class="gallery-block gallery-img col-md-6">
+								<a href="#" data-featherlight="#content-2">
+									<img src="images/gallery/02.jpg" alt="image">
+								</a>
+								<div id="content-2" class="gallery-lightbox">
+									<img src="images/gallery/02.jpg" alt="image">
 								</div>
-								<div class="gallery-img col-md-6 row">
-									<a href="#" data-featherlight="#content-1">
-										<img src="images/gallery/01.jpg" alt="image">
-									</a>
-									<div id="content-1" class="gallery-lightbox">
-										<img src="images/gallery/01.jpg" alt="image">
-										<!-- <div class="gallery-lightbox-content">
-											<h3>WORLD CUP 2014 FINAL: BRAZIL V CHILE</h3>
-											<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
-										</div> -->
-									</div>
+							</div>
+							<div class="gallery-block gallery-img col-md-6">
+								<a href="#" data-featherlight="#content-3">
+									<img src="images/gallery/03.jpg" alt="image">
+								</a>
+								<div id="content-3" class="gallery-lightbox">
+									<img src="images/gallery/03.jpg" alt="image">
 								</div>
-								<div class="gallery-img col-md-6 row">
-									<a href="#" data-featherlight="#content-1">
-										<img src="images/gallery/01.jpg" alt="image">
-									</a>
-									<div id="content-1" class="gallery-lightbox">
-										<img src="images/gallery/01.jpg" alt="image">
-										<!-- <div class="gallery-lightbox-content">
-											<h3>WORLD CUP 2014 FINAL: BRAZIL V CHILE</h3>
-											<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
-										</div> -->
-									</div>
+							</div>
+							<div class="gallery-block gallery-img col-md-6">
+								<a href="#" data-featherlight="#content-4">
+									<img src="images/gallery/04.jpg" alt="image">
+								</a>
+								<div id="content-4" class="gallery-lightbox">
+									<img src="images/gallery/04.jpg" alt="image">
 								</div>
-								<div class="gallery-img col-md-6 row">
-									<a href="#" data-featherlight="#content-1">
-										<img src="images/gallery/01.jpg" alt="image">
-									</a>
-									<div id="content-1" class="gallery-lightbox">
-										<img src="images/gallery/01.jpg" alt="image">
-										<!-- <div class="gallery-lightbox-content">
-											<h3>WORLD CUP 2014 FINAL: BRAZIL V CHILE</h3>
-											<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
-										</div> -->
-									</div>
-								</div>
-								<div class="gallery-img col-md-12">
-									<a href="#" data-featherlight="#content-1">
-										<img src="images/gallery/cover-3.jpg" alt="image">
-									</a>
-									<div id="content-1" class="gallery-lightbox">
-										<img src="images/gallery/cover-3.jpg" alt="image">
-										<!-- <div class="gallery-lightbox-content">
-											<h3>WORLD CUP 2014 FINAL: BRAZIL V CHILE</h3>
-											<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
-										</div> -->
-									</div>
+							</div>
+							<div class="gallery-block gallery-img col-md-6">
+								<a href="#" data-featherlight="#content-5">
+									<img src="images/gallery/05.jpg" alt="image">
+								</a>
+								<div id="content-5" class="gallery-lightbox">
+									<img src="images/gallery/05.jpg" alt="image">
 								</div>
 							</div>
 						</div>
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
+						<div class="col-md-6">
+							<div class="gallery-block gallery-img col-md-6">
+								<a href="#" data-featherlight="#content-6">
+									<img src="images/gallery/06.jpg" alt="image">
+								</a>
+								<div id="content-6" class="gallery-lightbox">
+									<img src="images/gallery/06.jpg" alt="image">
+								</div>
+							</div>
+							<div class="gallery-block gallery-img col-md-6">
+								<a href="#" data-featherlight="#content-7">
+									<img src="images/gallery/07.jpg" alt="image">
+								</a>
+								<div id="content-7" class="gallery-lightbox">
+									<img src="images/gallery/07.jpg" alt="image">
+								</div>
+							</div>
+							<div class="gallery-block gallery-img col-md-6">
+								<a href="#" data-featherlight="#content-8">
+									<img src="images/gallery/08.jpg" alt="image">
+								</a>
+								<div id="content-8" class="gallery-lightbox">
+									<img src="images/gallery/08.jpg" alt="image">
+								</div>
+							</div>
+							<div class="gallery-block gallery-img col-md-6">
+								<a href="#" data-featherlight="#content-9">
+									<img src="images/gallery/09.jpg" alt="image">
+								</a>
+								<div id="content-9" class="gallery-lightbox">
+									<img src="images/gallery/09.jpg" alt="image">
+								</div>
+							</div>
+							<div class="gallery-block gallery-img col-md-12">
+								<a href="#" data-featherlight="#content-10">
+									<img src="images/gallery/10.jpg" alt="image">
+								</a>
+								<div id="content-10" class="gallery-lightbox">
+									<img src="images/gallery/10.jpg" alt="image">
+								</div>
+							</div>
+						</div>
+
 					</div>
 					<!-- <div class="gallery-pagination">
 						<ul class="pagination">
@@ -413,31 +254,38 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			</div>
 		</section>
 		
-		<section class="section-video-parallax">
+		<!--<section class="section-video-parallax">
 			<div class="">
-				<!--<div class="section-content">
+				<div class="section-content">
 					<h2>LIVE THERE</h2>
 					<p>Book events from anywhere in 191+ countries and get awesome experience Lorem ipsum dolor sit amet, consectetuer adipiscing elit,</p>
 					<a href="#"><img src="images/play-btn.png" alt="image"></a>
-				</div>-->
+				</div>
 				<div class="pop-vid">
 					<video controls poster="images/vid-cover.jpg">
 						<source src="images/globalgala.mp4" type="video/mp4">
 					</video>
 				</div>
 			</div>
-		</section>
+		</section>-->
 		<section class="section-about">
 			<div class="container">
 				<div class="row">
-					<div class="col-md-12">
-						<h1>About Global Gala</h1>
+					<div class="col-md-6">
+						<h1>About <span>ticket at guru</span></h1>
 						<p>Global Gala is a festival of concerts by Six Stars Events. Global Gala is an established name in the music industry with over 15 years of experience in delivering concerts and high-end gala functions. We have traditionally hosted all our world-class galas at the Grosvenor House 5-star hotel at Park Lane in Central London.</p>
 
 						<p>Our galas always attract the crème de la crème of the Arabian music fraternity who are always more than happy to perform and join our prestigious hall of fame. In addition, celebrities and assorted dignitaries are invariably in attendance at our events. The musicians continually perform live music on stage with their full bands and this gives our guests that authentic experience that we have become synonymous with. On top of great music, we also offer a tantalizing dining experiences that will leave all your gastronomical senses completely satisfied.</p>
 
 						<p>Since we have been organizing events for two almost two decades, we wanted to begin something special this year, we are taking Six Stars Events a notch higher.</p>
+					</div>
+					<div class="col-md-6">
+						<div class="pop-vid">
+							<video controls poster="images/vid-cover.jpg">
+								<source src="images/globalgala.mp4" type="video/mp4">
+							</video>
 						</div>
+					</div>
 				</div>
 			</div>
 		</section>
@@ -445,7 +293,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<section class="section-sponsors" id="partners">
 			<div class="container">
 				<div class="section-content">
-					<h1>Our Sponsors</h1>
+					<h1>Our <span>Sponsors</span></h1>
 					<ul class="row autoplay">
 						<li class="col-sm-3">
 							<a href="#">

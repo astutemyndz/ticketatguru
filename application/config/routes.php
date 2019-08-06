@@ -100,7 +100,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 */
 
-$route['default_controller'] = 'EventController/pjActionEvents';
+$route['default_controller'] = 'EventController/index';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 $route['ajaxCity'] = 'home/ajaxCity';
@@ -121,6 +121,7 @@ $route['event/pjActionSeatsAjax'] = 'EventController/pjActionSeatsAjax';
 $route['event/pjActionSaveSeats'] = 'EventController/pjActionSaveSeats';
 
 $route['event/cart'] = 'EventController/pjActionCart';
+$route['event/list'] = 'EventController/eventList';
 
 
 

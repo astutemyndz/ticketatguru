@@ -5,6 +5,7 @@
 
 class pjAppController extends pjController
 {
+	
 	public $models = array();
 	
 	public $defaultLocale = 'frontend_locale_id';

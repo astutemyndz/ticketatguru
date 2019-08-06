@@ -33,23 +33,41 @@ class pjAdminRoleAcl extends pjAdmin
 	}
 	public function pjActionCreate()
 	{
-		$this->checkLogin();
+		//$this->checkLogin();
 		
-		if ($this->isAdmin())
+		if (App::isSuperAdmin())
 		{
 			if (isset($_POST['role_acl']))
 			{
-				// echo "<pre>";
-				// print_r($this->getPrivileges($_POST));
-				// exit;
-				$id = pjRoleAclModel::factory(array_merge($_POST, $this->getPrivileges($_POST)))->insert()->getInsertId();
-				if ($id !== false && (int) $id > 0)
-				{
-					$err = 'AU03';
-				} else {
-					$err = 'AU04';
+				$roleData = array();
+				$id = NULL;
+				$roleData['is_superadmin'] = 0;
+				$roleId = pjRoleModel::factory(array_merge($_POST, $roleData))->insert()->getInsertId();
+
+				$data = array();
+				$data['role_id'] = $roleId;
+				$data['privileges'] = $_POST['privileges'];
+
+			
+				if(isset($roleId) && !empty($roleId)) {
+					$id = pjRoleAclModel::factory(array_merge($_POST, $this->getPrivileges($data)))->insert()->getInsertId();
 				}
 				
+				
+				if ($id !== false && (int) $id > 0)
+				{
+					$err = 'AP01';
+				} else {
+					$err = 'AP03';
+				}
+				//Refresh Session Roles
+				$pjRoleAclModel = pjRoleAclModel::factory();
+				$roles = $pjRoleAclModel->select("t2.name, t2.path, t2.controller, t1.is_visible, t1.is_create, t1.is_read, t1.is_edit, t1.is_delete")
+										->join('pjModule', 't2.id = t1.id_tk_cbs_modules', 'left outer')
+										->where('t1.id_tk_cbs_roles =', App::getRoleId())
+										->findAll()
+										->getData();
+				App::setSession('roles', $roles);
 				pjUtil::redirect($_SERVER['PHP_SELF'] . "?controller=pjAdminRoleAcl&action=pjActionIndex&err=$err");
 			} else {
 				$this->set('role_arr', pjRoleModel::factory()->orderBy('t1.id ASC')->findAll()->getData());
@@ -120,28 +138,22 @@ class pjAdminRoleAcl extends pjAdmin
 		}
 		exit;
 	}
-	
-	public function pjActionGetUser()
+	*/
+	public function pjActionGetRole()
 	{
 		$this->setAjax(true);
 	
 		if ($this->isXHR())
 		{
-			$pjUserModel = pjUserModel::factory();
+			$pjAdminRoleAcl = pjRoleModel::factory();
 			
 			if (isset($_GET['q']) && !empty($_GET['q']))
 			{
 				$q = pjObject::escapeString($_GET['q']);
-				$pjUserModel->where('t1.email LIKE', "%$q%");
-				$pjUserModel->orWhere('t1.name LIKE', "%$q%");
+				$pjAdminRoleAcl->where('t1.role LIKE', "%$q%");
 			}
-
-			if (isset($_GET['status']) && !empty($_GET['status']) && in_array($_GET['status'], array('T', 'F')))
-			{
-				$pjUserModel->where('t1.status', $_GET['status']);
-			}
-				
-			$column = 'name';
+		
+			$column = 'role';
 			$direction = 'ASC';
 			if (isset($_GET['direction']) && isset($_GET['column']) && in_array(strtoupper($_GET['direction']), array('ASC', 'DESC')))
 			{
@@ -149,7 +161,7 @@ class pjAdminRoleAcl extends pjAdmin
 				$direction = strtoupper($_GET['direction']);
 			}
 
-			$total = $pjUserModel->findCount()->getData();
+			$total = $pjAdminRoleAcl->findCount()->getData();
 			$rowCount = isset($_GET['rowCount']) && (int) $_GET['rowCount'] > 0 ? (int) $_GET['rowCount'] : 10;
 			$pages = ceil($total / $rowCount);
 			$page = isset($_GET['page']) && (int) $_GET['page'] > 0 ? intval($_GET['page']) : 1;
@@ -161,24 +173,25 @@ class pjAdminRoleAcl extends pjAdmin
 
 			$data = array();
 			
-			$data = $pjUserModel->select('t1.id, t1.email, t1.name, t1.created, t1.status, t1.is_active, t1.role_id, t2.role')
-				->join('pjRole', 't2.id=t1.role_id', 'left')
+			$data = $pjAdminRoleAcl->select('t1.id, t1.role, t1.is_superadmin, t1.status')
 				->orderBy("$column $direction")->limit($rowCount, $offset)->findAll()->getData();
 			foreach($data as $k => $v)
 			{
-				$v['created'] = date($this->option_arr['o_date_format'], strtotime($v['created'])) . ', ' . date($this->option_arr['o_time_format'], strtotime($v['created']));
 				$data[$k] = $v;
 			}	
+			// echo "<pre>";
+			// print_r($data);
+			// exit;
 			pjAppController::jsonResponse(compact('data', 'total', 'pages', 'page', 'rowCount', 'column', 'direction'));
 		}
 		exit;
 	}
-	*/
+	
 	public function pjActionIndex()
 	{
 		$this->checkLogin();
 		
-		if ($this->isAdmin())
+		if (App::isSuperAdmin())
 		{
 			$this->appendJs('jquery.datagrid.js', PJ_FRAMEWORK_LIBS_PATH . 'pj/js/');
 			$this->appendJs('pjAdminRoleAcl.js');
@@ -205,37 +218,117 @@ class pjAdminRoleAcl extends pjAdmin
 		}
 		exit;
 	}
-	/*
+	
 	public function pjActionUpdate()
 	{
 		$this->checkLogin();
 		
-		if ($this->isAdmin())
+		if (App::isSuperAdmin())
 		{
-				
-			if (isset($_POST['user_update']))
+			$id = NULL;
+			$response = array();
+			if (isset($_POST['role_acl_update']))
 			{
-				pjUserModel::factory()->where('id', $_POST['id'])->limit(1)->modifyAll($_POST);
+				$role_id = (isset($_POST['role_id'])) ? $_POST['role_id'] : '';
+				pjRoleModel::factory()->where('id =', $role_id)->modifyAll($_POST);
 				
-				pjUtil::redirect(PJ_INSTALL_URL . "admin.php?controller=pjAdminUsers&action=pjActionIndex&err=AU01");
+				
+				if(pjRoleAclModel::factory()->where('id_tk_cbs_roles =', $role_id)->eraseAll())
+				{
+					$response['code'] = 200;
+				} else {
+					$response['code'] = 100;
+				}
+				$priv = $_POST['privileges'];
+				
+				if($response['code'] == 200) {
+					if ($priv) {
+
+						foreach ($priv as $id_modul => $data) {
+							//echo $role_id;
+							$currentPermission = pjRoleAclModel::factory()->where('id_tk_cbs_modules =', $id_modul)->where('id_tk_cbs_roles =', $role_id)->findAll()->getData();
+							// echo "<pre>";
+							// print_r($currentPermission);
+							// exit;
+							$currentPermission = $currentPermission[0];
+							
+							if ($currentPermission) {
+
+								$privilegesArr = [];
+								$privilegesArr['is_visible'] 		= (isset($data['is_visible'])) ? $data['is_visible'] : 0;
+								$privilegesArr['is_create'] 		= (isset($data['is_create'])) ? $data['is_create'] : 0;
+								$privilegesArr['is_read'] 			= (isset($data['is_read'])) ? $data['is_read'] : 0;
+								$privilegesArr['is_edit'] 			= (isset($data['is_edit'])) ? $data['is_edit']: 0;
+								$privilegesArr['is_delete'] 		= (isset($data['is_delete'])) ? $data['is_delete'] : 0;
+
+								pjRoleAclModel::factory()->where('id =', $currentPermission['id'])->modifyAll($privilegesArr);
+								$err = 'AP02';
+							} else {
+								//echo "inserted";
+								$privilegesArr = [];
+								$privilegesArr['is_visible'] 		= (isset($data['is_visible'])) ? $data['is_visible'] : 0;
+								$privilegesArr['is_create'] 		= (isset($data['is_create'])) ? $data['is_create'] : 0;
+								$privilegesArr['is_read'] 			= (isset($data['is_read'])) ? $data['is_read'] : 0;
+								$privilegesArr['is_edit'] 			= (isset($data['is_edit'])) ? $data['is_edit']: 0;
+								$privilegesArr['is_delete'] 		= (isset($data['is_delete'])) ? $data['is_delete'] : 0;
+								$privilegesArr['id_tk_cbs_roles'] 	= $role_id;
+								$privilegesArr['id_tk_cbs_modules'] = $id_modul;
+								
+								pjRoleAclModel::factory($privilegesArr)->insert();
+								$err = 'AP02';
+							}
+							
+						}
+						
+					}
+			
+					//Refresh Session Roles
+					if ($role_id == App::getRoleId()) {
+
+						$pjRoleAclModel = pjRoleAclModel::factory();
+						$roles = $pjRoleAclModel->select("t2.name, t2.path, t1.is_visible, t1.is_create, t1.is_read, t1.is_edit, t1.is_delete")
+													->join('pjModule', 't1.id_tk_cbs_modules = t2.id', 'left outer')
+													->where('id_tk_cbs_roles =', App::getRoleId())
+													->findAll()
+													->getData();
+						App::setSession($this->defaultUser['user_privileges_roles'], $roles);
+			
+					}
+					//$id = pjRoleAclModel::factory(array_merge($_POST, $this->getPrivileges($_POST)))->insert()->getInsertId();
+					// if ($id !== false && (int) $id > 0)
+					// {
+					// 	$err = 'AP02';
+					// } else {
+					// 	$err = 'AP04';
+					// }
+				}
+			
+				pjUtil::redirect(PJ_INSTALL_URL . "admin.php?controller=pjAdminRoleAcl&action=pjActionIndex&err=$err");
 				
 			} else {
-				$arr = pjUserModel::factory()->find($_GET['id'])->getData();
+				if(isset($_GET['id'])) {
+					$id = $_GET['id'];
+				}
+				$arr = pjRoleModel::factory()->find($_GET['id'])->getData();
+
 				if (count($arr) === 0)
 				{
-					pjUtil::redirect(PJ_INSTALL_URL. "admin.php?controller=pjAdminUsers&action=pjActionIndex&err=AU08");
+					pjUtil::redirect(PJ_INSTALL_URL. "admin.php?controller=pjAdminRoleAcl&action=pjActionIndex&err=AP08");
 				}
 				$this->set('arr', $arr);
+			
+				$this->set('id', $id);
 				
 				$this->set('role_arr', pjRoleModel::factory()->orderBy('t1.id ASC')->findAll()->getData());
-				
+				$this->set('modules', pjModuleModel::factory()->orderBy('t1.id ASC')->findAll()->getData());
+			
 				$this->appendJs('jquery.validate.min.js', PJ_THIRD_PARTY_PATH . 'validate/');
-				$this->appendJs('pjAdminUsers.js');
+				$this->appendJs('pjAdminRoleAcl.js');
 			}
 		} else {
 			$this->set('status', 2);
 		}
 	}
-	*/
+	
 }
 ?>

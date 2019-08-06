@@ -24,10 +24,7 @@ class pjAdminGroups extends pjAdmin
 	
 	public function pjActionCreate()
 	{
-		$this->checkLogin();
 		
-		if ($this->isAdmin())
-		{
 			if (isset($_POST['group_create']))
 			{
 				// echo "<pre>"; print_r($_POST);
@@ -45,9 +42,7 @@ class pjAdminGroups extends pjAdmin
 				$this->appendJs('additional-methods.js', PJ_THIRD_PARTY_PATH . 'validate/');
 				$this->appendJs('pjAdminGroups.js');
 			}
-		} else {
-			$this->set('status', 2);
-		}
+		
 	}
 	
 	public function pjActionDeleteGroup()
@@ -78,21 +73,20 @@ class pjAdminGroups extends pjAdmin
 	
 		if ($this->isXHR())
 		{
-			if ($this->isAdmin())
-			{
+			
 				if (isset($_POST['record']) && count($_POST['record']) > 0)
 				{
 					pjGroupModel::factory()->reset()->whereIn('id', $_POST['record'])->eraseAll();
 					pjGroupSubscriberModel::factory()->whereIn('group_id', $_POST['record'])->eraseAll();
 				}
-			}
+			
 		}
 		exit;
 	}
 	
 	public function pjActionExportGroup()
 	{
-		$this->checkLogin();
+		
 		
 		if (isset($_POST['record']) && is_array($_POST['record']))
 		{
@@ -161,16 +155,11 @@ class pjAdminGroups extends pjAdmin
 	
 	public function pjActionIndex()
 	{
-		$this->checkLogin();
 		
-		if ($this->isAdmin())
-		{
 			$this->appendJs('jquery.datagrid.js', PJ_FRAMEWORK_LIBS_PATH . 'pj/js/');
 			$this->appendJs('pjAdminGroups.js');
 			$this->appendJs('admin.php?controller=pjAdmin&action=pjActionMessages&page=list', PJ_INSTALL_URL, true);
-		} else {
-			$this->set('status', 2);
-		}
+		
 	}
 	
 	public function pjActionSaveGroup()
@@ -216,10 +205,7 @@ class pjAdminGroups extends pjAdmin
 	
 	public function pjActionUpdate()
 	{
-		$this->checkLogin();
 		
-		if ($this->isAdmin())
-		{
 			$pjGroupModel = pjGroupModel::factory();
 			if (isset($_POST['group_update']))
 			{
@@ -263,9 +249,7 @@ class pjAdminGroups extends pjAdmin
 				$this->appendJs('additional-methods.min.js', PJ_THIRD_PARTY_PATH . 'validate/');
 				$this->appendJs('pjAdminGroups.js');
 			}
-		} else {
-			$this->set('status', 2);
-		}
+	
 	}
 }
 ?>

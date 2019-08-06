@@ -8,10 +8,7 @@ class pjAdminMessages extends pjAdmin
 {
 	public function pjActionCreate()
 	{
-		$this->checkLogin();
-		
-		if ($this->isAdmin())
-		{
+	
 			if (isset($_POST['message_create']))
 			{
 				$pjMessageModel = pjMessageModel::factory();
@@ -68,9 +65,7 @@ class pjAdminMessages extends pjAdmin
 				$this->appendJs('additional-methods.js', PJ_THIRD_PARTY_PATH . 'validate/');
 				$this->appendJs('pjAdminMessages.js');
 			}
-		} else {
-			$this->set('status', 2);
-		}
+		
 	}
 	
 	public function pjActionDeleteMessage()
@@ -80,8 +75,7 @@ class pjAdminMessages extends pjAdmin
 		if ($this->isXHR())
 		{
 			$response = array();
-			if ($this->isAdmin())
-			{
+			
 				if (pjMessageModel::factory()->setAttributes(array('id' => $_GET['id']))->erase()->getAffectedRows() == 1)
 				{
 					$pjFileModel = pjFileModel::factory();
@@ -101,7 +95,7 @@ class pjAdminMessages extends pjAdmin
 				} else {
 					$response['code'] = 100;
 				}
-			}
+			
 			pjAppController::jsonResponse($response);
 		}
 		exit;
@@ -113,8 +107,7 @@ class pjAdminMessages extends pjAdmin
 	
 		if ($this->isXHR())
 		{
-			if ($this->isAdmin())
-			{
+			
 				if (isset($_POST['record']) && count($_POST['record']) > 0)
 				{
 					pjMessageModel::factory()->reset()->whereIn('id', $_POST['record'])->eraseAll();
@@ -132,14 +125,14 @@ class pjAdminMessages extends pjAdmin
 					}
 					$pjFileModel->reset()->whereIn('message_id', $_POST['record'])->eraseAll();
 				}
-			}
+			
 		}
 		exit;
 	}
 	
 	public function pjActionExportMessage()
 	{
-		$this->checkLogin();
+		
 		
 		if (isset($_POST['record']) && is_array($_POST['record']))
 		{
@@ -156,17 +149,14 @@ class pjAdminMessages extends pjAdmin
 	
 	public function pjActionIndex()
 	{
-		$this->checkLogin();
 		
-		if ($this->isAdmin())
-		{
+		
+		
 			$this->appendJs('jquery.datagrid.js', PJ_FRAMEWORK_LIBS_PATH . 'pj/js/');
 			$this->appendJs('jquery.validate.min.js', PJ_THIRD_PARTY_PATH . 'validate/');
 			$this->appendJs('pjAdminMessages.js');
 			$this->appendJs('admin.php?controller=pjAdmin&action=pjActionMessages&page=message', PJ_INSTALL_URL, true);
-		} else {
-			$this->set('status', 2);
-		}
+		
 	}
 	
 	public function pjActionGetMessage()
@@ -264,10 +254,7 @@ class pjAdminMessages extends pjAdmin
 	
 	public function pjActionUpdate()
 	{
-		$this->checkLogin();
 		
-		if ($this->isAdmin())
-		{
 			$pjMessageModel = pjMessageModel::factory();
 			if (isset($_POST['message_update']))
 			{
@@ -341,17 +328,12 @@ class pjAdminMessages extends pjAdmin
 				$this->appendJs('additional-methods.js', PJ_THIRD_PARTY_PATH . 'validate/');
 				$this->appendJs('pjAdminMessages.js');
 			}
-		} else {
-			$this->set('status', 2);
-		}
+	
 	}
 	
 	public function pjActionSend()
 	{
-		$this->checkLogin();
 		
-		if ($this->isAdmin())
-		{
 			if (isset($_POST['message_send']))
 			{
 				$pjSubscriberModel = pjSubscriberModel::factory();
@@ -512,9 +494,7 @@ class pjAdminMessages extends pjAdmin
 				$this->appendJs('jquery.validate.min.js', PJ_THIRD_PARTY_PATH . 'validate/');
 				$this->appendJs('pjAdminMessages.js');
 			}
-		} else {
-			$this->set('status', 2);
-		}
+		
 	}
 	
 	public function pjActionGetQueue()
@@ -569,10 +549,7 @@ class pjAdminMessages extends pjAdmin
 	
 	public function pjActionPreview()
 	{
-		$this->checkLogin();
 		
-		if ($this->isAdmin())
-		{
 			$arr = pjMessageModel::factory()->find($_GET['id'])->getData();
 			if (count($arr) === 0)
 			{
@@ -584,9 +561,7 @@ class pjAdminMessages extends pjAdmin
 			$this->set('file_arr', $file_arr);
 			
 			$this->appendJs('pjAdminMessages.js');
-		} else {
-			$this->set('status', 2);
-		}
+		
 	}
 	
 	public function pjActionDeleteFile()

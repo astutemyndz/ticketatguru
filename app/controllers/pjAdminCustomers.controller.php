@@ -213,10 +213,7 @@ class pjAdminCustomers extends pjAdmin
 	public function pjActionCreate()
 	{
 		$pjCustomerModel = pjCustomerModel::factory();
-		$this->checkLogin();
 		
-		if ($this->isAdmin())
-		{
 			$email 			= (isset($_POST['email'])) ? $_POST['email'] : '';
 			$password 		= (isset($_POST['password'])) ? $_POST['password'] : '';
 			$first_name 	= (isset($_POST['first_name'])) ? $_POST['first_name'] : '';
@@ -254,9 +251,7 @@ class pjAdminCustomers extends pjAdmin
 				$this->appendJs('jquery.validate.min.js', PJ_THIRD_PARTY_PATH . 'validate/');
 				$this->appendJs('pjAdminCustomers.js');
 			}
-		} else {
-			$this->set('status', 2);
-		}
+	
 	}
 	
 	public function pjActionDeleteUser()
@@ -301,7 +296,7 @@ class pjAdminCustomers extends pjAdmin
 	
 	public function pjActionExportUser()
 	{
-		$this->checkLogin();
+		
 		
 		if (isset($_POST['record']) && is_array($_POST['record']))
 		{
@@ -373,17 +368,8 @@ class pjAdminCustomers extends pjAdmin
 	public function pjActionIndex()
 	{
 		
-		$this->checkLogin();
-		
-		if ($this->isAdmin())
-		{
-			
-			$this->appendJs('jquery.datagrid.js', PJ_FRAMEWORK_LIBS_PATH . 'pj/js/');
-			$this->appendJs('pjAdminCustomers.js');
-		} else {
-			
-			$this->set('status', 2);
-		}
+		$this->appendJs('jquery.datagrid.js', PJ_FRAMEWORK_LIBS_PATH . 'pj/js/');
+		$this->appendJs('pjAdminCustomers.js');
 	}
 	
 	public function pjActionSetActive()
@@ -461,10 +447,7 @@ class pjAdminCustomers extends pjAdmin
 	
 	public function pjActionUpdate()
 	{
-		$this->checkLogin();
-		
-		if ($this->isAdmin())
-		{
+	
 				
 			if (isset($_POST['user_update']))
 			{
@@ -485,9 +468,7 @@ class pjAdminCustomers extends pjAdmin
 				$this->appendJs('jquery.validate.min.js', PJ_THIRD_PARTY_PATH . 'validate/');
 				$this->appendJs('pjAdminCustomers.js');
 			}
-		} else {
-			$this->set('status', 2);
-		}
+		
 	}
 }
 ?>

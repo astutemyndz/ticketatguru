@@ -1100,8 +1100,10 @@ body{
 	float:left;
 	position:relative;
 	border: 1px solid gray;
-
+	max-height:350px;
+	height:100%;
 	margin-left: 10px;
+	overflow:hidden;
 }
 .section-upcoming-events .section-content ul li img{
 	width: 100%;
@@ -2065,10 +2067,12 @@ body{
 	line-height:29px;
 	margin:0 0 20px;
 }
-.pop-vid{}
+.pop-vid{
+	padding-top:60px;
+}
 .pop-vid video{
-	width: 80%;
-	height: 500px;
+	width: 100%;
+	height: auto;
 	object-fit: fill;
 	display: block;
 	margin: 0 auto;
@@ -2083,17 +2087,30 @@ body{
 	background:#fff
 }
 .section-about {
-    padding: 50px 0 0;
+    padding: 70px 0 0;
+}
+.section-about p{
+	font-size: 15px;
+    line-height: 22px;
+    padding-bottom: 10px;
+    margin: 0;
+    text-align: justify;
 }
 .section-about h1, .section-content h1{
-	color: #ff6600;
+	color: #373737;
     font-size: 33px;
-	padding-bottom: 30px;
+	padding-bottom: 20px;
     margin: 0;
-    text-align: center;
-    text-transform: uppercase;
-	font-family: "Montserrat-Bold";
+    text-align: left;
+	font-family: 'Montserrat', sans-serif;
+	font-weight:400;
 }
+.section-about h1 span, .section-content h1 span{
+	color:#ff6600;
+	font-weight:600;
+	text-transform:capitalize;
+}
+
 .section-sponsors .autoplay{}
 .section-sponsors .slick-prev {
 	font-size: 0;
@@ -2107,7 +2124,7 @@ body{
     outline: none;
     position: absolute;
     left: -5%;
-    top: 40px;
+    top: 35px;
 	z-index: 9;
     border-radius: 100%;
     padding: 25px;
@@ -2131,6 +2148,17 @@ body{
 }
 .section-sponsors .autoplay li{
 	max-height: 120px;
+	border: 1px solid #dcdcdc;
+	padding:15px;
+    margin: 0 10px;
+	display: flex;
+    justify-content: center;
+    align-items: center;
+	outline:none;
+	cursor:pointer;
+}
+.section-sponsors .autoplay li a{
+	outline:none;
 }
 /*--------------------------------------------------------------
 	Section Newsletter
@@ -4350,7 +4378,9 @@ body{
 }
 
 .section-gallery  .gallery-list .gallery-img{
-	/*margin:0 0 30px;*/
+}
+.gallery-block{
+	margin: 0 0 30px;
 }
 
 .section-gallery  .gallery-list .gallery-img a{
@@ -6900,5 +6930,116 @@ a.ticket-left-info.active {
   100%{
 	transform: translateY(0);
   }
+}
+/**************************************************************
+				Event list page---05-08-19
+**************************************************************/
+
+.event-list{}
+.event-list-row {
+    padding: 0 0 30px;
+	margin: 0 0 50px;
+	border-bottom: 1px solid #bdbdbd;
+}
+.event-list-row:after, .event-list-row:before{
+	content:"";
+	display:table;
+	clear:both;
+}
+
+.event-list{
+	padding:60px 0 0;
+	overflow:hidden;
+}
+.event-list-img{
+	overflow:hidden;
+	margin-bottom: 50px;
+	box-shadow:0px 0px 10px 1px rgba(0, 0, 0, 0.75);
+}
+.event-list-img img{
+	transition: all 0.3s;
+}
+.event-list-img img:hover{
+	transform:scale(1.1);
+}
+.event-list-info{}
+.event-list-info a{
+	display: block;
+    font-size: 30px;
+    color: #f60;
+    padding-bottom: 10px;
+
+}
+
+.event-list-info p{
+	font-size: 14px;
+    color: #505050;
+    line-height: 20px;
+    padding: 5px 0 5px 0px;
+    margin: 0;
+    text-align: justify;
+}
+.event-list-info h5{
+	font-family:'Montserrat', sans-serif;
+	display:block;
+	font-size:16px;
+	color:#ff6600;
+	padding: 0 0 20px 0;
+	font-weight: 600;
+}
+.event-list-info h5 span{
+	    font-size: 16px;
+    color: #4e4e4e;
+    border-left: 1px solid #4e4e4e;
+    padding: 5px 0 5px 10px;
+    margin: 0 0 0 10px;
+	font-weight: 500;
+
+}
+.event-list-info h5 img{
+	margin-right:15px;
+}
+.event-list-info .event-booking a{
+	font-family: 'Montserrat', sans-serif;
+    display: block;
+    max-width: 250px;
+    width: 100%;
+    height: 45px;
+    background: #ff6600;
+    color: #fff;
+    text-align: center;
+    padding: 14px 0 0;
+    font-size: 18px;
+    text-transform: uppercase;
+    font-weight: 400;
+	border-radius: 50px;
+    margin: 30px 0px 15px;
+}
+.page-nav{
+	text-align: right;
+}
+.page-nav .pagination>.active>a, .page-nav .pagination>.active>a:hover{
+	z-index: 3;
+    color: #fff;
+    cursor: default;
+    background-color: #ff6600;
+    border-color: #ff6600;
+}
+.page-nav .pagination>li>a{
+	border-color: #ff6600;
+	color: #f60;
+}
+.page-nav .pagination>li>a:hover, .page-nav .pagination>li>a:focus{
+	background-color:rgba(255, 102, 0, 0.6);
+	border-color: #ff6600;
+	color: #fff;
+}
+.page-nav .pagination>.disabled>a, .page-nav .pagination>.disabled>a:hover, .page-nav .pagination>.disabled>a:focus{
+	background-color:rgba(255, 102, 0, 0.6);
+	border-color: #ff6600;
+	color: #fff;
+}
+.page-nav .pagination>li:first-child>a, .page-nav .pagination>li:last-child>a{
+	border-radius:0;
 }
 

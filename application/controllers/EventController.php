@@ -35,12 +35,22 @@ class EventController extends App_Controller
 		return ($this->getSession('hide')) ? (int) $this->getSession('locale') : 0;
 	}
 		
-	
+	public function index() {
+		$this->data = $this->pjActionEvents();
+		echo "<pre>";
+		print_r($this->data);
+		exit;
+ 		$this->load->view('frontend/layout/head', $this->data);
+        $this->load->view('frontend/layout/header');
+        $this->load->view('frontend/pages/home', $this->data);
+		$this->load->view('frontend/layout/footer');
+	}
 	/**
 	 * Get all events
 	 * @return Array
 	 */
-	public function pjActionEvents()
+
+	private function pjActionEvents()
 	{
 		$ts = time();
 		$hash_date = date('Y-m-d', $ts);
@@ -83,7 +93,8 @@ class EventController extends App_Controller
 				->findAll()
 				->getData();
 		$grid = $this->getShowsInGrid($show_arr);
-		
+		// echo "<pre>";
+		// print_r($show_arr);
 		$time_arr = array();
 		$showTimes = array();
 		foreach($grid['show_arr'] as $eventId => $v)
@@ -98,7 +109,8 @@ class EventController extends App_Controller
 					$showTimes[]  = array(
 						'showTime' => $showTime,
 						'dataTime' => $v[$l],
-						'event' => $this->pjGetEvent($eventId)
+						'event' => $this->pjGetEvent($eventId),
+						'Price' => $this->pjGetEventPrice($show_arr, $eventId),
 					);
 				}  else {
 					$showTimes = [];
@@ -123,9 +135,100 @@ class EventController extends App_Controller
 		$this->data['hashDate'] 	= $today;
 		$this->data['title'] 		= 'Home';
 	
+       
+		
+		return $this->data;
+	}
+
+
+
+	public function eventList(){
+		$ts = time();
+		$hash_date = date('Y-m-d', $ts);
+		
+		$from_ts = $ts;
+		
+		if(isset($_GET['from_date']) && !empty($_GET['from_date']))
+		{
+			$from_ts = strtotime(pjUtil::formatDate($_GET['from_date'], $this->option_arr['o_date_format']));
+		}
+		$end_ts = $from_ts + (86400 * 7);
+		
+		if(isset($_GET['date']) && !empty($_GET['date']))
+		{
+			$hash_date = pjUtil::formatDate($_GET['date'], $this->option_arr['o_date_format']);
+		}
+		if(strtotime($hash_date) < $from_ts || strtotime($hash_date) > $end_ts)
+		{
+			$hash_date = date('Y-m-d', $from_ts);
+		}
+		$pjEventModel = pjEventModel::factory();
+        $pjShowModel = pjShowModel::factory();
+     
+		$pjEventModel->where("t1.id IN(SELECT TS.event_id FROM `".$pjShowModel->getTable()."` AS TS WHERE DATE_FORMAT(TS.date_time,'%Y-%m-%d') = '".$hash_date."')");
+		//$pjShowModel->where("(DATE_FORMAT(t1.date_time,'%Y-%m-%d') = '$hash_date') AND (t1.venue_id IN (SELECT TV.id FROM `".pjVenueModel::factory()->getTable()."` AS TV WHERE TV.status='T') )");
+		
+		$arr = $pjEventModel
+			->join('pjMultiLang', "t2.model='pjEvent' AND t2.foreign_id=t1.id AND t2.field='title' AND t2.locale='".$this->getLocaleId()."'", 'left outer')
+			->join('pjMultiLang', "t3.model='pjEvent' AND t3.foreign_id=t1.id AND t3.field='description' AND t3.locale='".$this->getLocaleId()."'", 'left outer')
+			->select('t1.*, t2.content as title, t3.content as description')
+			->where('status', 'T')
+			->findAll()
+			->getData();
+        
+       // $_arr = $pjShowModel->orderBy("t1.date_time ASC")->findAll()->getData();
+	   $show_arr = $pjShowModel
+				->where("(DATE_FORMAT(t1.date_time,'%Y-%m-%d') = '$hash_date') AND (t1.venue_id IN (SELECT TV.id FROM `".pjVenueModel::factory()->getTable()."` AS TV WHERE TV.status='T') )")
+				->where("t1.venue_id IN (SELECT TV.id FROM `".pjVenueModel::factory()->getTable()."` AS TV WHERE TV.status='T')")
+				->orderBy("t1.date_time ASC")
+				->findAll()
+				->getData();
+			//echo "<pre>"; print_r($show_arr);	
+		$grid = $this->getShowsInGrid($show_arr);
+		// echo "<pre>"; print_r($grid);
+		$time_arr = array();
+		$showTimes = array();
+		foreach($grid['show_arr'] as $eventId => $v)
+		{
+			for($l=0; $l < count($v); $l++) {
+				$time_arr[] = $v[$l];
+				$date_time_iso = $hash_date . ' ' . $v[$l] . ':00';
+				$date_time_ts = strtotime($hash_date . ' ' . $v[$l] . ':00');
+				$showTime = date($this->option_arr['o_time_format'], strtotime($date_time_iso));
+				
+				if($date_time_ts >= strtotime(date('Y-m-d H:00')) + ($this->option_arr['o_booking_earlier'] * 60 )) {
+					$showTimes[]  = array(
+						'showTime' => $showTime,
+						'dataTime' => $v[$l],
+						'event' => $this->pjGetEvent($eventId)
+					);
+				}  else {
+					$showTimes = [];
+				}
+			}
+		}
+		// echo "<pre>"; print_r($grid);
+		$events = array();
+		foreach($arr as $event) {
+			$events[] = array(
+				'event' => $event,
+				'shows' => $this->pjShowDatesByEventId($event['id']),
+				'showTimes' => $showTimes
+			); 
+		}
+	
+		$this->data['showTimes'] 	= (count($showTimes) > 0) ? $showTimes : [];
+		$this->data['events'] 		= $events;
+		$ts 						= time();
+		$today 						= date('Y-m-d', $ts);
+		
+		$this->data['today'] 		= $today;
+		$this->data['hashDate'] 	= $today;
+		$this->data['title'] 		= 'Event Lists';
+	
         $this->load->view('frontend/layout/head', $this->data);
         $this->load->view('frontend/layout/header');
-        $this->load->view('frontend/pages/home', $this->data);
+        $this->load->view('frontend/pages/event/event_list', $this->data);
         $this->load->view('frontend/layout/footer');
 	}
 	private function pjGetEvent($id) {
@@ -137,6 +240,18 @@ class EventController extends App_Controller
 				->find($id)
 				->getData();
 			return $arr;
+	}
+	private function pjGetEventPrice($show_arr, $id) {
+		$price = 0;
+		if(count($show_arr) > 0) {
+			foreach ($show_arr as $value) {
+				if($value['event_id'] == $id) {
+					$price = $value['price'];
+					break;
+				}
+			}
+		}
+		return $price;
 	}
 	private function pjShowDatesByEventId($id) {
 		$pjShowModel = pjShowModel::factory();
@@ -163,6 +278,7 @@ class EventController extends App_Controller
 		return $show_date_arr;
 		
 	}
+	
 	
 	public function pjActionDetails($id)
 	{

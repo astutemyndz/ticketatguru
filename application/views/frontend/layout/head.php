@@ -1,4 +1,6 @@
-<head>
+<!DOCTYPE html>
+<html lang="en">
+	<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,6 +12,7 @@
     <!-- Latest compiled and minified CSS -->   
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
     <link rel="stylesheet" href="<?php echo base_url();?>css/bootstrap.min.css">
     <link rel="stylesheet" href="<?php echo base_url();?>css/bootstrap-select.min.css">
@@ -41,3 +44,4 @@
 	<script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 
 </head>
+<body>

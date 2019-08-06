@@ -10,10 +10,7 @@ class pjAdminVideo extends pjAdmin
 	/***********Adding function*************/
     public function pjActionCreate()
 	{
-		$this->checkLogin();
 		
-		if ($this->isAdmin() || $this->isEditor())
-		{
 
 			$post_max_size = pjUtil::getPostMaxSize();
 			if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_SERVER['CONTENT_LENGTH']) && (int) $_SERVER['CONTENT_LENGTH'] > $post_max_size)
@@ -157,9 +154,7 @@ class pjAdminVideo extends pjAdmin
 				$this->appendJs('tinymce.min.js', PJ_THIRD_PARTY_PATH . 'tinymce/');
 				$this->appendJs('pjAdminVideo.js');
 			}
-		} else {
-			$this->set('status', 2);
-		}
+		
 	}
 	/***********Ajax Fetching function*************/
 	public function pjActionGetVideo()
@@ -214,15 +209,10 @@ class pjAdminVideo extends pjAdmin
 	/***********Call List Page*************/
 	public function pjActionIndex()
 	{
-		$this->checkLogin();
 		
-		if ($this->isAdmin() || $this->isEditor())
-		{
 			$this->appendJs('jquery.datagrid.js', PJ_FRAMEWORK_LIBS_PATH . 'pj/js/');
 			$this->appendJs('pjAdminVideo.js');
-		} else {
-			$this->set('status', 2);
-		}
+	
 	}
 	/***********Ajax Change Status function*************/
 	public function pjActionSaveVideo()
@@ -246,10 +236,7 @@ class pjAdminVideo extends pjAdmin
 	/***********Edit And Update function*************/
 	public function pjActionUpdate()
 	{
-		$this->checkLogin();
 		
-		if ($this->isAdmin() || $this->isEditor())
-		{
 			$post_max_size = pjUtil::getPostMaxSize();
 			if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_SERVER['CONTENT_LENGTH']) && (int) $_SERVER['CONTENT_LENGTH'] > $post_max_size)
 			{
@@ -411,9 +398,7 @@ class pjAdminVideo extends pjAdmin
 				$this->appendJs('tinymce.min.js', PJ_THIRD_PARTY_PATH . 'tinymce/');
 				$this->appendJs('pjAdminVideo.js');
 			}
-		} else {
-			$this->set('status', 2);
-		}
+		
 	}
 
 	/*******Only Delete image from edit page********/

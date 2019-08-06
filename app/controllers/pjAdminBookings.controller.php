@@ -141,10 +141,7 @@ class pjAdminBookings extends pjAdmin
 	
 	public function pjActionIndex()
 	{
-		$this->checkLogin();
 		
-		if ($this->isAdmin() || $this->isEditor())
-		{
 			$event_arr = pjEventModel::factory()
 				->join('pjMultiLang', "t2.model='pjEvent' AND t2.foreign_id=t1.id AND t2.field='title' AND t2.locale='".$this->getLocaleId()."'", 'left outer')
 				->select(" t1.*, t2.content as title")
@@ -158,14 +155,12 @@ class pjAdminBookings extends pjAdmin
 			$this->appendCss('chosen.css', PJ_THIRD_PARTY_PATH . 'chosen/');
 			$this->appendJs('jquery.datagrid.js', PJ_FRAMEWORK_LIBS_PATH . 'pj/js/');
 			$this->appendJs('pjAdminBookings.js');
-		} else {
-			$this->set('status', 2);
-		}
+		
 	}
 	
 	public function pjActionExportBooking()
 	{
-		$this->checkLogin();
+		
 		
 		if (isset($_POST['record']) && is_array($_POST['record']))
 		{
@@ -182,10 +177,7 @@ class pjAdminBookings extends pjAdmin
 	
 	public function pjActionCreate()
 	{
-		$this->checkLogin();
 		
-		if ($this->isAdmin() || $this->isEditor())
-		{
 			$pjEventModel = pjEventModel::factory();
 			
 			if (isset($_POST['booking_create']))
@@ -380,17 +372,14 @@ class pjAdminBookings extends pjAdmin
 				$this->appendJs('jquery.validate.min.js', PJ_THIRD_PARTY_PATH . 'validate/');
 				$this->appendJs('pjAdminBookings.js');
 			}
-		} else {
-			$this->set('status', 2);
-		}
+		
 	}
 	
 	public function pjActionUpdate()
 	{
-		$this->checkLogin();
 		
-		if ($this->isAdmin() || $this->isEditor())
-		{
+		
+		
 			$pjBookingModel = pjBookingModel::factory();
 			$pjEventModel = pjEventModel::factory();
 
@@ -666,7 +655,7 @@ class pjAdminBookings extends pjAdmin
 				
 				$this->set('arr', $booking);
 			}
-		}
+		
 	}
 	
 	public function pjActionResend()
@@ -775,10 +764,7 @@ class pjAdminBookings extends pjAdmin
 	
 	public function pjActionBarcode()
 	{
-		$this->checkLogin();
 		
-		if ($this->isAdmin() || $this->isEditor())
-		{
 			if(isset($_POST['read_barcode']))
 			{
 				$ticket_arr = pjBookingTicketModel::factory()
@@ -809,9 +795,7 @@ class pjAdminBookings extends pjAdmin
 			}
 			
 			$this->appendJs('pjAdminBookings.js');
-		} else {
-			$this->set('status', 2);
-		}
+		
 	}
 	
 	public function pjActionSetUseTicket()

@@ -74,15 +74,15 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 			
 			var $grid = $("#grid").datagrid({
 				buttons: [{type: "edit", url: "admin.php?controller=pjAdminRoleAcl&action=pjActionUpdate&id={:id}"},
-				          {type: "delete", url: "admin.php?controller=pjAdminRoleAcl&action=pjActionDeleteUser&id={:id}", beforeShow: onBeforeShow}
+				          
 				          ],
 				columns: [{text: myLabel.id, type: "text", sortable: true, editable: true},
-				          {text: myLabel.name, type: "text", sortable: true, editable: true},
+				          {text: myLabel.role, type: "text", sortable: true, editable: true},
 				          //{text: myLabel.superAdmin, type: "text", sortable: true, editable: true},
 				          ],
-				dataUrl: "admin.php?controller=pjAdminRoleAcl&action=pjActionGetUser",
+				dataUrl: "admin.php?controller=pjAdminRoleAcl&action=pjActionGetRole",
 				dataType: "json",
-				fields: ['id', 'name'],
+				fields: ['id', 'role'],
 				paginator: {
 					actions: [
 					   {text: myLabel.delete_selected, url: "admin.php?controller=pjAdminRoleAcl&action=pjActionDeleteUserBulk", render: true, confirmation: myLabel.delete_confirmation},
@@ -114,7 +114,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 				q: ""
 			});
 			$grid.datagrid("option", "cache", cache);
-			$grid.datagrid("load", "admin.php?controller=pjAdminRoleAcl&action=pjActionGetUser", "name", "ASC", content.page, content.rowCount);
+			$grid.datagrid("load", "admin.php?controller=pjAdminRoleAcl&action=pjActionRole", "name", "ASC", content.page, content.rowCount);
 			return false;
 		}).on("click", ".btn-filter", function (e) {
 			if (e && e.preventDefault) {
@@ -129,7 +129,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 			obj[$this.data("column")] = $this.data("value");
 			$.extend(cache, obj);
 			$grid.datagrid("option", "cache", cache);
-			$grid.datagrid("load", "admin.php?controller=pjAdminRoleAcl&action=pjActionGetUser", "name", "ASC", content.page, content.rowCount);
+			$grid.datagrid("load", "admin.php?controller=pjAdminRoleAcl&action=pjActionGetRole", "name", "ASC", content.page, content.rowCount);
 			return false;
 		}).on("click", ".pj-status-1", function (e) {
 			if (e && e.preventDefault) {
@@ -143,7 +143,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 			$.post("admin.php?controller=pjAdminRoleAcl&action=pjActionSetActive", {
 				id: $(this).closest("tr").data("object")['id']
 			}).done(function (data) {
-				$grid.datagrid("load", "admin.php?controller=pjAdminRoleAcl&action=pjActionGetUser");
+				$grid.datagrid("load", "admin.php?controller=pjAdminRoleAcl&action=pjActionGetRole");
 			});
 			return false;
 		}).on("submit", ".frm-filter", function (e) {
@@ -157,7 +157,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 				q: $this.find("input[name='q']").val()
 			});
 			$grid.datagrid("option", "cache", cache);
-			$grid.datagrid("load", "admin.php?controller=pjAdminRoleAcl&action=pjActionGetUser", "id", "ASC", content.page, content.rowCount);
+			$grid.datagrid("load", "admin.php?controller=pjAdminRoleAcl&action=pjActionGetRole", "id", "ASC", content.page, content.rowCount);
 			return false;
 		});
 	});

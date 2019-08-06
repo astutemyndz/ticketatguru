@@ -13,7 +13,8 @@ class pjRoleModel extends pjAppModel
 	protected $schema = array(
 		array('name' => 'id', 'type' => 'tinyint', 'default' => ':NULL'),
 		array('name' => 'role', 'type' => 'varchar', 'default' => ':NULL'),
-		array('name' => 'status', 'type' => 'enum', 'default' => 'T')
+		array('name' => 'status', 'type' => 'enum', 'default' => 'T'),
+		array('name' => 'is_superadmin', 'type' => 'tinyint', 'default' => ':NULL')
 	);
 	
 	public static function factory($attr=array())

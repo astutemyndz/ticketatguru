@@ -1,4 +1,5 @@
 <?php
+
 if (isset($tpl['status']))
 {
 	$status = __('status', true);
@@ -9,6 +10,7 @@ if (isset($tpl['status']))
 			break;
 	}
 }else{
+	
 	?>
 	<div class="dashboard_header">
 		<div class="item">

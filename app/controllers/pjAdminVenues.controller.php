@@ -28,10 +28,7 @@ class pjAdminVenues extends pjAdmin
     
 	public function pjActionCreate()
 	{
-		$this->checkLogin();
-		
-		if ($this->isAdmin() || $this->isEditor())
-		{
+	
 			$post_max_size = pjUtil::getPostMaxSize();
 			if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_SERVER['CONTENT_LENGTH']) && (int) $_SERVER['CONTENT_LENGTH'] > $post_max_size)
 			{
@@ -144,9 +141,7 @@ class pjAdminVenues extends pjAdmin
 				$this->appendCss('jquery.tipsy.css', PJ_THIRD_PARTY_PATH . 'tipsy/');
 				$this->appendJs('pjAdminVenues.js');
 			}
-		} else {
-			$this->set('status', 2);
-		}
+		
 	}
 	
 	public function pjActionDeleteVenue()
@@ -190,7 +185,7 @@ class pjAdminVenues extends pjAdmin
 	
 	public function pjActionExportVenue()
 	{
-		$this->checkLogin();
+		
 		
 		if (isset($_POST['record']) && is_array($_POST['record']))
 		{
@@ -262,15 +257,10 @@ class pjAdminVenues extends pjAdmin
 	
 	public function pjActionIndex()
 	{
-		$this->checkLogin();
 		
-		if ($this->isAdmin() || $this->isEditor())
-		{
 			$this->appendJs('jquery.datagrid.js', PJ_FRAMEWORK_LIBS_PATH . 'pj/js/');
 			$this->appendJs('pjAdminVenues.js');
-		} else {
-			$this->set('status', 2);
-		}
+		
 	}
 	
 	public function pjActionSaveVenue()
@@ -294,10 +284,7 @@ class pjAdminVenues extends pjAdmin
 	
 	public function pjActionUpdate()
 	{
-		$this->checkLogin();
 		
-		if ($this->isAdmin() || $this->isEditor())
-		{
 			$post_max_size = pjUtil::getPostMaxSize();
 			if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_SERVER['CONTENT_LENGTH']) && (int) $_SERVER['CONTENT_LENGTH'] > $post_max_size)
 			{
@@ -499,17 +486,12 @@ class pjAdminVenues extends pjAdmin
 				$this->appendCss('jquery.tipsy.css', PJ_THIRD_PARTY_PATH . 'tipsy/');
 				$this->appendJs('pjAdminVenues.js');
 			}
-		} else {
-			$this->set('status', 2);
-		}
+		
 	}
 	
 	public function pjActionSector()
 	{
-		$this->checkLogin();
-	
-		if ($this->isAdmin() || $this->isEditor())
-		{
+		
 			if (isset($_POST['venue_update']))
 			{
 				$pjVenueModel = pjVenueModel::factory();
@@ -563,9 +545,7 @@ class pjAdminVenues extends pjAdmin
 				$this->appendJs('jquery.validate.min.js', PJ_THIRD_PARTY_PATH . 'validate/');
 				$this->appendJs('pjAdminVenues.js');
 			}
-		} else {
-			$this->set('status', 2);
-		}
+	
 	}
 	
 	public function pjActionDeleteMap()

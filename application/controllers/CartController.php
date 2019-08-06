@@ -17,7 +17,7 @@ class CartController extends App_Controller {
      * @return view
      */
     public function index()	{
-        
+        $this->data['title'] 		= 'Cart';
         $this->load->view('frontend/layout/head', $this->data);
 		$this->load->view('frontend/layout/header');
 		$this->load->view('frontend/pages/event/cart');

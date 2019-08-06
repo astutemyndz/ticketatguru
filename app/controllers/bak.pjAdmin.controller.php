@@ -52,7 +52,10 @@ class pjAdmin extends pjAppController
 		
 	public function pjActionIndex()
 	{
+		$this->checkLogin();
 		
+		if ($this->isAdmin() || $this->isEditor())
+		{
 			
 			$pjShowModel = pjShowModel::factory();
 			
@@ -113,7 +116,9 @@ class pjAdmin extends pjAppController
 			$this->set('now_showing', pjSanitize::clean($now_showing));
 			// echo App::getRoleId();
 			// exit;
-		
+		} else {
+			$this->set('status', 2);
+		}
 	}
 	
 	public function pjActionForgot()
@@ -216,10 +221,10 @@ class pjAdmin extends pjAppController
 				unset($user['password']);
 				
 				$priv = pjRoleModel::factory()->find($user['role_id'])->getData();//("id =", $user['id_cms_privileges'])->first();
-				$isSuperAdmin = FALSE;
+				$isSuperAdmin = 0;
 				if(count($user) > 0) {
 					if(!$priv['is_superadmin']) {
-						$isSuperAdmin = FALSE;
+						$isSuperAdmin = 0;
 						$pjRoleAclModel = pjRoleAclModel::factory();
 						$roles = $pjRoleAclModel->select("t2.name, t2.path, t2.controller, t1.is_visible, t1.is_create, t1.is_read, t1.is_edit, t1.is_delete")
 													->join('pjModule', 't2.id = t1.id_tk_cbs_modules', 'left outer')
@@ -234,7 +239,7 @@ class pjAdmin extends pjAppController
 						App::setSession('role_id', $user['role_id']);
 						App::setSession('role_name', $priv['role']);
 						//pjUtil::redirect($_SERVER['PHP_SELF'] . "?controller=pjAdmin&action=pjActionIndex&err=5");
-						$isSuperAdmin = TRUE;
+						$isSuperAdmin = 1;
 						App::setSession('is_superadmin', $isSuperAdmin);
 					}
 						
@@ -302,7 +307,8 @@ class pjAdmin extends pjAppController
 	{
 		$this->checkLogin();
 		
-		
+		if (!$this->isAdmin())
+		{
 			if (isset($_POST['profile_update']))
 			{
 				$pjUserModel = pjUserModel::factory();
@@ -323,7 +329,9 @@ class pjAdmin extends pjAppController
 				$this->appendJs('jquery.validate.min.js', PJ_THIRD_PARTY_PATH . 'validate/');
 				$this->appendJs('pjAdmin.js');
 			}
-		
+		} else {
+			$this->set('status', 2);
+		}
 	}
 }
 ?>

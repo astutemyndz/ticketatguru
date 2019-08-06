@@ -12,12 +12,32 @@ if (isset($tpl['status']))
 	}
 } else {
 	
-	pjUtil::printNotice(__('infoAddUserTitle', true), __('infoAddUserDesc', true));
+	pjUtil::printNotice(__('infoAddUserRoleTitle', true), __('infoAddUserRoleDesc', true));
 	?>
 	
 	<form action="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminRoleAcl&amp;action=pjActionCreate" method="post" id="frmCreateRoleAcl" class="form pj-form" autocomplete="off">
-		<input type="hidden" name="role_acl" value="1" />
-		<p>
+        <input type="hidden" name="role_acl" value="1" />
+        <p>
+			<label class="title"><?php __('lblName'); ?></label>
+			<span class="inline_block">
+				<input type="text" name="role" id="name" class="pj-form-field w250 required" />
+			</span>
+        </p>
+        <p>
+			<label class="title"><?php __('lblStatus'); ?></label>
+			<span class="inline_block">
+				<select name="status" id="status" class="pj-form-field required">
+					<option value="">-- <?php __('lblChoose'); ?>--</option>
+					<?php
+					foreach (__('u_statarr', true) as $k => $v)
+					{
+						?><option value="<?php echo $k; ?>"><?php echo $v; ?></option><?php
+					}
+					?>
+				</select>
+			</span>
+		</p> 
+		<!-- <p>
 			<label class="title"><?php __('lblRole'); ?></label>
 			<span class="inline_block">
 				<select name="role_id" id="role_id" class="pj-form-field required">
@@ -30,7 +50,7 @@ if (isset($tpl['status']))
 					?>
 				</select>
 			</span>
-		</p>
+		</p> -->
 		<div id="privileges_configuration" class="form-group">
                         <label>Privileges Configuration</label>
                                                 <table class="table table-striped table-hover table-bordered">
@@ -71,12 +91,14 @@ if (isset($tpl['status']))
                                 <tr>
                                     <td><?php echo $no;?></td>
                                     <td><?php echo $module['name'];?></td>
-                                    <td <?php ($acls['is_create'] && $acls['is_read'] && $acls['is_edit'] && $acls['is_delete']) ? "checked" : "" ?> class="info" align="center"><input type="checkbox" title="Check All Horizontal" class="select_horizontal" ></td>
-                                    <td <?php ($acls['is_create'] && $acls['is_read'] && $acls['is_edit'] && $acls['is_delete']) ? "checked" : "" ?> class="active" align="center"><input type="checkbox" class="is_visible" name="privileges[<?php echo $module['id'];?>][is_visible]" value="1" ></td>
-                                    <td <?php ($acls['is_create'] && $acls['is_read'] && $acls['is_edit'] && $acls['is_delete']) ? "checked" : "" ?> class="warning" align="center"><input type="checkbox" class="is_create" name="privileges[<?php echo $module['id'];?>][is_create]" value="1"></td>
-                                    <td <?php ($acls['is_create'] && $acls['is_read'] && $acls['is_edit'] && $acls['is_delete']) ? "checked" : "" ?> class="info" align="center"><input type="checkbox" class="is_read" name="privileges[<?php echo $module['id'];?>][is_read]" value="1"></td>
-                                    <td <?php ($acls['is_create'] && $acls['is_read'] && $acls['is_edit'] && $acls['is_delete']) ? "checked" : "" ?> class="success" align="center"><input type="checkbox" class="is_edit" name="privileges[<?php echo $module['id'];?>][is_edit]" value="1"></td>
-                                    <td <?php ($acls['is_create'] && $acls['is_read'] && $acls['is_edit'] && $acls['is_delete']) ? "checked" : "" ?> class="danger" align="center"><input type="checkbox" class="is_delete" name="privileges[<?php echo $module['id'];?>][is_delete]" value="1"></td>
+                                    <td  class="info" align="center">
+                                        <input type="checkbox" title="Check All Horizontal" class="select_horizontal" <?php ($acls['is_create'] && $acls['is_read'] && $acls['is_edit'] && $acls['is_delete']) ? "checked" : "" ?>>
+                                    </td>
+                                    <td  class="active" align="center"><input <?php ($acls['is_visible']) ? "checked" : "" ?> type="checkbox" class="is_visible" name="privileges[<?php echo $module['id'];?>][is_visible]" value="1" ></td>
+                                    <td  class="warning" align="center"><input <?php ($acls['is_create']) ? "checked" : "" ?> type="checkbox" class="is_create" name="privileges[<?php echo $module['id'];?>][is_create]" value="1"></td>
+                                    <td  class="info" align="center"><input <?php ($acls['is_read']) ? "checked" : "" ?> type="checkbox" class="is_read" name="privileges[<?php echo $module['id'];?>][is_read]" value="1"></td>
+                                    <td  class="success" align="center"><input <?php ($acls['is_edit']) ? "checked" : "" ?> type="checkbox" class="is_edit" name="privileges[<?php echo $module['id'];?>][is_edit]" value="1"></td>
+                                    <td  class="danger" align="center"><input <?php ($acls['is_delete']) ? "checked" : "" ?> type="checkbox" class="is_delete" name="privileges[<?php echo $module['id'];?>][is_delete]" value="1"></td>
 								</tr>
 								<?php $no++; } ?>
                                                                                             
