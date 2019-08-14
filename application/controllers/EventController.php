@@ -19,6 +19,7 @@ class EventController extends App_Controller
 	public function __construct() {
 		parent::__construct();
 		self::allowCORS();
+		// App::dd($this->option_arr);
 	}
 	
 	private function pjActionSetLocale($locale) {
@@ -37,11 +38,46 @@ class EventController extends App_Controller
 		
 	public function index() {
 		$this->data = $this->pjActionEvents();
-		echo "<pre>";
-		print_r($this->data);
-		exit;
+		$pjSponsorsModel = pjSponsorsModel::factory();
+        $pjSponsorsModel->join('pjMultiLang', "t2.model='pjSponsor' AND t2.foreign_id=t1.id AND t2.field='title' AND t2.locale='".$this->getLocaleId()."'", 'left outer');
+		$pjSponsorsModel->where('t1.status', 'T');
+		$pjSponsorsModel->where('t1.sponsor_year', date('Y'));
+		$this->data['sponsorsData'] = $pjSponsorsModel
+							->select(" t1.id, t1.sponsor_image,t1.sponsor_year, t1.created, t1.sponsor_link, t1.status, t2.content as name")
+							->orderBy("t1.id desc")
+							->findAll()
+							->getData();
+		
+		$pjVideoModel = pjVideoModel::factory();
+		$pjVideoModel->join('pjMultiLang', "t2.model='pjVideo' AND t2.foreign_id=t1.id AND t2.field='title' AND t2.locale='".$this->getLocaleId()."'", 'left outer');
+		$pjVideoModel->where('t1.id', 1);
+		$this->data['video']  = $pjVideoModel
+				->select(" t1.id, t1.video_path, t1.mime_type, t1.created, t1.status, t2.content as name")
+				->orderBy("t1.id desc")
+				->find(1)
+				->getData();
+
+		$pjMultiLangModel = pjMultiLangModel::factory();
+		$this->data['Cms_About'] = pjCmsModel::factory()->find(4)->getData();
+		$this->data['Cms_About']['i18n'] = $pjMultiLangModel->getMultiLang($this->data['Cms_About']['id'], 'pjCms');
+		
+		$pjImageGalleryModel = pjImageGalleryModel::factory();
+		$pjImageGalleryModel->join('pjMultiLang', "t2.model='pjImageGallery' AND t2.foreign_id=t1.id AND t2.field='title' AND t2.locale='".$this->getLocaleId()."'", 'left outer');
+		$pjImageGalleryModel->join('pjMultiLang', "t3.model='pjImageGallery' AND t3.foreign_id=t1.id AND t3.field='description' AND t3.locale='".$this->getLocaleId()."'", 'left outer');
+		$pjImageGalleryModel->where('t1.status', 'T');
+		$this->data['gallery'] = $pjImageGalleryModel
+							->select(" t1.id, t1.gallery_image, t1.created, t1.status, t2.content as title, t3.content as description")
+							->orderBy("t1.id desc")
+							->limit(0, 8)
+							->findAll()
+							->getData();
+		//  echo "<pre>"; print_r($this->data['gallery']);		
+		//echo "<pre>"; print_r($this->data['Cms_About']);
+
+		
+		$this->data['title'] 	= 'Ticket At Guru :: Home';
  		$this->load->view('frontend/layout/head', $this->data);
-        $this->load->view('frontend/layout/header');
+        $this->load->view('frontend/layout/header',$this->data);
         $this->load->view('frontend/pages/home', $this->data);
 		$this->load->view('frontend/layout/footer');
 	}
@@ -59,21 +95,24 @@ class EventController extends App_Controller
 		
 		if(isset($_GET['from_date']) && !empty($_GET['from_date']))
 		{
+			// echo "testuuuuuuuuuuuuuuuuu";
 			$from_ts = strtotime(pjUtil::formatDate($_GET['from_date'], $this->option_arr['o_date_format']));
 		}
 		$end_ts = $from_ts + (86400 * 7);
 		
 		if(isset($_GET['date']) && !empty($_GET['date']))
 		{
+			// echo "ttttestuuuuuuuuuuuuuuuuu";
 			$hash_date = pjUtil::formatDate($_GET['date'], $this->option_arr['o_date_format']);
 		}
 		if(strtotime($hash_date) < $from_ts || strtotime($hash_date) > $end_ts)
 		{
+			// echo "tkkkestuuuuuuuuuuuuuuuuu";
 			$hash_date = date('Y-m-d', $from_ts);
 		}
 		$pjEventModel = pjEventModel::factory();
         $pjShowModel = pjShowModel::factory();
-     
+		// echo $hash_date."kkkkkkkkkkkkkkkkkkkkkkkkkkkkkk";
 		$pjEventModel->where("t1.id IN(SELECT TS.event_id FROM `".$pjShowModel->getTable()."` AS TS WHERE DATE_FORMAT(TS.date_time,'%Y-%m-%d') = '".$hash_date."')");
 		//$pjShowModel->where("(DATE_FORMAT(t1.date_time,'%Y-%m-%d') = '$hash_date') AND (t1.venue_id IN (SELECT TV.id FROM `".pjVenueModel::factory()->getTable()."` AS TV WHERE TV.status='T') )");
 		
@@ -109,8 +148,7 @@ class EventController extends App_Controller
 					$showTimes[]  = array(
 						'showTime' => $showTime,
 						'dataTime' => $v[$l],
-						'event' => $this->pjGetEvent($eventId),
-						'Price' => $this->pjGetEventPrice($show_arr, $eventId),
+						'event' => $this->pjGetEvent($eventId)
 					);
 				}  else {
 					$showTimes = [];
@@ -122,7 +160,8 @@ class EventController extends App_Controller
 		foreach($arr as $event) {
 			$events[] = array(
 				'event' => $event,
-				'shows' => $this->pjShowDatesByEventId($event['id'])
+				'shows' => $this->pjShowDatesByEventId($event['id']),
+				'Price' => $this->pjGetEventPrice($show_arr, $eventId)
 			); 
 		}
 	
@@ -133,7 +172,7 @@ class EventController extends App_Controller
 		
 		$this->data['today'] 		= $today;
 		$this->data['hashDate'] 	= $today;
-		$this->data['title'] 		= 'Home';
+		
 	
        
 		
@@ -143,92 +182,65 @@ class EventController extends App_Controller
 
 
 	public function eventList(){
-		$ts = time();
-		$hash_date = date('Y-m-d', $ts);
-		
-		$from_ts = $ts;
-		
-		if(isset($_GET['from_date']) && !empty($_GET['from_date']))
-		{
-			$from_ts = strtotime(pjUtil::formatDate($_GET['from_date'], $this->option_arr['o_date_format']));
-		}
-		$end_ts = $from_ts + (86400 * 7);
-		
-		if(isset($_GET['date']) && !empty($_GET['date']))
-		{
-			$hash_date = pjUtil::formatDate($_GET['date'], $this->option_arr['o_date_format']);
-		}
-		if(strtotime($hash_date) < $from_ts || strtotime($hash_date) > $end_ts)
-		{
-			$hash_date = date('Y-m-d', $from_ts);
-		}
-		$pjEventModel = pjEventModel::factory();
-        $pjShowModel = pjShowModel::factory();
-     
-		$pjEventModel->where("t1.id IN(SELECT TS.event_id FROM `".$pjShowModel->getTable()."` AS TS WHERE DATE_FORMAT(TS.date_time,'%Y-%m-%d') = '".$hash_date."')");
-		//$pjShowModel->where("(DATE_FORMAT(t1.date_time,'%Y-%m-%d') = '$hash_date') AND (t1.venue_id IN (SELECT TV.id FROM `".pjVenueModel::factory()->getTable()."` AS TV WHERE TV.status='T') )");
-		
-		$arr = $pjEventModel
-			->join('pjMultiLang', "t2.model='pjEvent' AND t2.foreign_id=t1.id AND t2.field='title' AND t2.locale='".$this->getLocaleId()."'", 'left outer')
-			->join('pjMultiLang', "t3.model='pjEvent' AND t3.foreign_id=t1.id AND t3.field='description' AND t3.locale='".$this->getLocaleId()."'", 'left outer')
-			->select('t1.*, t2.content as title, t3.content as description')
-			->where('status', 'T')
-			->findAll()
-			->getData();
-        
-       // $_arr = $pjShowModel->orderBy("t1.date_time ASC")->findAll()->getData();
-	   $show_arr = $pjShowModel
-				->where("(DATE_FORMAT(t1.date_time,'%Y-%m-%d') = '$hash_date') AND (t1.venue_id IN (SELECT TV.id FROM `".pjVenueModel::factory()->getTable()."` AS TV WHERE TV.status='T') )")
-				->where("t1.venue_id IN (SELECT TV.id FROM `".pjVenueModel::factory()->getTable()."` AS TV WHERE TV.status='T')")
-				->orderBy("t1.date_time ASC")
-				->findAll()
-				->getData();
-			//echo "<pre>"; print_r($show_arr);	
-		$grid = $this->getShowsInGrid($show_arr);
-		// echo "<pre>"; print_r($grid);
-		$time_arr = array();
-		$showTimes = array();
-		foreach($grid['show_arr'] as $eventId => $v)
-		{
-			for($l=0; $l < count($v); $l++) {
-				$time_arr[] = $v[$l];
-				$date_time_iso = $hash_date . ' ' . $v[$l] . ':00';
-				$date_time_ts = strtotime($hash_date . ' ' . $v[$l] . ':00');
-				$showTime = date($this->option_arr['o_time_format'], strtotime($date_time_iso));
-				
-				if($date_time_ts >= strtotime(date('Y-m-d H:00')) + ($this->option_arr['o_booking_earlier'] * 60 )) {
-					$showTimes[]  = array(
-						'showTime' => $showTime,
-						'dataTime' => $v[$l],
-						'event' => $this->pjGetEvent($eventId)
-					);
-				}  else {
-					$showTimes = [];
-				}
-			}
-		}
-		// echo "<pre>"; print_r($grid);
-		$events = array();
-		foreach($arr as $event) {
-			$events[] = array(
-				'event' => $event,
-				'shows' => $this->pjShowDatesByEventId($event['id']),
-				'showTimes' => $showTimes
-			); 
-		}
-	
-		$this->data['showTimes'] 	= (count($showTimes) > 0) ? $showTimes : [];
-		$this->data['events'] 		= $events;
-		$ts 						= time();
-		$today 						= date('Y-m-d', $ts);
-		
-		$this->data['today'] 		= $today;
-		$this->data['hashDate'] 	= $today;
+		$this->data = $this->pjActionEvents();
 		$this->data['title'] 		= 'Event Lists';
-	
+		$this->data['page_heading'] = 'Events List';
         $this->load->view('frontend/layout/head', $this->data);
         $this->load->view('frontend/layout/header');
         $this->load->view('frontend/pages/event/event_list', $this->data);
+        $this->load->view('frontend/layout/footer');
+	}
+	public function galleryList(){
+		
+		$pjImageGalleryModel = pjImageGalleryModel::factory();
+		$pjImageGalleryModel->join('pjMultiLang', "t2.model='pjImageGallery' AND t2.foreign_id=t1.id AND t2.field='title' AND t2.locale='".$this->getLocaleId()."'", 'left outer');
+		$pjImageGalleryModel->join('pjMultiLang', "t3.model='pjImageGallery' AND t3.foreign_id=t1.id AND t3.field='description' AND t3.locale='".$this->getLocaleId()."'", 'left outer');
+		$pjImageGalleryModel->where('t1.status', 'T');
+		$this->data['gallery'] = $pjImageGalleryModel
+							->select(" t1.id, t1.gallery_image, t1.created, t1.status, t2.content as title, t3.content as description")
+							->orderBy("t1.id desc")
+							->findAll()
+							->getData();
+		//echo "<pre>"; print_r($this->data['gallery']);
+		$this->data['title'] 		= 'Gallery Lists';
+		$this->data['page_heading'] = 'Gallery';
+        $this->load->view('frontend/layout/head', $this->data);
+        $this->load->view('frontend/layout/header');
+        $this->load->view('frontend/pages/event/gallery', $this->data);
+        $this->load->view('frontend/layout/footer');
+	}
+	public function partnersList(){
+		$pjSponsorsYear = pjSponsorsModel::factory();
+        
+		
+		$sponsorsYear = $pjSponsorsYear
+		->where('t1.status', 'T')
+		->select("t1.sponsor_year")
+		->orderBy("t1.sponsor_year asc")
+		->groupBy("t1.sponsor_year")
+		->findAll()
+		->getData();
+		$this->data['sponsor_year'] = array();
+		// echo "<pre>"; print_r($sponsorsYear);
+		foreach($sponsorsYear as $sponsorsYearVal){
+			$pjSponsorsModel = pjSponsorsModel::factory();
+			$pjSponsorsModel->join('pjMultiLang', "t2.model='pjSponsor' AND t2.foreign_id=t1.id AND t2.field='title' AND t2.locale='".$this->getLocaleId()."'", 'left outer');
+			$pjSponsorsModel->where('t1.status', 'T');
+			$pjSponsorsModel->where('t1.sponsor_year', $sponsorsYearVal['sponsor_year']);
+			$this->data['sponsorsData'] = $pjSponsorsModel
+								->select(" t1.id, t1.sponsor_image,t1.sponsor_year, t1.created, t1.sponsor_link, t1.status, t2.content as name")
+								->orderBy("t1.id desc")
+								->findAll()
+								->getData();
+			$this->data['sponsor_year'][$sponsorsYearVal['sponsor_year']] = $this->data['sponsorsData'];
+			
+		}
+		// echo "<pre>"; print_r($this->data['sponsor_year']);
+		$this->data['title'] 		= 'Partners';
+		$this->data['page_heading'] = 'Main sponsors';
+        $this->load->view('frontend/layout/head', $this->data);
+        $this->load->view('frontend/layout/header');
+        $this->load->view('frontend/pages/event/partners', $this->data);
         $this->load->view('frontend/layout/footer');
 	}
 	private function pjGetEvent($id) {
@@ -242,12 +254,12 @@ class EventController extends App_Controller
 			return $arr;
 	}
 	private function pjGetEventPrice($show_arr, $id) {
-		$price = 0;
+		$price = array();
 		if(count($show_arr) > 0) {
 			foreach ($show_arr as $value) {
 				if($value['event_id'] == $id) {
-					$price = $value['price'];
-					break;
+					$price[] = $value['price'];
+					//break;
 				}
 			}
 		}
@@ -261,7 +273,7 @@ class EventController extends App_Controller
 					->orderBy("t1.date_time ASC")
 					->findAll()
 					->getData();
-	
+		// echo "<pre>"; print_r($show_arr);
 		$grid = $this->getShowsInGrid($show_arr);
 		$show_date_arr = array();
 			foreach($show_arr as $v)
@@ -368,6 +380,7 @@ class EventController extends App_Controller
 			$this->data['show_date_arr'] = $show_date_arr;
 			$this->data['show_arr'] = $grid['show_arr'];
 			$this->data['title'] = 'Ticket at Guru';
+			$this->data['page_heading'] = 'Ticket at Guru details';
 			
 			$this->load->view('frontend/layout/head', $this->data);
 			$this->load->view('frontend/layout/header');
@@ -572,6 +585,7 @@ class EventController extends App_Controller
 	
 	public function pjActionSeats() {
 		$this->data['title'] = 'Ticket at Guru';
+		$this->data['page_heading'] = 'Select Your Seat(s)';
 		$this->load->view('frontend/layout/head', $this->data);
 		$this->load->view('frontend/layout/header');
 		$this->load->view('frontend/pages/event/seats');

@@ -3304,10 +3304,10 @@ iframe {
     font-size: 30px;
     padding: 0;
 }
-.nav-tabs>li a{
+.login-inner .nav-tabs>li a{
 	margin: 0 -2px;
 }
-.nav-tabs>li.left-radius>a {
+.login-inner .nav-tabs>li.left-radius>a {
 	background-color: #242424;
     width: 200px;
     border: none ;
@@ -3318,14 +3318,14 @@ iframe {
     border-radius: 50px 0 0 50px;
 	border: none;
 }
-.nav-tabs>li.active>a{
+.login-inner .nav-tabs>li.active>a{
 	border: none;
 	background-color: #ff6600 !important;
 	color:#fff !important;
 	border: none !important;
 }
 
-.nav-tabs>li.right-radius>a {
+.login-inner .nav-tabs>li.right-radius>a {
 	background-color: #242424;
     width: 200px;
     border: none ;

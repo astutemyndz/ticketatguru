@@ -395,7 +395,8 @@ class pjAdminBookings extends pjAdmin
 				->limit(1)
 				->findAll()
 				->getDataIndex(0);
-			
+			//echo "<pre>";
+			//App::dd($booking);
 			if (!$booking)
 			{
 				pjUtil::redirect($_SERVER['PHP_SELF'] . "?controller=pjAdminBookings&action=pjActionIndex&err=AR08");

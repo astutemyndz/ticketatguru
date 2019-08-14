@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="<?php echo base_url();?>css/featherlight.min.css">
     <link rel="stylesheet" href="<?php echo base_url();?>css/font-awesome.min.css">
     <link rel="stylesheet" href="<?php echo base_url();?>css/bootstrap.offcanvas.min.css">
+	<link rel="stylesheet" href="<?php echo base_url();?>css/imgal.min.css">
     <link rel="stylesheet" href="<?php echo base_url();?>css/core.css">
     <link rel="stylesheet" href="<?php echo base_url();?>css/custom.css">
     
@@ -32,7 +33,20 @@
     <link rel="stylesheet" href="<?php echo base_url();?>css/responsive.css" >
     <link rel="stylesheet" href="<?php echo base_url();?>css/datepicker.css" >
     <link rel="stylesheet" href="<?php echo base_url();?>css/jquery.loading.css" >
-
+    <link rel="stylesheet" href="<?php echo base_url();?>css/animate.css" >
+	
+	
+	<!-------------------------------------->
+	<link href="<?php echo base_url();?>css/paper-bootstrap-wizard.css" rel="stylesheet" />
+	<!-- Fonts and Icons -->
+    <link href="https://netdna.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.css" rel="stylesheet">
+	<link href='https://fonts.googleapis.com/css?family=Muli:400,300' rel='stylesheet' type='text/css'>
+	<link href="<?php echo base_url();?>css/themify-icons.css" rel="stylesheet">
+	
+	
+	<link href="https://netdna.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.css" rel="stylesheet">
+	<link href='https://fonts.googleapis.com/css?family=Muli:400,300' rel='stylesheet' type='text/css'>
+	
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
       <script src="http://cdnjs.cloudflare.com/ajax/libs/selectivizr/1.0.2/selectivizr-min.js"></script>
@@ -41,7 +55,10 @@
     <script src="<?php echo base_url();?>js/jquery-3.2.0.min.js"></script>
     <script src="<?php echo base_url();?>js/jquery.panzoom.js"></script>
 	<script src="<?php echo base_url();?>js/jquery.mousewheel.js"></script>
+	<script src="<?php echo base_url();?>js/imgal.js"></script>
 	<script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
-
+	
+	
+	
 </head>
 <body>

@@ -2,6 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 // echo $selected_date ."==". $today;
 //  echo "<pre>"; print_r($events);
+//  echo "<pre>"; print_r($showTimes);
 ?>
 
 
@@ -9,38 +10,50 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <div class="container">
 	<div class="row">
 		<div id="primary" class="col-sm-12 col-md-12">
-		<?php if(count($events) > 0) {?>
-			<?php foreach($events as $event) { $lastEventDate = end($event['shows']); ?>
+		<?php if(count($events) > 0) { ?>
+			<?php foreach($events as $event) { 
+				$firstEventDate = reset($event['shows']); 
+				$firstEventPrice = reset($event['Price']); 
+				?>
 			<div class="artist-event-item">
 				<div class="row">
-					<div class="artist-event-item-info col-sm-9">
+					<div class="artist-event-item-info col-sm-10">
 						<h3><?php echo $event['event']['title'];?></h3>
 						<ul class="row">
-							<li class="col-sm-5">
+							<li class="col-sm-3">
 								<span>Venue</span>
 								Alun-alun kidul
 								<span class="location">Yogyakarta, Indonesia</span>
 							</li>
-							<li class="col-sm-4">
-								<span><?php echo date("l", strtotime($lastEventDate)); ?></span>
-								<?php echo date("jS M Y", strtotime($lastEventDate)); ?>
+							<li class="col-sm-2">
+								<span><?php echo date("l", strtotime($firstEventDate)); ?></span>
+								<?php echo date("jS M Y", strtotime($firstEventDate)); ?>
 							</li>
-							<li class="col-sm-3">
-								<span>Time</span>
-								07:00 PM
+							<li class="col-sm-7">
+								<span>Small Details</span>
+								<?php echo substr($event['event']['description'],0,150)."....";?>
 							</li>
 						</ul>
 					</div>
-					<div class="artist-event-item-price col-sm-3">
+					<div class="artist-event-item-price col-sm-2">
 						<span>Price From</span>
-						<strong>$83</strong>
+						<strong>£ <?php echo $firstEventPrice;?></strong>
 						<a href="<?php echo base_url();?>event/details/<?php echo $event['event']['id'];?>">View Details</a>
 					</div>
 				</div>
 			</div>
 			<?php } ?>
 			<?php } else { ?>
-				<span>Comming Soon</span>
+				<div class="artist-event-item">
+					<div class="row">
+						<div class="artist-event-item-info col-sm-10">
+							<h3>Comming Soon</h3>
+						</div>
+						<div class="artist-event-item-price col-sm-2">
+							<a href="<?php echo base_url('contact-us');?>" class="get-ticket">Contact Us</a>
+						</div>
+					</div>
+				</div>
 			<?php } ?>
 			
 			<!-- <div class="artist-event-footer">

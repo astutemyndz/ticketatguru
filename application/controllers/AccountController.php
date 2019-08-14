@@ -24,4 +24,6 @@ class AccountController extends App_Controller
 		$this->load->view('frontend/pages/account/index');
 		$this->load->view('frontend/layout/footer');
 	}
+
+	
 }

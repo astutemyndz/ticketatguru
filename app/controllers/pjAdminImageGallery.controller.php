@@ -73,7 +73,7 @@ class pjAdminImageGallery extends pjAdmin
 												$image_path = PJ_UPLOAD_PATH . 'gallery_images/' . $id . '_' . $hash . '.' . $Image->getExtension();
 												
 												$Image->loadImage($_FILES['gallery_image']["tmp_name"]);
-												$Image->resizeSmart(220, 320);
+												// $Image->resizeSmart(220, 320);
 												$Image->saveImage($image_path);
 												$data = array();
 												$data['gallery_image'] = $image_path;
@@ -123,6 +123,7 @@ class pjAdminImageGallery extends pjAdmin
 				$this->appendJs('jquery.multilang.js', PJ_FRAMEWORK_LIBS_PATH . 'pj/js/');
 				$this->appendJs('jquery.tipsy.js', PJ_THIRD_PARTY_PATH . 'tipsy/');
 				$this->appendCss('jquery.tipsy.css', PJ_THIRD_PARTY_PATH . 'tipsy/');
+				$this->appendJs('tinymce.min.js', PJ_THIRD_PARTY_PATH . 'tinymce/');
 				$this->appendJs('pjAdminImageGallery.js');
 			}
 		
@@ -252,7 +253,7 @@ class pjAdminImageGallery extends pjAdmin
 											$image_path = PJ_UPLOAD_PATH . 'gallery_images/' . $_POST['id'] . '_' . $hash . '.' . $Image->getExtension();
 											
 											$Image->loadImage($_FILES['gallery_image']["tmp_name"]);
-											$Image->resizeSmart(220, 320);
+											// $Image->resizeSmart(220, 320);
 											$Image->saveImage($image_path);
 											$data['gallery_image'] = $image_path;
 											
@@ -364,6 +365,7 @@ class pjAdminImageGallery extends pjAdmin
 				$this->appendJs('jquery.multilang.js', PJ_FRAMEWORK_LIBS_PATH . 'pj/js/');
 				$this->appendJs('jquery.tipsy.js', PJ_THIRD_PARTY_PATH . 'tipsy/');
 				$this->appendCss('jquery.tipsy.css', PJ_THIRD_PARTY_PATH . 'tipsy/');
+				$this->appendJs('tinymce.min.js', PJ_THIRD_PARTY_PATH . 'tinymce/');
 				$this->appendJs('pjAdminImageGallery.js');
 			}
 		

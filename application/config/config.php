@@ -577,3 +577,8 @@ $config['file'] = [
 
 require_once PJ_FRAMEWORK_PATH . 'pjAutoloader.class.php';
 pjAutoloader::register();
+
+require_once ROOT_PATH . 'vendor/vendorAutoLoader.class.php';
+vendorAutoLoader::register();
+
+

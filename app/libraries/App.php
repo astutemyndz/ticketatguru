@@ -24,6 +24,15 @@ class App {
         return false;
     }
 
+    public static function printSession() {
+        echo "<pre>";
+        print_r($_SESSION);
+    }
+    public static function dd($data, $exit = false) {
+        echo "<pre>";
+        print_r($data);
+        if($exit) exit; 
+    }
     public static function getUserRoles() {
         $roles = array();
         if(self::getSession('roles')) { 
@@ -63,6 +72,15 @@ class App {
                 return (bool) $v['is_visible'];
             }
         }
+    }
+
+    public static function isCart() {
+        $CI =& get_instance();
+        $CI->load->library('cart');
+        if(count($CI->cart->contents()) >0) {
+            return TRUE;
+        }
+        return FALSE;
     }
 
 

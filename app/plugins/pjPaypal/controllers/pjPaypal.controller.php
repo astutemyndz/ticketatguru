@@ -184,6 +184,17 @@ class pjPaypal extends pjPaypalAppController
 		//submit
 		//submit_class
 		//target
+		$this->set('params', array(
+			'name' => 'vrPaypal',
+			'id' => 'vrPaypal',
+			'business' => 'o_paypal_address',
+			'item_name' => 'Vacation Rental',
+			'custom' => 'id',
+			'amount' => 10.00,
+			'currency_code' => 'GBP',
+			'return' => 'o_thankyou_page',
+			'notify_url' => PJ_INSTALL_URL . 'index.php?controller=pjListings&action=confirmPaypal'
+		));
 		$this->set('arr', $this->getParams());
 	}
 /**

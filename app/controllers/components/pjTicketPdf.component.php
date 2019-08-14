@@ -88,6 +88,8 @@ class pjTicketPdf
 		
 		$barcode = $this->generateBarcode();
 		$barcodeSize = getimagesize($barcode);
+		// print_r($barcodeSize);
+		// exit;
 		switch ($barcodeSize[2])
 		{
 			case IMAGETYPE_GIF:
@@ -100,14 +102,53 @@ class pjTicketPdf
 				$src = imagecreatefromjpeg($barcode);
 				break;
 		}
-		$filename = PJ_UPLOAD_PATH . 'tickets/tickets/t_' . $this->barcode_value . '.png';
+		
+		$filename = PJ_UPLOAD_PATH . 'tickets/t_' . $this->barcode_value . '.png';
 		imagecopymerge($dest, $src, 234, 219, 0, 0, $barcodeSize[0], $barcodeSize[1], 100);
 		imagepng($dest, $filename, 9);
 		imagedestroy($src);
 		imagedestroy($dest);
 		return $filename;
 	}
-	
+	/*
+	public function generatePdf($params)
+	{
+		$dm = new pjDependencyManager(PJ_INSTALL_PATH, PJ_THIRD_PARTY_PATH);
+		$dm->load(PJ_CONFIG_PATH . 'dependencies.php')->resolve();
+		
+		require_once($dm->getPath('tcpdf') . 'tcpdf.php');
+		
+		$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+		$pdf->setPrintHeader(false);
+		$pdf->setPrintFooter(false);
+		$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+		$pdf->SetMargins(10, 10, 10);
+		$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+		$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+		
+		$pdf->SetFont('dejavusans', '', 8);
+		
+		$uuid = '';
+		
+		foreach($params as $v)
+		{
+			$ticket = $this->generateTicket($v['ticket_img'], $v['ticket_id']);
+			echo $ticket;exit;
+			$pdf->AddPage();
+			$pdf->Image($ticket, 10, 10, '', '', 'PNG', '', 'T', false, 300, '', false, false, 0, true, false, true);
+			$pdf->Ln(100);
+			
+			$html = '<p style="color: #000; border:none;">' . $v['ticket_info'] . '</p>';
+			$pdf->writeHTMLCell(87, 19, 13, 68, $html, 0);
+			
+			$uuid = $v['uuid'];
+		}
+		
+		$pdf->Output(PJ_INSTALL_PATH . PJ_UPLOAD_PATH . 'tickets/pdfs/p_'. $uuid .'.pdf', 'F');
+		$filename = PJ_UPLOAD_PATH . 'tickets/pdfs/p_'. $uuid . '.pdf';
+		return $filename;
+	}
+	*/
 	public function generatePdf($params)
 	{
 		$dm = new pjDependencyManager(PJ_INSTALL_PATH, PJ_THIRD_PARTY_PATH);
@@ -135,7 +176,7 @@ class pjTicketPdf
 			$pdf->Image($ticket, 10, 10, '', '', 'PNG', '', 'T', false, 300, '', false, false, 0, true, false, true);
 			$pdf->Ln(100);
 			
-			$html = '<p style="color: #000; border:none;">' . $v['ticket_info'] . '</p>';
+			$html = '<p style="color: #000; border:none;">' . preg_replace('/\r\n|\n/', '<br />', $v['ticket_info']) . '</p>';
 			$pdf->writeHTMLCell(87, 19, 13, 68, $html, 0);
 			
 			$uuid = $v['uuid'];

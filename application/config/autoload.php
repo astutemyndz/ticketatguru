@@ -82,7 +82,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 
 
-$autoload['packages'] = array(APPPATH.'third_party', 'ion_auth', 'datamapper');
+$autoload['packages'] = array(APPPATH.'third_party', 'ion_auth', 'datamapper', 'PayPal');
 
 
 
@@ -210,7 +210,7 @@ $autoload['helper'] = array('form', 'url','common_helper','cookie');
 
 
 
-$autoload['config'] = array();
+$autoload['config'] = array('paypal');
 
 
 

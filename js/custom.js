@@ -2,23 +2,39 @@
 
 //import { CradleLoader } from "./CradleLoader";
 
-window.addEventListener('load', () => {
 
+// const funcCountDown = function () {
+// 	// console.log(countEvent);
+// 	var i = 1;
+// 	for(i; i <= countEvent; i++) {
+// 		var countdown = $(`#countdown_${i}`).data("id");
+// 		// console.log(countdown);
+// 		var countdown_date = $(`#countdown_${i}`).data("date");
+		
+// 		$(`#countdown_${i}`).countdown(countdown_date, function (event) {
+//             console.log(countdown_date+'=='+countdown);
+// 			$(`#dday_${i}`).html(event.strftime('%-D'));
+// 			$(`#dhour_${i}`).html(event.strftime('%-H'));
+// 			$(`#dmin_${i}`).html(event.strftime('%-M'));
+// 			$(`#dsec_${i}`).html(event.strftime('%-S'));
+// 		});
+// 	}
+	
+// }
+
+//funcCountDown();
+window.addEventListener('load', () => {
+//    / 
     $( '.hamburger-menu' ).on( 'click', function() {
         $(this).toggleClass('open');
         $('.site-navigation').toggleClass('show');
     });
 
-    let countdown_date = $('.countdown').data("date");
-
-    $('.countdown').countdown(countdown_date, function (event) {
-        $('.dday').html(event.strftime('%-D'));
-        $('.dhour').html(event.strftime('%-H'));
-        $('.dmin').html(event.strftime('%-M'));
-        $('.dsec').html(event.strftime('%-S'));
-    });
+    
+        
 
 });
+
 function getBaseUrl() {
     var re = new RegExp(/^.*\//);
     return re.exec(window.location.href);

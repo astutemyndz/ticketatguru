@@ -1029,7 +1029,7 @@
 	}
 
 	.top-header .top-right{
-		display: none;
+		display: block;
 	}
 		
 	.section-page-content .section-404 h2{

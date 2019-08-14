@@ -122,6 +122,12 @@ $route['event/pjActionSaveSeats'] = 'EventController/pjActionSaveSeats';
 
 $route['event/cart'] = 'EventController/pjActionCart';
 $route['event/list'] = 'EventController/eventList';
+$route['gallery'] = 'EventController/galleryList';
+$route['partners'] = 'EventController/partnersList';
+$route['contact-us'] = 'ContactController';
+$route['about-us'] = 'ContactController/about_us';
+$route['terms-conditions'] = 'ContactController/terms_conditions';
+$route['privacy-policy'] = 'ContactController/privacy_policy';
 
 
 
@@ -148,6 +154,8 @@ $route['auth/register/post'] = 'AuthController/register';
 
 $route['account']           = 'AccountController/pjAccountForm';
 $route['cart']              = 'CartController';
+$route['cart/checkout']     = 'CartController/pjActionCheckout';
+$route['cart/post/checkout']     = 'CartController/pjActionPostCheckout';
 $route['pjActionCart']      = 'CartController/pjActionCart';
 $route['loadCartPage']      = 'CartController/loadCartPage';
 $route['updateCartPini']    = 'CartController/updateCartPini';
@@ -162,7 +170,9 @@ $route['pjActionLoadMap']   = 'CartController/pjActionLoadMap';
  */
 $route['pjActionCart']      = 'CartController/pjActionCart';
 $route['loadCart']      = 'CartController/loadCart';
+$route['loadCartSummery']      = 'CartController/loadCartSummery';
 $route['cart/remove']      = 'CartController/removeCartItemOnClickEventListener';
 
 $route['cart/checkout'] = 'CartController/checkout';
 
+$route['paypal/pay/credit-card'] = 'PayPalPaymentController/payWithCreditCard';

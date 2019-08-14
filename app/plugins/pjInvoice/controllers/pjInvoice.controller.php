@@ -207,7 +207,7 @@ class pjInvoice extends pjInvoiceAppController
 	
 	public function pjActionCreateInvoice()
 	{
-		$this->checkLogin();
+		//$this->checkLogin();
 		
 		if (!$this->isInvoiceReady())
 		{
@@ -496,13 +496,13 @@ class pjInvoice extends pjInvoiceAppController
 	
 	public function pjActionIndex()
 	{
-		$this->checkLogin();
+		//$this->checkLogin();
 		
-		if (!$this->isInvoiceReady())
-		{
-			$this->set('status', 2);
-			return;
-		}
+		// if (!$this->isInvoiceReady())
+		// {
+		// 	$this->set('status', 2);
+		// 	return;
+		// }
 		
 		if (isset($_POST['invoice_post']))
 		{
@@ -615,13 +615,13 @@ class pjInvoice extends pjInvoiceAppController
 	
 	public function pjActionInvoices()
 	{
-		$this->checkLogin();
+		//$this->checkLogin();
 		
-		if (!$this->isInvoiceReady())
-		{
-			$this->set('status', 2);
-			return;
-		}
+		// if (!$this->isInvoiceReady())
+		// {
+		// 	$this->set('status', 2);
+		// 	return;
+		// }
 		
 		$this
 			->set('invoice_config_arr', pjInvoiceConfigModel::factory()->getConfigData($this->getLocaleId()))
@@ -1007,7 +1007,7 @@ class pjInvoice extends pjInvoiceAppController
 	
 	public function pjActionUpdate()
 	{
-		$this->checkLogin();
+		//$this->checkLogin();
 		
 		if (!$this->isInvoiceReady())
 		{

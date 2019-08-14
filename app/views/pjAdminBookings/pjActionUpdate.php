@@ -1,4 +1,6 @@
 <?php
+//App::dd($tpl['arr']);
+
 if (isset($tpl['status']))
 {
 	$status = __('status', true);
@@ -47,6 +49,10 @@ if (isset($tpl['status']))
 					<span class="inline_block">
 						<label class="content"><a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminBookings&amp;action=pjActionResend&id=<?php echo $tpl['arr']['id'];?>"><?php echo __('lblResendTickets', true); ?></a></label>
 					</span>
+				</p>
+				<p>
+				<label class="title">&nbsp;</label>
+					<label class="title"><a target="_blank" href="<?php echo PJ_INSTALL_URL . PJ_UPLOAD_PATH . '/tickets/pdfs/p_' . $tpl['arr']['uuid'] . '.pdf'; ?>"><?php echo __('lblPrintTickets', true); ?></a></label>
 				</p>
 				<p>
 					<label class="title"><?php __('lblCreatedOn'); ?></label>

@@ -5055,7 +5055,7 @@ body{
 /***********************************************************
 				Gallery Page CSS==06-08-19
 ***********************************************************/
-@keyframes slide {
+/*@keyframes slide {
     0% {
         opacity: 0;
         transform: translateY(50%);
@@ -5152,6 +5152,22 @@ body{
 	width: 100%;
     height: -webkit-fill-available;
     object-fit: cover;
+}*/
+.gallery-sec {
+    padding: 70px 0;
+}
+.gallery-sec .imgal-container{
+	line-height: 0;
+    -webkit-column-count: 3;
+    -webkit-column-gap: 0;
+    -moz-column-count: 3;
+    -moz-column-gap: 0;
+    column-count: 3;
+    column-gap: 0;
+}
+.gallery-sec .imgal-container img{
+	margin: 5px 0;
+    padding: 0 5px;
 }
 
 /***********************************************************
@@ -5201,4 +5217,201 @@ body{
     background: #f60;
     border: none;
     color: #fff;
+}
+.cont-form:before, .cont-form:after{
+	display: table;
+	content: "";
+	clear: both;
+}
+.cont-form{
+	padding: 0 0 100px;
+}
+.cont-lft-img{
+	padding: 50px 0;
+}
+.contact-sec {
+    padding: 70px 0;
+}
+.address{
+	
+}
+.address .nav-tabs>li{
+	width: 100%;
+	margin: 10px 0;
+}
+.address .nav-tabs>li>a{
+	border: none;
+	cursor: pointer;
+	padding: 20px 25px
+}
+.address .nav-tabs>li.active>a:hover, .address .nav-tabs>li.active>a:focus{
+	border:none;
+	outline: none;
+	background-color: #fff;
+}
+.address .nav>li>a:focus, .address .nav>li>a:hover{
+	border:none;
+	outline: none;
+	background-color: #fff;
+}
+
+.address .nav-tabs>li.active>a{
+	/*background-color: #f7f7f7;*/
+	box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.15);
+}
+.address .nav-tabs>li.active:after{
+	content: "";
+    display: block;
+    width: 0;
+    height: 0;
+    background: transparent;
+    position: absolute;
+    right: -18px;
+    top: 42%;
+    border-left: 20px solid #ececec;
+    border-top: 20px solid transparent;
+    border-bottom: 20px solid transparent;
+}
+.address .nav-tabs{
+	border: none;
+}
+.address .nav-tabs>li>a>ul>li {
+	color: #464646;
+    font-size: 16px;
+    font-weight: 100;
+    padding: 10px 0;
+}
+.address .nav-tabs>li>a>ul>li>i {
+	color: #f60;
+	font-size: 20px;
+	text-align: center;
+	min-width: 50px;
+}
+.address .nav-tabs>li>a>ul{
+	position: relative;
+	padding-left: 80px;
+}
+.address .nav-tabs>li>a>ul.uk:before{
+	content: "";
+    display: block;
+    background-image: url(../images/england-flag.png);
+	background-repeat: no-repeat;
+    width: 70px;
+    height: 50px;
+    box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.3);
+	border-radius: 10px;
+    position: absolute;
+    left: 0;
+    right: auto;
+	top: 28%; 
+}
+.address .nav-tabs>li>a>ul.egypt:before{
+	content: "";
+    display: block;
+    background-image: url(../images/egypt-flag.png);
+	background-repeat: no-repeat;
+    width: 70px;
+    height: 50px;
+    box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.3);
+	border-radius: 10px;
+    position: absolute;
+    left: 0;
+    right: auto;
+	top: 30%; 
+}
+.address .heading{
+	display: block;
+    font-size: 22px;
+    font-weight: 400;
+    color: #f60;
+	text-transform: capitalize;
+    padding: 0 0 20px;
+
+}
+.tab-content .map{
+	border: 5px solid #ffffff;
+    box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.3);
+}
+.address h3{
+	font-size: 30px;
+    font-weight: 400;
+    text-transform: capitalize;
+    padding: 0 0 20px;
+}
+.contact-sec .tab-content {
+    padding-top: 62px;
+}
+/***********************************************************
+				Partner Page CSS==06-08-19
+***********************************************************/
+
+.accordion-sec .panel-group .panel {
+	border-radius: 0;
+	box-shadow: none;
+	border-color: #EEEEEE;
+}
+
+.accordion-sec .panel-default > .panel-heading {
+	padding: 0;
+	border-radius: 0;
+	color: #212121;
+	background-color: #FAFAFA;
+	border-color: #EEEEEE;
+}
+
+.accordion-sec .panel-title {
+	font-size: 14px;
+}
+
+.accordion-sec .panel-title > a {
+	display: block;
+	padding: 15px;
+	text-decoration: none;
+	background: #f60;
+	color: #fff;
+    font-size: 16px;
+}
+
+.accordion-sec .more-less {
+	float: right;
+	color: #fff;
+}
+
+.accordion-sec .panel-default > .panel-heading + .panel-collapse > .panel-body {
+	border-top-color: #EEEEEE;
+}
+.accordion-sec .panel-body ul{
+	margin: 0;
+	padding: 0;
+}
+.accordion-sec .panel-body ul li{
+	display: flex;
+    width: 30.62%;
+    max-height: 150px;
+	min-height:150px;
+	align-items: center;
+    float: left;
+    padding: 15px;
+	margin: 15px;
+	box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
+}
+
+.accordion-sec .panel-body ul li img{
+	max-width: 250px;
+	width:100%;
+	height: auto;
+    display: block;
+    margin: 0 auto;
+}
+.accordion-sec .panel-body ul li a{
+	text-align:center;
+	display: block;
+	margin: 0 auto;
+}
+.accordion-sec .panel-group{
+	margin:0;
+}
+
+.partner{
+	padding:70px 0;
 }

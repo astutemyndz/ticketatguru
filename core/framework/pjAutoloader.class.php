@@ -19,6 +19,7 @@ class pjAutoloader
 			PJ_FRAMEWORK_PATH . 'components/'. $className . '.component.php',
 			PJ_APP_PATH . 'libraries/'. $className . '.php',
 			PJ_APPLICATION_PATH . 'libraries/'. $className . '.php',
+			PJ_APPLICATION_PATH . 'third_party/PayPal/'. $className . '.php',
 			
 		);
 		///echo PJ_CONTROLLERS_PATH . $className . '.controller.php'."<br>";

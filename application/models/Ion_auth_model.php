@@ -818,12 +818,12 @@ class Ion_auth_model extends CI_Model
         // IP Address
         $ip_address = $this->_prepare_ip($this->input->ip_address());
         $salt = $this->store_salt ? $this->salt() : FALSE;
-        $password = $this->hash_password($password, $salt);
+        $has_password = $this->hash_password($password, $salt);
         // Users table.
         $data = array(
             $this->identity_column => $identity,
             'username' => $identity,
-            'password' => $password,
+            'password' => $has_password,
             'email' => $email,
             'ip_address' => $ip_address,
             'created_on' => time(),
@@ -838,6 +838,9 @@ class Ion_auth_model extends CI_Model
         $user_data = array_merge($this->_filter_data($this->tables['users'], $additional_data), $data);
         $this->trigger_events('extra_set');
         $this->db->insert($this->tables['users'], $user_data);
+            
+        
+        
         $id = $this->db->insert_id($this->tables['users'] . '_id_seq');
         // add in groups array if it doesn't exists and stop adding into default group if default group ids are set
         if (isset($default_group->id) && empty($groups))
@@ -853,7 +856,31 @@ class Ion_auth_model extends CI_Model
             }
         }
         $this->trigger_events('post_register');
-        return (isset($id)) ? $id : FALSE;
+        $query = $this->db->select($this->identity_column . ', email, id, password, active, last_login, user_type')
+                        ->where($this->identity_column, $email)
+                        ->limit(1)
+                        ->order_by('id', 'desc')
+                        ->get($this->tables['users']);
+        if ($query->num_rows() === 1)
+        {
+            $user = $query->row();
+            $session_data = array(
+                'identity'             => $user->{$this->identity_column},
+                $this->identity_column => $user->{$this->identity_column},
+                'email'                => $user->email,
+                'user_id'              => $user->id, //everyone likes to overwrite id so we'll use user_id
+                'old_last_login'       => $user->last_login,
+                'last_check'           => time(),
+                'user_type'				=>	$user->user_type,
+                'loggedIn'				=> true
+            );
+            $this->session->set_userdata($session_data);
+            $this->update_last_login($user->id);
+            // Regenerate the session (for security purpose: to avoid session fixation)
+            $this->_regenerate_session();
+            //$this->trigger_events(array('post_login', 'post_login_successful'));
+            return (isset($id)) ? $id : FALSE;
+        }                
     }
     /**
      * login

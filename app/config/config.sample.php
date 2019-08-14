@@ -10,3 +10,6 @@ if (!defined("PJ_INSTALL_URL")) define("PJ_INSTALL_URL", "[install_url]");
 if (!defined("PJ_SALT")) define("PJ_SALT", "[salt]");
 if (!defined("PJ_INSTALLATION")) define("PJ_INSTALLATION", "[pj_installation]");
 ?>
+<?php
+$CONFIG['plugins'] = 'pjPaypal';
+?>

@@ -3,20 +3,20 @@
 			<div class="main-footer">
 				<div class="container">
 					<div class="row">
-						<div class="footer-1 col-md-4">
+						<div class="footer-1 col-md-4 col-sm-4 col-xs-12">
 							<div class="about clearfix">
-								<h3>Site Map</h3>
+								<h3>Quick links</h3>
 								<ul>
-										<li><a href="#home">Home</a></li>
-										<li><a href="#events">Events</a></li>
-										<li><a href="#">Tickets Cart</a></li>
-										<li><a href="#gallery">Gallery</a></li>
-										<li><a href="#partners">Partners</a></li>
-										<li><a href="#">Contact</a></li>
+										<li><i class="fa fa-angle-double-right" aria-hidden="true"></i><a href="<?php echo base_url();?>">Home</a></li>
+										<li><i class="fa fa-angle-double-right" aria-hidden="true"></i><a href="<?php echo base_url('about-us');?>">About Us</a></li>
+										<li><i class="fa fa-angle-double-right" aria-hidden="true"></i><a href="<?php echo base_url('event/list');?>">Events</a></li>
+										<li><i class="fa fa-angle-double-right" aria-hidden="true"></i><a href="<?php echo base_url('gallery');?>">Gallery</a></li>
+										<li><i class="fa fa-angle-double-right" aria-hidden="true"></i><a href="<?php echo base_url('partners');?>">Partners</a></li>
+										<li><i class="fa fa-angle-double-right" aria-hidden="true"></i><a href="<?php echo base_url('contact-us');?>">Contact</a></li>
 									</ul>
 							</div>
 						</div>
-						<div class="footer-1 col-md-4">
+						<div class="footer-1 col-md-4 col-sm-4 col-xs-12">
 							<div class="about clearfix">
 								<h3>Contact Us</h3>
 								<span class="foo-adrs">
@@ -36,12 +36,12 @@
 								</span>
 								<span class="foo-call">
 									<img src="<?php echo base_url() ?>/images/foo-mail.png" alt="">
-									<a class="foo-mail" href="mailto:info@globalgala.co.uk">info@globalgala.co.uk</a>
+									<a class="foo-mail" href="mailto:info@ticketatguru.co.uk">info@ticketatguru.co.uk</a>
 								</span>
 								
 							</div>
 						</div>
-						<div class="footer-2 col-md-4">
+						<div class="footer-2 col-md-4 col-sm-4 col-xs-12">
 							<div class="about clearfix">
 								<ul class="foo-social">
 									<span>Find us on :</span>
@@ -62,6 +62,12 @@
 									</li>
 								</ul>
 								<div><img src="<?php echo base_url(); ?>/images/sage_logos2.png" alt="payment"></div>
+								<ul class="foo-social">
+									<li><a href="<?php echo base_url('terms-conditions');?>">Terms & Conditions</a></li>
+									<li><a href="<?php echo base_url('privacy-policy');?>">Cookies</a></li>
+									<li><a href="<?php echo base_url('contact-us');?>">Company Information</a></li>
+								</ul>
+								
 							</div>
 						</div>
 					</div>
@@ -71,11 +77,11 @@
 				<div class="container">
 					<div class="row">
 						
-						<div class="col-md-8">
+						<div class="col-md-6">
 							<a href="#"><img src="<?php echo base_url();?>/images/ticketGuruLogo.png" alt="logo"></a>
 						</div>
-						<div class="col-md-4">
-						<p>Copyright &copy; <?php date('Y');?>  Ticketatguru.com. Design And Develop By <a href="https://astutemynzd.com/" target="_blank" rel="nofollow" class="MSI_ext_nofollow">Astutemynzd</a></p>
+						<div class="col-md-6">
+						<p>Copyright &copy; <?php echo date('Y');?>  Ticketatguru.com. Design And Developed By <a href="https://astutemynzd.com/" target="_blank" rel="nofollow" class="MSI_ext_nofollow">Astutemynzd</a></p>
 						</div>
 					</div>
 				</div>
@@ -224,6 +230,8 @@
 <script src="<?php echo base_url();?>js/event/Event.js"></script>
 <script src="<?php echo base_url();?>js/auth/auth.js"></script>
 <script src="<?php echo base_url();?>js/cart/Cart.js"></script>
+<script src="<?php echo base_url();?>js/payment/CreditCard.js"></script>
+<script src="<?php echo base_url();?>js/notification/bootstrap-notify.js"></script>
 <script>
 	(function() {
 		var $section = $('.wrapper-image');
@@ -258,6 +266,37 @@ $('.autoplay').slick({
   slidesToScroll: 1,
   autoplay: false,
   autoplaySpeed: 2000,
+  responsive: [
+  {
+      breakpoint: 1024,
+      settings: {
+        slidesToShow: 3,
+		slidesToScroll: 1
+      }
+    },
+    {
+      breakpoint: 800,
+      settings: {
+        slidesToShow: 2,
+		slidesToScroll: 1
+      }
+    },
+	{
+      breakpoint: 667,
+      settings: {
+        slidesToShow: 1,
+		slidesToScroll: 1,
+		variableWidth: true
+      }
+    },
+    {
+      breakpoint: 480,
+      settings: {
+        slidesToShow: 1,
+		slidesToScroll: 1
+      }
+    }
+  ]
 });
 </script>
 <script>
@@ -298,5 +337,10 @@ $(document).ready(function(){
   });
 });
 </script>	  
+	<script src="<?php echo base_url();?>js/jquery.bootstrap.wizard.js" type="text/javascript"></script>
+	<script src="<?php echo base_url();?>js/jquery.validate.min.js" type="text/javascript"></script>
+	<!--  Plugin for the Wizard -->
+	<script src="<?php echo base_url();?>js/checkoutFormWizard.js" type="text/javascript"></script>
+	<script src="<?php echo base_url();?>js/paper-bootstrap-wizard.js" type="text/javascript"></script>
 </body>
 </html>

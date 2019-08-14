@@ -54,12 +54,12 @@ $("document").ready(function() {
                                 const STATUS = data.status;
                                 const status = res.status
 
-                                if(STATUS === "OK" && status === true) {
+                                if(STATUS == "OK" && status == true) {
                                     
                                     setTimeout(() => {
                                         $("#eventDetails").loading('stop');
                                         window.location.href = `${API_URL}event/seats`;
-                                    }, 3000);
+                                    }, 1000);
 
                                 } else {
                                     console.log("ERR:",STATUS,"===",status);
@@ -104,11 +104,11 @@ $("document").ready(function() {
                 const STATUS = data.status;
                 const status = res.status
 
-                if(STATUS === "OK" && status === true) {
+                if(STATUS == "OK" && status == true) {
                     setTimeout(() => {
                         $(".section-todays-schedule").loading('stop');
                         window.location.href = `${API_URL}event/seats`;
-                    }, 2000);
+                    }, 1000);
 
                 } else {
                     console.log("ERR:",STATUS,"===",status);

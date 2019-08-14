@@ -36,7 +36,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										<div class="event-img">
 											<?php
 												$src = 'https://placehold.it/220x320';
-												if(!empty($arr['event_img']) && is_file(PJ_INSTALL_PATH . $arr['event_img']))
+											if(!empty($arr['event_img']) && is_file(PJ_INSTALL_PATH . $arr['event_img']))
 												{
 													$src = PJ_INSTALL_URL . $arr['event_img'];
 												} 
@@ -47,7 +47,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<div class="col-md-8">
 										<div class="event-title">
 											<h3><?php echo pjSanitize::html($arr['title']);?></h3>
-											<span><img src="http://103.121.156.221/projects/ticketatguru/images/ticket.png" alt="">20 Tickets Left</span>
+											<span><img src="<?php echo base_url(); ?>/images/ticket.png" alt="">20 Tickets Left</span>
 										</div>
 										<div class="clearfix"></div>
 										<div class="event-info">

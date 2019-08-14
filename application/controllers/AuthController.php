@@ -18,6 +18,7 @@ class AuthController extends CI_Controller
 		$this->form_validation->set_error_delimiters($this->config->item('error_start_delimiter', 'ion_auth'), $this->config->item('error_end_delimiter', 'ion_auth'));
 
 		$this->lang->load('auth');
+		
 	}
 
 	/**
@@ -64,7 +65,7 @@ class AuthController extends CI_Controller
 		
 
 
-		$this->data['title'] = $this->lang->line('create_user_heading');
+		$this->data['page_heading'] = $this->lang->line('create_user_heading');
 
 	
 		$tables = $this->config->item('tables', 'ion_auth');
@@ -76,7 +77,7 @@ class AuthController extends CI_Controller
 		$this->form_validation->set_rules('last_name', $this->lang->line('create_user_validation_lname_label'), 'trim|required');
 		//if ($identity_column !== 'email')
 		//{
-			$this->form_validation->set_rules('registerIdentity', $this->lang->line('create_user_validation_identity_label'), 'trim|required|is_unique[' . $tables['users'] . '.' . $identity_column . ']');
+			$this->form_validation->set_rules('identity', $this->lang->line('create_user_validation_identity_label'), 'trim|required|is_unique[' . $tables['users'] . '.' . $identity_column . ']');
 			//$this->form_validation->set_rules('email', $this->lang->line('create_user_validation_email_label'), 'trim|required|valid_email');
 		//}
 		//else
@@ -91,7 +92,7 @@ class AuthController extends CI_Controller
 		if ($this->form_validation->run() === TRUE)
 		{
 			$email = strtolower($this->input->post('email'));
-			$identity = strtolower($this->input->post('registerIdentity'));//($identity_column === 'email') ? $email : $this->input->post('identity');
+			$identity = strtolower($this->input->post('identity'));//($identity_column === 'email') ? $email : $this->input->post('identity');
 			$password = $this->input->post('password');
 
 			$additional_data = array(
@@ -103,6 +104,7 @@ class AuthController extends CI_Controller
 		{
 			// check to see if we are creating the user
 			// redirect them back to the admin page
+			
 			$this->session->set_flashdata('message', $this->ion_auth->messages());
 			return $this->output
 						->set_content_type('application/json')
@@ -111,7 +113,8 @@ class AuthController extends CI_Controller
 								'data' => [],
 								'errors' => [],
 								'message' => 'User has been successfully created',
-								'status' => true
+								'status' => true,
+								'loggedIn' => $this->session->userdata('user_id')
 						)));
 		}
 		else
@@ -120,13 +123,21 @@ class AuthController extends CI_Controller
 			// set the flash data error message if there is one
 			$validation_errors = (validation_errors() ? validation_errors() : ($this->ion_auth->errors() ? $this->ion_auth->errors() : $this->session->flashdata('message')));
 			$validation_errors = explode('.', strip_tags($validation_errors));
-			//print_r($validation_errors);
+			$errors = array();
+			//$validation_errors = array('abc', 'xyz','mno');
+			if(count($validation_errors) >0) {
+				foreach($validation_errors as $error) {
+					$errors[] = trim(preg_replace('/\s\s+/', ' ', $error));
+				}
+			}
+			//print_r($errors);
+			$err = array_pop($errors);
 			return $this->output
 						->set_content_type('application/json')
 						->set_status_header(200)
 						->set_output(json_encode(array(
 								'data' => [],
-								'errors' => $validation_errors,
+								'errors' => $errors,
 								'message' => '',
 								'status' => false
 								
@@ -221,7 +232,7 @@ class AuthController extends CI_Controller
 	 */
 	public function logout()
 	{
-		$this->data['title'] = "Logout";
+		$this->data['page_heading'] = "Logout";
 
 		// log the user out
 		$logout = $this->ion_auth->logout();
@@ -239,8 +250,11 @@ class AuthController extends CI_Controller
 	}
 
 	public function pjAuthForm() {
-
-		$this->data['title'] = "Login Form";
+		if ($this->ion_auth->logged_in())
+		{
+		  redirect('account');
+		}
+		$this->data['page_heading'] = "Login Form";
 		$this->load->view('frontend/layout/head', $this->data);
 		$this->load->view('frontend/layout/header');
 		$this->load->view('frontend/pages/auth/index');
@@ -248,7 +262,7 @@ class AuthController extends CI_Controller
 	}
 	public function pjAccount() {
 
-		$this->data['title'] = "My Account";
+		$this->data['page_heading'] = "My Account";
 		$this->load->view('frontend/layout/head', $this->data);
 		$this->load->view('frontend/layout/header');
 		$this->load->view('frontend/pages/account/index');

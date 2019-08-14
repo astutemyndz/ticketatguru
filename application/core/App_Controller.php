@@ -16,6 +16,7 @@ class App_Controller extends CI_Controller
     protected 	$optionArr 				= 'option_arr';
 	protected 	$locale_arr 			= 'locale_arr';
 	protected   $data					 = array();
+	protected	$payPalConfig			= array();
 
 	public function __construct()
     {
@@ -361,7 +362,19 @@ class App_Controller extends CI_Controller
 		require PJ_CONFIG_PATH . 'settings.inc.php';
 		$fields = array_merge($tmp, $fields, $settings, $arrays);
 		$registry->set('fields', $fields);
-    }
+	}
+	/**
+	 * Format Number
+	 *
+	 * Returns the supplied number with commas and a decimal point.
+	 *
+	 * @param	float
+	 * @return	string
+	 */
+	public function format_number($n = '')
+	{
+		return ($n === '') ? '' : number_format( (float) $n, 2, '.', ',');
+	}
 
 
 

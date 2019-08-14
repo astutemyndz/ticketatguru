@@ -1,10 +1,11 @@
 <?php
-if (pjObject::getPlugin('pjOneAdmin') !== NULL && $controller->isAdmin())
-{
-	$controller->requestAction(array('controller' => 'pjOneAdmin', 'action' => 'pjActionMenu'));
-}
+// if (pjObject::getPlugin('pjOneAdmin') !== NULL && $controller->isAdmin())
+// {
+// 	$controller->requestAction(array('controller' => 'pjOneAdmin', 'action' => 'pjActionMenu'));
+// }
 // echo "<pre>";
-// print_r(App::getUserRoles());
+// print_r(App::printSession());
+// exit;
 
 
 ?>
@@ -13,6 +14,7 @@ if (pjObject::getPlugin('pjOneAdmin') !== NULL && $controller->isAdmin())
 <div class="leftmenu-middle">
 	<ul class="menu">
 		<?php 
+		// is_superadmin = false
 		if(!App::isSuperAdmin()) { ?>
 			<li <?php echo (in_array('controller=pjAdmin&action=pjActionIndex', App::getUserRoles())) ? "style=display:block" : "style=display:none;"?>><a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdmin&action=pjActionIndex" class="<?php echo $_GET['controller'] == 'pjAdmin' && $_GET['action'] == 'pjActionIndex' ? 'menu-focus' : NULL; ?>"><span class="menu-dashboard">&nbsp;</span><?php __('menuDashboard'); ?></a></li>
 			<li <?php echo (in_array('controller=pjAdminSchedule&action=pjActionIndex', App::getUserRoles())) ? "style=display:block" : "style=display:none;"?>><a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminSchedule&action=pjActionIndex" class="<?php echo $_GET['controller'] == 'pjAdminSchedule' ? 'menu-focus' : NULL; ?>"><span class="menu-schedule">&nbsp;</span><?php __('menuSchedule'); ?></a></li>
@@ -33,7 +35,10 @@ if (pjObject::getPlugin('pjOneAdmin') !== NULL && $controller->isAdmin())
 			<li <?php echo (in_array('controller=pjAdminCustomers&action=pjActionIndex', App::getUserRoles())) ? "style=display:block" : "style=display:none;"?>><a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminCustomers&action=pjActionIndex" class="<?php echo $_GET['controller'] == 'pjAdminCustomers' ? 'menu-focus' : NULL; ?>"><span class="menu-users">&nbsp;</span><?php __('menuCustomers'); ?></a></li>
 			<li <?php echo (in_array('controller=pjAdminUsers&action=pjActionIndex', App::getUserRoles())) ? "style=display:block" : "style=display:none;"?>><a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminUsers&action=pjActionIndex" class="<?php echo $_GET['controller'] == 'pjAdminUsers' ? 'menu-focus' : NULL; ?>"><span class="menu-users">&nbsp;</span><?php __('menuUsers'); ?></a></li>
 			<li <?php echo (in_array('controller=pjAdmin&action=pjActionProfile', App::getUserRoles())) ? "style=display:block" : "style=display:none;"?>><a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdmin&action=pjActionProfile" class="<?php echo $_GET['controller'] == 'pjAdmin' && $_GET['action'] == 'pjActionProfile' ? 'menu-focus' : NULL; ?>"><span class="menu-users">&nbsp;</span><?php __('menuProfile'); ?></a></li>
-		<?php } else { ?>
+		<?php } else { 
+			
+			// is_superadmin = true;
+			?>
 			<li ><a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdmin&action=pjActionIndex" class="<?php echo $_GET['controller'] == 'pjAdmin' && $_GET['action'] == 'pjActionIndex' ? 'menu-focus' : NULL; ?>"><span class="menu-dashboard">&nbsp;</span><?php __('menuDashboard'); ?></a></li>
 			<li ><a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminSchedule&action=pjActionIndex" class="<?php echo $_GET['controller'] == 'pjAdminSchedule' ? 'menu-focus' : NULL; ?>"><span class="menu-schedule">&nbsp;</span><?php __('menuSchedule'); ?></a></li>
 			<li ><a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminBookings&action=pjActionIndex" class="<?php echo ($_GET['controller'] == 'pjAdminBookings' || ($_GET['controller'] == 'pjInvoice' && $_GET['action'] != 'pjActionIndex')) ? 'menu-focus' : NULL; ?>"><span class="menu-bookings">&nbsp;</span><?php __('menuBookings'); ?></a></li>

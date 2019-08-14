@@ -5,17 +5,12 @@ const addToCart = function(props, callback) {
         var isCart = res.cart;// true or false
         $(self).removeClass('tbSeatAvailable');
         $(self).addClass('tbSeatSelected');
-
+        notification(options = {message: 'Item added to cart'}, settings = {type: 'success', placement: {}, animate: {}});
         if(isCart) {
             callback(res);
         }
     });
 }
-
-
-
-
-
 const pjActionLoadMap = function(callback) {
     console.log('map loading...');
     $.ajax({
@@ -30,7 +25,6 @@ const pjActionLoadMap = function(callback) {
         }         
     });
 }
-
 const seatAvailable = function(callback) {
     $('.tbSeatAvailable').on('click', function() {
         var props = {
@@ -74,9 +68,9 @@ $("document").ready(function() {
 		setTimeout(() => {
 			window.location.href = `${API_URL}`;
 		}, 300);
-	});
+    });
+    loadCartSummery();
 });
-
 const reloadMap = function() {
 	var imp = document.getElementById('plk-map-seat-points-wrapper');
 	if(imp){
@@ -93,7 +87,7 @@ const reloadMap = function() {
 	}
 }
 const removeCartItemOnClick = function() {
-    $('.cartTr').on('click', function(){
+    $('.btn-danger').on('click', function(){
         var rowId = $(this).attr('data-id');
         $.ajax({
             url: `${API_URL}cart/remove`,
@@ -101,9 +95,7 @@ const removeCartItemOnClick = function() {
             data: {
                 'rowId': rowId
             },
-           
             success: function(res) {
-                //$("#cartTable").loading('stop');
                 loadCart();
                 var cp = document.getElementById('plk-cart-pini-wrapper');
                 //console.log(res);
@@ -119,8 +111,9 @@ const removeCartItemOnClick = function() {
     });
 }
 const loadCart = function(callback) {
-    var loadCart = document.getElementById('loadCart');
-    if(loadCart) {
+    var $loadCart = document.getElementById('loadCart');
+    var subtotal = document.getElementById('subtotal');
+    if($loadCart) {
         $.ajax({
             url: `${API_URL}loadCart`,
             type: 'GET',
@@ -129,13 +122,13 @@ const loadCart = function(callback) {
                 $("#cartTable").loading();
              },
             success: function(res) {
-                console.log(res.rows);
+               // console.log(res.rows);
                 if(res.rows) {
-                    setInterval(function() {
-                        $("#cartTable").loading('stop');
-                      }, 2000);
-                      loadCart.innerHTML = res.rows;
+                      $("#cartTable").loading('stop');
+                      $loadCart.innerHTML = res.rows;
+                      subtotal.innerHTML = res.subtotal;
                       if(res.cart == 0) {
+                          console.log('Cart is empty');
                           $('#cartTable').hide();
                           $('#cartEmpty').html('Cart is Empty');
                       }
@@ -145,6 +138,31 @@ const loadCart = function(callback) {
                 
                 
                 ///callback();
+            },
+            error: function(res) {
+            }         
+        });
+    }
+}
+
+const loadCartSummery = function() {
+    var $loadCartSummery = document.getElementById('loadCartSummery');
+    var subtotal = document.getElementById('subtotal');
+    if($loadCartSummery) {
+        $.ajax({
+            url: `${API_URL}loadCartSummery`,
+            type: 'GET',
+            context: document.body,
+            beforeSend: function() {
+                $("#loadCartSummeryTable").loading();
+             },
+            success: function(res) {
+               // console.log(res.rows);
+                if(res.rows) {
+                      $("#loadCartSummeryTable").loading('stop');
+                      $loadCartSummery.innerHTML = res.rows;
+                      subtotal.innerHTML = res.subtotal;
+                }
             },
             error: function(res) {
             }         

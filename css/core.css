@@ -3220,7 +3220,7 @@ iframe {
 	/*float:left;*/
     background: #fff;
     /*height: 100%;*/
-    padding: 60px 0;
+    padding: 0;
 }
 /*.login-inner:after{
 	content: "";
@@ -3305,13 +3305,14 @@ iframe {
 }
 .from-sec{
 	    max-width: 100%;
+	padding: 50px 30px 0!important;
 }
-.from-sec input{
+.from-sec input, select{
 	width: 100%;
     padding: 10px 10px;
     border: 1px solid #eee;
     border-radius: 10px;
-    margin: 10px 0;
+    margin: 5px 0;
     outline: none;
 
 }

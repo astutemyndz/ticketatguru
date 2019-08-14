@@ -195,6 +195,20 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 		    myLabel.duration_greater_zero);
 		}
 		if ($frmCreateImageGallery.length > 0 && validate) {
+			tinymce.init({
+			    selector: "textarea.mceEditor",
+			    theme: "modern",
+			    relative_urls : false,
+				remove_script_host : false,
+				convert_urls : true,
+			    width: 500,
+			    plugins: [
+			         "advlist autolink link image lists charmap print preview hr anchor pagebreak",
+			         "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
+			         "save table contextmenu directionality emoticons template paste textcolor"
+				],
+				toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | l      ink image | print preview media fullpage | forecolor backcolor emoticons"
+			});
 			$frmCreateImageGallery.validate({
 				rules:{
 					"duration": {
@@ -309,6 +323,20 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 			}
 		}
 		if ($frmUpdateImageGallery.length > 0 && validate) {
+			tinymce.init({
+			    selector: "textarea.mceEditor",
+			    theme: "modern",
+			    relative_urls : false,
+				remove_script_host : false,
+				convert_urls : true,
+			    width: 500,
+			    plugins: [
+			         "advlist autolink link image lists charmap print preview hr anchor pagebreak",
+			         "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
+			         "save table contextmenu directionality emoticons template paste textcolor"
+				],
+				toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | l      ink image | print preview media fullpage | forecolor backcolor emoticons"
+			});
 			$frmUpdateImageGallery.validate({
 				rules:{
 					"duration": {

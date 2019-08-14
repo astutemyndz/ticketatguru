@@ -18,6 +18,7 @@ class CartController extends App_Controller {
      */
     public function index()	{
         $this->data['title'] 		= 'Cart';
+        $this->data['page_heading'] 		= 'Cart';
         $this->load->view('frontend/layout/head', $this->data);
 		$this->load->view('frontend/layout/header');
 		$this->load->view('frontend/pages/event/cart');
@@ -91,20 +92,21 @@ class CartController extends App_Controller {
      */
     public function loadCart() {
         $rows = array();
+        $total = 0;
         if($this->isCart) {
             $items = $this->cart->contents();
-           
+            
             if(count($items) > 0) {
                 foreach($items as $rowid => $item) {
                     $rows[] = '<tr class="cartTr" data-id="'.$rowid.'">
                                     <td>'.$item['name'].'</td>
-                                    <td>'.$item['qty'].'</td>
                                     <td>'.$item['price'].'</td>
-                                    <td class="text-right"><button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> </button> </td>
+                                    <td class="text-right"><button class="btn btn-sm btn-danger" data-id="'.$rowid.'"><i class="fa fa-trash"></i> </button> </td>
                                 </tr>';
+                    $total += $this->cart->format_number($item['subtotal']); 
                    
                 }
-                
+                //$this->cart->format_number($items['subtotal']);
             } else {
                 $rows = [];
             }
@@ -148,11 +150,39 @@ class CartController extends App_Controller {
             $this->data['rows'] = $rows;
             $this->data['cart'] = ($this->cart->contents()) ? count($this->cart->contents()) : 0;
             $this->data['li'] = $this->LIComponent();
+            $this->data['subtotal'] = ($total) ? $total : 0;
             // echo "<pre>";
             // print_r($this->data);
             pjAppController::jsonResponse($this->data);
 			exit;
         //return false;
+    }
+
+    public function loadCartSummery() {
+        $rows = array();
+        $total = 0;
+        if($this->isCart) {
+            $items = $this->cart->contents();
+            
+            if(count($items) > 0) {
+                foreach($items as $rowid => $item) {
+                    $rows[] = '<tr>
+                                    <td>'.$item['name'].'</td>
+                                    <td>'.$item['price'].'</td>
+                                </tr>';
+                    $total += $this->cart->format_number($item['subtotal']); 
+                   
+                }
+            } else {
+                $rows = [];
+            }
+        }
+            $this->data['rows'] = $rows;
+            $this->data['cart'] = ($this->cart->contents()) ? count($this->cart->contents()) : 0;
+            $this->data['li'] = $this->LIComponent();
+            $this->data['subtotal'] = ($total) ? $total : 0;
+            pjAppController::jsonResponse($this->data);
+			exit;
     }
     /**
      * @method GET
@@ -295,7 +325,7 @@ class CartController extends App_Controller {
 				'qty' 		=>	1,
 				'price' 	=>	$price,
 				'name'		=>	$name,
-				'options' 	=> 	array('event' => $event)
+				'options' 	=> 	array('event' => $event, 'o_currency' => $this->option_arr['o_currency'])
             );
           
             if($this->cart->insert($data)){
@@ -357,11 +387,21 @@ class CartController extends App_Controller {
 
     public function checkout() {
         $this->load->library(array('ion_auth'));
-        if (!$this->ion_auth->logged_in())
-        {
-          redirect('auth/login');
-        }
+        // if (!$this->ion_auth->logged_in())
+        // {
+        //   redirect('auth/login');
+        // }
+        $this->data['title'] 		= 'Checkout Page';
+        $this->data['page_heading'] 		= 'Checkout';
+        $this->load->view('frontend/layout/head', $this->data);
+		$this->load->view('frontend/layout/header');
+		$this->load->view('frontend/pages/cart/checkout');
+		$this->load->view('frontend/layout/footer');
       
+    }
+
+    public function pjActionCheckout() {
+        $this->data['page_heading'] 		= 'Checkout';
     }
 	
 }

@@ -14,7 +14,7 @@
 					<div id="login" class="tab-pane fade in active">
 						<div class="from-sec">
 							<form id="loginForm" method="post" action="<?php echo base_url();?>auth/login/post">
-								<input type="email" placeholder="Username" name="identity" id="identity" required>
+								<input type="email" placeholder="Username" name="signInIdentity" id="signInIdentity" required>
 								<input type="password" placeholder="Password" name="password" id="password" required>
 								<label class="check">
 									<input type="checkbox" id="remember" name="remember">
@@ -33,7 +33,7 @@
                                 <form action="<?php echo base_url();?>auth/register/post" method="post" id="registerForm" >
                                     <input type="text" placeholder="First Name" name="first_name" id="first_name" required>
                                     <input type="text" placeholder="Last Name" name="last_name" id="last_name" required>
-                                    <input type="text" placeholder="Username" name="registerIdentity" id="registerIdentity" required>
+                                    <input type="text" placeholder="Username" name="identity" id="identity" required>
                                     <input type="email" placeholder="Email" name="email" id="email" required>
                                     <input type="email" placeholder="Confirm Email" name="confirm_email" id="confirm_email" required>
                                     <input type="password" placeholder="Password" name="password" id="main_password" required>
@@ -42,7 +42,7 @@
                                         <input type="checkbox" id="agree" name="agree" required>
                                         <span class="checkmark"></span>I agree with the Terms and Conditions</a>
                                     </label>
-                                    <div class="flash"></div>
+                                    <div class="signupFlash"></div>
                                     <input type="submit" class="sign-btn" value="Sign In">
                                 </form>
                             </div>
