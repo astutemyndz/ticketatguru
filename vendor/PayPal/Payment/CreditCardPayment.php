@@ -265,9 +265,6 @@ class CreditCardPayment
             'log.FileName' => $this->config['log']['file_name'],
             'log.LogLevel' => $this->config['log']['log_level']
         ]);
-        // echo "<pre>";
-        // print_r($apiContext);
-        // exit;
         return $apiContext;
     }
 

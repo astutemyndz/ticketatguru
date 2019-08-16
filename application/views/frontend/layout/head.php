@@ -34,6 +34,7 @@
     <link rel="stylesheet" href="<?php echo base_url();?>css/datepicker.css" >
     <link rel="stylesheet" href="<?php echo base_url();?>css/jquery.loading.css" >
     <link rel="stylesheet" href="<?php echo base_url();?>css/animate.css" >
+    <link rel="stylesheet" href="<?php echo base_url();?>css/jquery.creditCardValidator.css" >
 	
 	
 	<!-------------------------------------->
@@ -58,7 +59,13 @@
 	<script src="<?php echo base_url();?>js/imgal.js"></script>
 	<script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 	
-	
+    <style>
+    #custom-overlay {
+  background-color: #000;
+  opacity: 0.7;
+  overflow: hidden;
+}
+    </style>
 	
 </head>
 <body>

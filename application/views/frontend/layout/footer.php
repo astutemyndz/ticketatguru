@@ -231,7 +231,8 @@
 <script src="<?php echo base_url();?>js/auth/auth.js"></script>
 <script src="<?php echo base_url();?>js/cart/Cart.js"></script>
 <script src="<?php echo base_url();?>js/payment/CreditCard.js"></script>
-<script src="<?php echo base_url();?>js/notification/bootstrap-notify.js"></script>
+<script src="<?php echo base_url();?>js/payment/CreditCard.js"></script>
+<script src="<?php echo base_url();?>js/jquery.creditCardValidator.js"></script>
 <script>
 	(function() {
 		var $section = $('.wrapper-image');

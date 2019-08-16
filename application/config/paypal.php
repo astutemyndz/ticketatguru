@@ -12,7 +12,7 @@ $config['paypal'] = [
 
     # Connection Information
     'http' => [
-        'connection_time_out' => 30,
+        'connection_time_out' => 500,
         'retry' => 1,
     ],
 

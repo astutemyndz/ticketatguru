@@ -103,7 +103,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 														<div id="card" class="tab-pane fade in active">
 															<div class="from-sec">
 																	<!--<input type="text" placeholder="Name on card">-->
-																	<input id="number" type="text" class="card-no" placeholder="Card number">
+																	<input id="card_number" type="text" class="card-no" placeholder="Card number">
 																	<input id="expireMonth" type="text" class="card-date grid-3" placeholder="Month">
 																	<input id="expireYear" type="text" class="card-date grid-3 ml" placeholder="Year">
 																	<input id="cvv2" type="text" class="cvv grid-3 ml" placeholder="CVV">

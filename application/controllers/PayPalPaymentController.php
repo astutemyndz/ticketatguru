@@ -1,7 +1,10 @@
 <?php
 
+use PayPal\Api\BillingAddress;
+use PayPal\Api\ItemList;
 use PayPal\Api\PaymentExecution;
 use PayPal\Api\RedirectUrls;
+use PayPal\Api\ShippingAddress;
 use PayPal\Payment\CreditCardPayment;
 class PayPalPaymentController extends App_Controller {
 
@@ -10,6 +13,7 @@ class PayPalPaymentController extends App_Controller {
     private $payPal = false;
     private $defaultConfig;
     private $billingAddress;
+    private $shippingAddress;
     private $cartItems;
     private $creditCardInfo;
     private $creditCard;
@@ -27,6 +31,7 @@ class PayPalPaymentController extends App_Controller {
 
        $this->defaultConfig = array();
        $this->billingAddress = array();
+       $this->shippingAddress = array();
        $this->cartItems = array();
        $this->creditCardInfo = array();
        $this->data = array();
@@ -58,7 +63,14 @@ class PayPalPaymentController extends App_Controller {
         return $this;
     }
     public function getBillingAddress() {
-        return $this->billingAddress;
+        return $this->shippingAddress;
+    }
+    public function setShippingAddress($value) {
+        $this->shippingAddress = $value;
+        return $this;
+    }
+    public function getShippingAddress() {
+        return $this->shippingAddress;
     }
 
     public function getCartItems() {
@@ -102,37 +114,39 @@ class PayPalPaymentController extends App_Controller {
     */
     public function payWithCreditCard()
     {
+        
+        
          // ### get post data
          $this->data = $this->getRequest();
          //App::dd($this->data);
          // ### set billing address
-         $this->setBillingAddress($this->data['billingAddress']);
-         $this->billingAddress = $this->getBillingAddress();
+         $this->setShippingAddress($this->data['billingAddress']);
+         $this->shippingAddress = $this->getShippingAddress();
 
         // ### Address
         // Base Address object used as shipping or billing
         // address in a payment. [Optional]
-        $billingAddress = $this->creditCardPayment->billingAddress();
-        $billingAddress
-            ->setCity($this->billingAddress['city'])
+        $shippingAddress = new ShippingAddress();
+        $shippingAddress
+            ->setLine1('line1')
+            ->setLine2('line2')
+            ->setCity($this->shippingAddress['city'])
             //->setState($this->billingAddress['state'])
-            ->setPostalCode($this->billingAddress['postalCode'])
-            ->setCountryCode($this->billingAddress['countryCode'])
-            ->setPhone($this->billingAddress['phone'])
-            ->setRecipientName($this->billingAddress['firstName']. " ". $this->billingAddress['lastName']);
-
+            ->setPostalCode($this->shippingAddress['postalCode'])
+            ->setCountryCode($this->shippingAddress['countryCode'])
+            ->setPhone($this->shippingAddress['phone'])
+            ->setRecipientName($this->shippingAddress['firstName']. " ". $this->shippingAddress['lastName']);
         // ### set credit card info
         $this->setCreditCardInfo($this->data['creditCardInfo']);
         $this->creditCardInfo = $this->getCreditCardInfo();
 
         // ### CreditCard
-        $this->creditCard = $this->creditCardPayment->creditCard();
+        $this->creditCard = new \PayPal\Api\CreditCard();
         $this->creditCard->setNumber($this->creditCardInfo['number']);
         $this->creditCard->setType($this->creditCardInfo['type']);
         $this->creditCard->setExpireMonth($this->creditCardInfo['expireMonth']);
         $this->creditCard->setExpireYear($this->creditCardInfo['expireYear']);
         $this->creditCard->setCvv2($this->creditCardInfo['cvv2']);
-        $this->creditCard->setBillingAddress($billingAddress);
 
        
 
@@ -142,29 +156,30 @@ class PayPalPaymentController extends App_Controller {
         // and provided by the facilitator. This is required when
         // creating or using a tokenized funding instrument)
         // and the `CreditCardDetails`
-        $fi = $this->creditCardPayment->fundingInstrument();
+        $fi = new \PayPal\Api\FundingInstrument();
         $fi->setCreditCard($this->creditCard);
 
         // ### Payer
         // A resource representing a Payer that funds a payment
         // Use the List of `FundingInstrument` and the Payment Method
         // as 'credit_card'
-        $payer = $this->creditCardPayment->payer();
-        $payer->setPaymentMethod("credit_card");
-            //->setFundingInstruments([$fi]);
+        $payer = new \PayPal\Api\Payer();//$this->creditCardPayment->payer();
+        $payer->setPaymentMethod("credit_card")
+            ->setFundingInstruments([$fi]);
             //App::dd($payer);
         // get cart items
+
         $this->cartItems = $this->getCartItems();
         
-
+        
         if($this->cartItems) {
             $i = 0;
             foreach($this->cartItems as $cartItem) {
                 // create a new item object 
-                $this->item[$i] = $this->creditCardPayment->item();
+                $this->item[$i] = new \PayPal\Api\Item();
                 // set value an item object
                 $this->item[$i]->setName($cartItem['name'])
-                            ->setDescription('Ground Coffee 40 oz')
+                            ->setDescription('Ticket(s)')
                             ->setQuantity($cartItem['qty'])
                             ->setPrice($cartItem['price'])
                             ->setCurrency($cartItem['options']['o_currency']);
@@ -174,23 +189,25 @@ class PayPalPaymentController extends App_Controller {
                 $i++;
             }
         }
-        $this->setTotal($this->total);
-        //App::dd($this->item);
-        $this->itemList = $this->creditCardPayment->itemList();
-        if($this->item) {
-            $this->itemList->setItems(array($this->item))
-                            ->setBillingAddress($billingAddress);
-        }
         
-        $details = $this->creditCardPayment->details();
+
+        $this->setTotal($this->total);
+        
+       
+        
+        $this->itemList = new \PayPal\Api\ItemList();
+        $this->itemList->setItems($this->item)
+                       ->setShippingAddress($shippingAddress);
+        
+        $details = new \PayPal\Api\Details();
         $details
-                // ->setShipping("1.2")
+                 //->setShipping("1.2")
                 // ->setTax("1.3")
                 //total of items prices
-                ->setSubtotal("17.5");
+                ->setSubtotal($this->getTotal());
         
         //Payment Amount
-        $amount = $this->creditCardPayment->amount();
+        $amount = new \PayPal\Api\Amount();
         $amount->setCurrency($this->getCurrency())
                 // the total is $17.8 = (16 + 0.6) * 1 ( of quantity) + 1.2 ( of Shipping).
                 ->setTotal($this->getTotal())
@@ -202,56 +219,43 @@ class PayPalPaymentController extends App_Controller {
         // is fulfilling it. Transaction is created with
         // a `Payee` and `Amount` types
 
-        $this->transaction = $this->creditCardPayment->transaction();
+        $this->transaction = new \PayPal\Api\Transaction();
         $this->transaction->setAmount($amount)
-            ->setItemList($this->itemList)
-            ->setDescription("Payment description")
-            ->setInvoiceNumber(uniqid());
+                        ->setItemList($this->itemList)
+                        ->setDescription("Payment description")
+                        ->setInvoiceNumber(uniqid());
 
-        // ### Payment
+            // ### Payment
         // A Payment Resource; create one using
         // the above types and intent as 'sale'
-        $redirectUrls = new RedirectUrls();
+        $redirectUrls = new \PayPal\Api\RedirectUrls();
         $redirectUrls->setReturnUrl("https://example.com/your_redirect_url.html")
-            ->setCancelUrl("https://example.com/your_cancel_url.html");
-            
-            
-
-        $payment = $this->creditCardPayment->payment();
+                    ->setCancelUrl("https://example.com/your_cancel_url.html");
+        $payment = new \PayPal\Api\Payment();
 
         $payment->setIntent("authorize")
-            ->setPayer($payer)
-            ->setTransactions([$this->transaction])
-            ->setRedirectUrls($redirectUrls);
-       
+                ->setPayer($payer)
+                ->setTransactions(array($this->transaction))
+                ->setRedirectUrls($redirectUrls);
+        
+        $this->_api_context = $this->creditCardPayment->apiContext();
         try {
-            // ### Create Payment
-            // Create a payment by posting to the APIService
-            // using a valid ApiContext
-            // The return object contains the status;
-            
-            //App::dd($this->creditCardPayment->apiContext());
-            $apiContext = new \PayPal\Rest\ApiContext(
-                new \PayPal\Auth\OAuthTokenCredential(
-                    'AZZI7nBmRypZF4H7ajNM4G8JnbxGTor8OpxdwXmKUWh2R-zfKfYAX9Us1idmQ_6-zltNgcIeZCZWVakG',     // ClientID
-                    'EJ4gqjUBn0B8xf1SxlK5z4aFsxjOTaZ20AFn6BpVrX52BP1WYd-S7z0oqnYjFBHnEBYpNsKAdE4TWD_D'      // ClientSecret
-                )
-            );
-
-            //App::dd($apiContext);
-            $payment->create($apiContext);
-            echo $payment;
-
-            echo "\n\nRedirect user to approval_url: " . $payment->getApprovalLink() . "\n";
-            //$execution = new PaymentExecution(); 
-            //$result = $payment->execute($execution, $this->creditCardPayment->apiContext());
-        } catch (\PayPal\Exception\PayPalConnectionException $ex) {
-            pjAppController::jsonResponse(["error" => $ex->getData()]);
-            //echo '<pre>';print_r(json_decode($ex->getData()));exit;
+            $payment->create($this->_api_context);
+            $response = $payment->toArray();
+            pjAppController::jsonResponse(['response' => $response]);
             exit;
+        }
+        catch (\PayPal\Exception\PayPalConnectionException $ex) {
+            // This will print the detailed information on the exception.
+            //REALLY HELPFUL FOR DEBUGGING
+            if ($this->isDebug()) {
+                pjAppController::jsonResponse(["Exception" => $ex->getMessage(), "data" => $ex->getData()]);
+                exit;
+            } else {
+                die('Some error occur, sorry for inconvenient');
+            }
         }
         pjAppController::jsonResponse([$payment->toArray()]);
         exit;
     }
-     
 }

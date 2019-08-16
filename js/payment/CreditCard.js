@@ -13,13 +13,13 @@ $(document).ready(function() {
     $('#finish').on('click', function() {
         
 
-        creditCardInfo.number       = $('#number').val();
+        creditCardInfo.number       = $('#card_number').val();
         creditCardInfo.expireMonth  = $('#expireMonth').val();
         creditCardInfo.expireYear   = $('#expireYear').val();
         creditCardInfo.cvv2         = $('#cvv2').val();
 
         creditCardInfo.type = creditCard.IsValidCreditCardNumber(creditCardInfo.number);
-        console.log(creditCardInfo);
+        //console.log(creditCardInfo);
 
         billingAddress.firstName  = $('#firstName').val();
         billingAddress.lastName   = $('#lastName').val();
@@ -30,18 +30,36 @@ $(document).ready(function() {
         billingAddress.address    = $('#_address').val();
         billingAddress.postalCode   = $('#postalCode').val();
 
-        console.log(billingAddress);
+       // console.log(billingAddress);
 
         var props = {
           creditCardInfo: creditCardInfo,
           billingAddress: billingAddress
         };
 
-        console.log(props);
-        
-        $.post(`${API_URL}/paypal/pay/credit-card`, props, function(res) {
-          console.log(res);
-        });
+       // console.log(props);
+        $.ajax({
+          url: `${API_URL}paypal/pay/credit-card`,
+          type: 'POST',
+          data: props,
+          beforeSend: function() {
+              $(".wizard-container").loading({
+                message: 'Please Wait – We are processing your payment, do not click away from this page. This process can take up to 30 seconds'
+              });
+           },
+          success: function(res) {
+              console.log(res);
+              if(res) {
+                $(".wizard-container").loading('stop');
+              }
+          },
+          error: function(res) {
+            console.log(res);
+          }         
+      });
+        // $.post(`${API_URL}/paypal/pay/credit-card`, props, function(res) {
+        //   console.log(res);
+        // });
 
     });
 

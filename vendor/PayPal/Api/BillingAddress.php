@@ -45,7 +45,7 @@ class BillingAddress extends Address
      */
     public function setRecipientName($recipient_name)
     {
-        $this->recipient_name = $recipient_name;
+        $this->recipient_name  = $recipient_name;
         return $this;
     }
 

@@ -28,7 +28,7 @@ class App {
         echo "<pre>";
         print_r($_SESSION);
     }
-    public static function dd($data, $exit = false) {
+    public static function dd($data, $exit = true) {
         echo "<pre>";
         print_r($data);
         if($exit) exit; 
