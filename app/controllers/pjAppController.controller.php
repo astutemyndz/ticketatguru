@@ -653,6 +653,8 @@ class pjAppController extends pjController
 	
 	public function buildPdfTickets($arr)
 	{
+		// echo $this->getLocaleId();
+		// exit;
 		$event_arr = pjEventModel::factory()
 			->find($arr['event_id'])
 			->getData();
@@ -669,7 +671,7 @@ class pjAppController extends pjController
 				->where('t1.booking_id', $arr['id'])
 				->findAll()
 				->getData();
-			
+			//App::dd($bt_arr);
 			$ticket_template = pjMultiLangModel::factory()->select('t1.*')
 				->where('t1.model','pjOption')
 				->where('t1.locale', $this->getLocaleId())

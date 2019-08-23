@@ -7,54 +7,7 @@ const messageBox = function(targetElement, props) {
 		</div>`
 	);
 }
-var notification = function(options, settings) {
-	$.notify({
-		// options
-		icon: (options.icon) ? options.icon : '',
-		title:  (options.title) ? options.title : '',
-		message:  (options.message) ? options.message :'Turning standard Bootstrap alerts into "notify" like notifications',
-		url:  (options.url) ? options.url :'https://github.com/mouse0270/bootstrap-notify',
-		target:  (options.target) ? options.target :'_blank'
-	},{
-		// settings
-		element: (settings.element) ? settings.element :'body',
-		position: (settings.position) ? settings.position : null,
-		type: (settings.type) ? settings.type : "info",
-		allow_dismiss: (settings.allow_dismiss) ? settings.allow_dismiss : true,
-		newest_on_top: (settings.newest_on_top) ? settings.newest_on_top : false,
-		showProgressbar: (settings.showProgressbar) ? settings.showProgressbar : false,
-		placement: {
-			from: (settings.placement.from) ? settings.placement.from : "top",
-			align: (settings.placement.align) ? settings.placement.align : "right"
-		},
-		offset: (settings.offset) ? settings.offset : 20,
-		spacing: (settings.spacing) ? settings.spacing : 10,
-		z_index: (settings.z_index) ? settings.z_index : 1031,
-		delay: (settings.delay) ? settings.delay : 5000,
-		timer: (settings.timer) ? settings.timer : 1000,
-		url_target: (settings.url_target) ? settings.url_target : '_blank',
-		mouse_over: (settings.mouse_over) ? settings.mouse_over : null,
-		animate: {
-			enter: (settings.animate.enter) ? settings.animate.enter : 'animated bounceIn',
-			exit: (settings.animate.exit) ? settings.animate.exit : 'animated bounceOut'
-		},
-		onShow: (settings.onShow) ? settings.onShow : null,
-		onShown: (settings.onShown) ? settings.onShown : null,
-		onClose: (settings.onClose) ? settings.onClose : null,
-		onClosed: (settings.onClosed) ? settings.onClosed : null,
-		icon_type: 'class',
-		template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
-			'<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
-			'<span data-notify="icon"></span> ' +
-			'<span data-notify="title">{1}</span> ' +
-			'<span data-notify="message">{2}</span>' +
-			'<div class="progress" data-notify="progressbar">' +
-				'<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
-			'</div>' +
-			'<a href="{3}" target="{4}" data-notify="url"></a>' +
-		'</div>' 
-	});
-}
+
 var foo = function(props) {
 	console.log(props.name);
 	$('.signupFlash').append("<p>"+ props.name + "</p>");
@@ -138,7 +91,7 @@ $("document").ready(function() {
 									$('.alert').delay(2000).fadeOut();
 							}, 2000);
 						setTimeout(function() {
-							window.location.href = `${API_URL}account`;
+							window.location.href = `${API_URL}cart/checkout`;
 						}, 3000);
 					} else {
 						const errors = res.errors;
@@ -201,7 +154,7 @@ $("document").ready(function() {
 					$("#auth").loading({theme: 'dark'});
 				},
 				success: function(res) {
-					///console.log(res);
+					console.log(res);
 					
 					if(res.status) {
 						$("#auth").loading('stop');
@@ -210,7 +163,7 @@ $("document").ready(function() {
 							$('.alert').delay(2000).fadeOut();
 						}, 2000);
 						setTimeout(function() {
-							window.location.href = `${API_URL}account`;
+							window.location.href = `${API_URL}cart/checkout`;
 						}, 2000);
 					} else {
 						$("#auth").loading('stop');

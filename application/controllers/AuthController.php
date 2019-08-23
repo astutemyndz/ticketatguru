@@ -235,7 +235,17 @@ class AuthController extends CI_Controller
 		$this->data['page_heading'] = "Logout";
 
 		// log the user out
-		$logout = $this->ion_auth->logout();
+		//$this->ion_auth->logout();
+		$identity = $this->config->item('identity', 'ion_auth');
+
+		if (substr(CI_VERSION, 0, 1) == '2')
+		{
+			$this->session->unset_userdata(array($identity => '', 'id' => '', 'user_id' => '', 'user_type' => '', 'loggedIn' => '', 'old_last_login' => '', 'last_check' => ''));
+		}
+		else
+		{
+			$this->session->unset_userdata(array($identity, 'id', 'user_id','user_type', 'last_check', 'old_last_login', 'loggedIn', 'identity'));
+		}
 
 		// redirect them to the login page
 		$this->session->set_flashdata('message', $this->ion_auth->messages());
@@ -263,10 +273,14 @@ class AuthController extends CI_Controller
 	public function pjAccount() {
 
 		$this->data['page_heading'] = "My Account";
-		$this->load->view('frontend/layout/head', $this->data);
-		$this->load->view('frontend/layout/header');
-		$this->load->view('frontend/pages/account/index');
+		$this->load->view('frontend/layout/head');
+		$this->load->view('frontend/layout/header',$this->data);
+		$this->load->view('frontend/pages/account/index',$this->data);
 		$this->load->view('frontend/layout/footer');
+	}
+
+	public function emptySession() {
+		$this->session->sess_destroy();
 	}
 
 

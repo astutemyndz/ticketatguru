@@ -6,6 +6,9 @@ if (!defined("ROOT_PATH"))
 }
 class pjShowModel extends pjAppModel
 {
+	
+	
+
 	protected $primaryKey = 'id';
 	
 	protected $table = 'shows';

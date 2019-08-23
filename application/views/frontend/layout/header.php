@@ -1,4 +1,7 @@
 <?php 
+//App::dd($this->session->all_userdata());
+// echo PJ_SALT;
+// exit;
 $cartItemsCount = ($this->cart->contents()) ? count($this->cart->contents()) : 0;
 ?>
 <?php
@@ -66,7 +69,7 @@ $active_url = $controller.'/'.$method;
 						</ul>
 					</div>
 					<ul class="js-signin-modal">
-						<?php if(!empty($_SESSION['loggedIn']) && $_SESSION['loggedIn'] === TRUE) { ?>
+						<?php if(!empty($this->session->userdata('loggedIn')) && $this->session->userdata('loggedIn') === TRUE) { ?>
 							<li>
 								<a id="logoutLink" class="" href="javascript:void(0);" >
 									<span class="hidden-xs">Sign out</span>
@@ -212,7 +215,7 @@ if($controller == 'EventController' && $method =='index'){
 		<img src="<?php echo base_url() ?>/images/banner.jpg" alt="">
 		<div class="black-layer"></div>
 		<div class="caption">
-			<h3><?php echo $page_heading ? $page_heading : 'Welcome to Ticket at Guru'; ?></h3>
+			<h3><?php //echo ($page_heading) ? $page_heading : 'Welcome to Ticket at Guru'; ?></h3>
 		</div>
 	</section>
 </section>	

@@ -7,7 +7,7 @@ if (!defined("ROOT_PATH"))
 class EventController extends App_Controller
 {	
 	
-	public $defaultStore = 'pjTicketBooking_Store';
+	//public $defaultStore = 'pjTicketBooking_Store';
 	public $cartItems = array();
 	public $defaultForm = 'pjTicketBooking_Form';
 	public $pjActionSeatsAjaxResponse = 'pjActionSeatsAjaxResponse';
@@ -468,7 +468,7 @@ class EventController extends App_Controller
 				$pjBookingShowModel = pjBookingShowModel::factory();
 				$pjBookingModel 	= pjBookingModel::factory();
 				$_show_arr		 	= $pjShowModel
-										->select('DISTINCT t1.venue_id, t2.content as venue_name')
+										->select('DISTINCT t1.venue_id, t2.content as venue_name, t1.date_time')
 										->join('pjMultiLang', "t2.model='pjVenue' AND t2.foreign_id=t1.venue_id AND t2.field='name' AND t2.locale='".$this->getLocaleId()."'", 'left outer')
 										->where("(t1.venue_id IN (SELECT `TV`.id FROM `".pjVenueModel::factory()->getTable()."` AS `TV` WHERE `TV`.`status`='T'))")
 										->where('t1.event_id', $id)
@@ -567,6 +567,7 @@ class EventController extends App_Controller
 					$this->data['hash_date'] 		= $hash_date;
 					$this->data['selected_date'] 	= $selected_date;
 					$this->data['selected_time'] 	= $selected_time;
+					$this->data['selected_date_time'] = $_show_arr[0]['date_time'];
 					$this->data['hall_arr'] 		= $_show_arr;
 					$this->data['status'] 			= 'OK';
 					$this->data['title'] 			= 'Ticket at Guru';

@@ -7,50 +7,23 @@ $(document).ready(function() {
     // });
    
     //creditCardInfo.type         = $('#type').val();
-    var creditCardInfo = {}, 
-        billingAddress = {};
-      
+   
+      /*
     $('#finish').on('click', function() {
-        
-
-        creditCardInfo.number       = $('#card_number').val();
-        creditCardInfo.expireMonth  = $('#expireMonth').val();
-        creditCardInfo.expireYear   = $('#expireYear').val();
-        creditCardInfo.cvv2         = $('#cvv2').val();
-
-        creditCardInfo.type = creditCard.IsValidCreditCardNumber(creditCardInfo.number);
-        //console.log(creditCardInfo);
-
-        billingAddress.firstName  = $('#firstName').val();
-        billingAddress.lastName   = $('#lastName').val();
-        billingAddress.email      = $('#email').val();
-        billingAddress.phone      = $('#phone').val();
-        billingAddress.countryCode    = $('#countryCode').val();
-        billingAddress.city       = $('#city').val();
-        billingAddress.address    = $('#_address').val();
-        billingAddress.postalCode   = $('#postalCode').val();
-
-       // console.log(billingAddress);
-
-        var props = {
-          creditCardInfo: creditCardInfo,
-          billingAddress: billingAddress
-        };
-
-       // console.log(props);
         $.ajax({
           url: `${API_URL}paypal/pay/credit-card`,
           type: 'POST',
           data: props,
-          beforeSend: function() {
-              $(".wizard-container").loading({
-                message: 'Please Wait – We are processing your payment, do not click away from this page. This process can take up to 30 seconds'
-              });
-           },
+          // beforeSend: function() {
+          //     $(".wizard-container").loading({
+          //       message: 'Please Wait – We are processing your payment, do not click away from this page. This process can take up to 30 seconds'
+          //     });
+          //  },
           success: function(res) {
               console.log(res);
               if(res) {
-                $(".wizard-container").loading('stop');
+                //$(".wizard-container").loading('stop');
+                alert('Booked');
               }
           },
           error: function(res) {
@@ -62,6 +35,50 @@ $(document).ready(function() {
         // });
 
     });
+    */
+    var creditCardInfo = {}, 
+    billingAddress = {};
+
+    $('form.checkoutForm').on('submit', function(e) {
+      
+      e.preventDefault(); //'return false' is deprecated according to jQuery documentation, use this instead.
+      console.log('clicked');
+      var that = $(this),
+      url = that.attr('action'),
+      type = that.attr('method'),
+      data = that.serialize(); //This will capture all form input values, no need to reinvent the wheel
+/*
+      creditCardInfo.number       = $('#card_number').val();
+      creditCardInfo.expireMonth  = $('#expireMonth').val();
+      creditCardInfo.expireYear   = $('#expireYear').val();
+      creditCardInfo.cvv2         = $('#cvv2').val();
+      creditCardInfo.type = creditCard.IsValidCreditCardNumber(creditCardInfo.number);
+      
+      billingAddress.firstName  = $('#firstName').val();
+      billingAddress.lastName   = $('#lastName').val();
+      billingAddress.email      = $('#email').val();
+      billingAddress.phone      = $('#phone').val();
+      billingAddress.countryCode    = $('#countryCode').val();
+      billingAddress.city       = $('#city').val();
+      billingAddress.address    = $('#_address').val();
+      billingAddress.postalCode   = $('#postalCode').val();
+    */
+      // var props = {
+      //   creditCardInfo: creditCardInfo,
+      //   billingAddress: billingAddress,
+      //   data: data
+      // };
+
+      //console.log(props);
+      $.ajax({
+          url: url,
+          type: type,
+          data: data,
+          success: function(response) {
+             console.log(response);
+          }
+      });
+  });
 
     function CreditCard() {
         const AmexCardNumber = function(cardNumber) {

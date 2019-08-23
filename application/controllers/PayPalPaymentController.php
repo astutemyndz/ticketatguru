@@ -24,11 +24,12 @@ class PayPalPaymentController extends App_Controller {
     private $total;
     private $transaction;
     private $creditCardPayment;
+    private $tickets = array();
 
     public function __construct()
     {
        parent::__construct();
-
+        //exit;
        $this->defaultConfig = array();
        $this->billingAddress = array();
        $this->shippingAddress = array();
@@ -115,7 +116,7 @@ class PayPalPaymentController extends App_Controller {
     public function payWithCreditCard()
     {
         
-        
+        //App::dd($this->getLocaleId());
          // ### get post data
          $this->data = $this->getRequest();
          //App::dd($this->data);
@@ -130,23 +131,24 @@ class PayPalPaymentController extends App_Controller {
         $shippingAddress
             ->setLine1('line1')
             ->setLine2('line2')
-            ->setCity($this->shippingAddress['city'])
+            ->setCity($this->shippingAddress['c_city'])
             //->setState($this->billingAddress['state'])
-            ->setPostalCode($this->shippingAddress['postalCode'])
-            ->setCountryCode($this->shippingAddress['countryCode'])
-            ->setPhone($this->shippingAddress['phone'])
-            ->setRecipientName($this->shippingAddress['firstName']. " ". $this->shippingAddress['lastName']);
+            ->setPostalCode($this->shippingAddress['c_zip'])
+            ->setCountryCode($this->shippingAddress['c_country'])
+            ->setPhone($this->shippingAddress['c_phone'])
+            //->setDefaultAddress($this->shippingAddress['c_address'])
+            ->setRecipientName($this->shippingAddress['c_firstName']. " ". $this->shippingAddress['c_lastName']);
         // ### set credit card info
         $this->setCreditCardInfo($this->data['creditCardInfo']);
         $this->creditCardInfo = $this->getCreditCardInfo();
 
         // ### CreditCard
         $this->creditCard = new \PayPal\Api\CreditCard();
-        $this->creditCard->setNumber($this->creditCardInfo['number']);
-        $this->creditCard->setType($this->creditCardInfo['type']);
-        $this->creditCard->setExpireMonth($this->creditCardInfo['expireMonth']);
-        $this->creditCard->setExpireYear($this->creditCardInfo['expireYear']);
-        $this->creditCard->setCvv2($this->creditCardInfo['cvv2']);
+        $this->creditCard->setNumber($this->creditCardInfo['cc_num']);
+        $this->creditCard->setType($this->creditCardInfo['cc_type']);
+        $this->creditCard->setExpireMonth($this->creditCardInfo['cc_exp_month']);
+        $this->creditCard->setExpireYear($this->creditCardInfo['cc_exp_year']);
+        $this->creditCard->setCvv2($this->creditCardInfo['cc_code']);
 
        
 
@@ -171,7 +173,8 @@ class PayPalPaymentController extends App_Controller {
 
         $this->cartItems = $this->getCartItems();
         
-        
+        //$tickets = array();
+        //$showModel = pjShowModel::factory();
         if($this->cartItems) {
             $i = 0;
             foreach($this->cartItems as $cartItem) {
@@ -182,15 +185,52 @@ class PayPalPaymentController extends App_Controller {
                             ->setDescription('Ticket(s)')
                             ->setQuantity($cartItem['qty'])
                             ->setPrice($cartItem['price'])
-                            ->setCurrency($cartItem['options']['o_currency']);
+                            ->setCurrency($cartItem['o_currency']);
                 
-                $this->setCurrency($cartItem['options']['o_currency']);
+                $this->setCurrency($cartItem['o_currency']);
                 $this->total += $this->format_number($cartItem['subtotal']);
+               
+               
+                $this->data['event_id'] = $cartItem['event_id'];
+                $this->data['venue_id'] = $cartItem['venue_id'];
+
+                
                 $i++;
+            
+            
+            }
+
+            
+        }
+     
+        $arr = [];
+        $newArr = [];
+        $i = 0;
+        if(count($this->cart->contents()) > 0) {
+            foreach($this->cart->contents() as $item) { 
+                if(is_array($item['tickets']) && count($item['tickets']) > 0) {
+                    foreach($item['tickets'] as $ticketType => $price_id) {
+                        if(in_array($price_id, $arr)) {
+                            $newArr[$price_id] = $newArr[$price_id] += 1;
+                        } else {
+                            array_push($arr, $price_id);
+                            $newArr[$price_id] = 1;
+                        }
+                        $tickets[$ticketType] = array(
+                            $price_id => $newArr[$price_id]
+                        );
+                    }
+                }
             }
         }
+        $this->data['sub_total'] = $this->total;
+        $this->data['total'] = $this->total; // excluded tax
+        $this->data['tickets'] = $this->tickets;
         
+        $this->options = array();
 
+        
+        
         $this->setTotal($this->total);
         
        
@@ -241,8 +281,42 @@ class PayPalPaymentController extends App_Controller {
         $this->_api_context = $this->creditCardPayment->apiContext();
         try {
             $payment->create($this->_api_context);
-            $response = $payment->toArray();
-            pjAppController::jsonResponse(['response' => $response]);
+            $this->response = $payment->toArray();
+            //App::dd($this->response);
+            if(is_array($this->response) && count($this->response) > 0) {
+                if($this->response['state'] === "approved") {
+
+                    if(is_array($this->response['payer']) && count($this->response['payer']) > 0) {
+                        $this->data['payment_method'] = str_replace('_', '',$this->response['payer']['payment_method']);
+                    }
+                    if(is_array($this->response['transactions']) && count($this->response['transactions']) > 0) {
+
+                        $this->data['sub_total'] = $this->response['transactions'][0]['amount']['details']['subtotal'];
+                        $this->data['total'] = $this->response['transactions'][0]['amount']['total'];
+                        $this->data['description'] = $this->response['transactions'][0]['description'];
+                        $this->data['invoice_number'] = $this->response['transactions'][0]['invoice_number'];
+                        
+                    }
+                    $this->data['txn_id'] = $this->response['id'];
+                   // $this->data['date_time'] = //show date time $this->response['create_time'];
+                    $this->data['processed_on'] = $this->response['create_time'];
+                    $this->data['created'] = $this->response['create_time'];
+                    $this->data['status'] = 'confirmed';
+                    $this->data['date_time'] = $this->getSession($this->defaultStore)['selected_date_time'];
+                    
+                     $this->load->model('BookingModel');
+                    // $this->option_arr['']
+                    $this->data['localeId'] = $this->getLocaleId();
+                     $this->response = $this->BookingModel->save($this->data, $this->option_arr);
+                     pjAppController::jsonResponse(['response' => $this->response]);
+                     exit;
+                    
+                    
+                }
+            }
+            
+            pjAppController::jsonResponse(['response' => $this->response]);
+
             exit;
         }
         catch (\PayPal\Exception\PayPalConnectionException $ex) {

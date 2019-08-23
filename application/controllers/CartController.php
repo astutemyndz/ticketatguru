@@ -9,6 +9,7 @@ class CartController extends App_Controller {
     function __construct() {
         parent::__construct();
         $this->isCart = (count($this->cart->contents()) > 0) ? true : false;
+        
     }
 
    
@@ -204,11 +205,14 @@ class CartController extends App_Controller {
 				}
 			} 
 			$ticket_name_arr = array();
-			$ticket_tooltip_arr = array();
+            $ticket_tooltip_arr = array();
+            //App::dd($this->defaultStore['ticket_arr']);
 			if($this->defaultStore['ticket_arr'] && count($this->defaultStore['ticket_arr']) > 0)
 			{
 				foreach($this->defaultStore['ticket_arr'] as $v)
 				{
+					$ticket_tooltip_arr['ticketAttr'][$v['price_id']] = $v['id'];
+					$ticket_name_arr['show_id'] = $v['id'];
 					$ticket_name_arr[$v['price_id']] = pjSanitize::html($v['ticket']);
 					$ticket_tooltip_arr['tooltip'][$v['price_id']] = pjSanitize::html($v['ticket']);// . ', ' .  pjUtil::formatCurrencySign($v['price'], $this->option_arr['o_currency']);
 					$ticket_tooltip_arr['tooltip']['price'][$v['price_id']] = $v['price'];
@@ -216,8 +220,7 @@ class CartController extends App_Controller {
 					$ticket_tooltip_arr['tooltip']['price']['currency'][$v['price_id']] = $this->option_arr['o_currency'];
 				}
 			}
-            // echo "<pre>";
-            // print_r($ticket_tooltip_arr);
+            
 			$seatComponents = array();
 
 			if($this->isCart) {
@@ -225,7 +228,8 @@ class CartController extends App_Controller {
 				$cartItems = $this->cart->contents();
 
 				if(count($cartItems) > 0 ) {
-					$unique_ids = array_unique(array_column($this->cart->contents(), 'id'));
+                    $unique_ids = array_unique(array_column($this->cart->contents(), 'id'));
+                    //App::dd($this->defaultStore['seat_arr']);
                     foreach($this->defaultStore['seat_arr'] as $seat) {
                         $is_selected = false;
                         $is_available = true;
@@ -248,7 +252,8 @@ class CartController extends App_Controller {
                             $style 	.= "line-height:".$seat['height']."px;";
                             $price = $ticket_tooltip_arr[$seat['price_id']];
                             $tooltip = $ticket_tooltip_arr['tooltip'][$seat['price_id']];
-                            $seatComponents[] = self::SeatComponent(array('props' => array('id' => $seat['id'], 'name' => $seat['name'], 'price' => $price, 'price_id' => $seat['price_id'], 'tooltip' => $seat['name'], 'className' => $className, 'style' => $style)));
+                            $ticketAttr = $ticket_tooltip_arr['ticketAttr'][$seat['price_id']];
+                            $seatComponents[] = self::SeatComponent(array('props' => array('ticketAttr' => $ticketAttr, 'id' => $seat['id'], 'show' => $ticket_name_arr['show_id'], 'venue' => $seat['venue_id'], 'name' => $seat['name'], 'price' => $price, 'price_id' => $seat['price_id'], 'tooltip' => $seat['name'], 'className' => $className, 'style' => $style)));
                                         
                         } else {
 
@@ -267,7 +272,8 @@ class CartController extends App_Controller {
                             $style 	.= "line-height:".$seat['height']."px;";
                             $price = $ticket_tooltip_arr[$seat['price_id']];
                             $tooltip = $ticket_tooltip_arr['tooltip'][$seat['price_id']];
-                            $seatComponents[] = self::SeatComponent(array('props' => array('id' => $seat['id'], 'name' => $seat['name'],'price' => $price, 'price_id' => $seat['price_id'], 'tooltip' => $seat['name'],'className' => $className, 'style' => $style)));
+                            $ticketAttr = $ticket_tooltip_arr['ticketAttr'][$seat['price_id']];
+                            $seatComponents[] = self::SeatComponent(array('props' => array('ticketAttr' => $ticketAttr,'id' => $seat['id'], 'show' => $ticket_name_arr['show_id'], 'venue' => $seat['venue_id'],'name' => $seat['name'],'price' => $price, 'price_id' => $seat['price_id'], 'tooltip' => $seat['name'],'className' => $className, 'style' => $style)));
                         }
                     }
                 } 
@@ -291,9 +297,10 @@ class CartController extends App_Controller {
                     $style 	.= "top:".$seat['top']."px;"; 
                     $style 	.= "line-height:".$seat['height']."px;";
                     $price = $ticket_tooltip_arr[$seat['price_id']];
-                    $tooltip[] = $ticket_tooltip_arr['tooltip'][$seat['price_id']];
-
-                    $seatComponents[] = self::SeatComponent(array('props' => array('id' => $seat['id'], 'name' => $seat['name'], 'price' => $price, 'tooltip' => $seat['name'],'price_id' => $seat['price_id'], 'className' => $className, 'style' => $style)));
+                    $tooltip = $ticket_tooltip_arr['tooltip'][$seat['price_id']];
+                    $ticketAttr = $ticket_tooltip_arr['ticketAttr'][$seat['price_id']];
+                   // $seatComponents[] = self::SeatComponent(array('props' => array('id' => $seat['id'], 'name' => $seat['name'], 'price' => $price, 'tooltip' => $seat['name'],'price_id' => $seat['price_id'], 'className' => $className, 'style' => $style)));
+                    $seatComponents[] = self::SeatComponent(array('props' => array('ticketAttr' => $ticketAttr, 'id' => $seat['id'], 'show' => $ticket_name_arr['show_id'], 'venue' => $seat['venue_id'],'name' => $seat['name'],'price' => $price, 'price_id' => $seat['price_id'], 'tooltip' => $seat['name'],'className' => $className, 'style' => $style)));
                 }
               
             }
@@ -312,23 +319,39 @@ class CartController extends App_Controller {
         $this->setAjax(true);
 		if ($this->isXHR())
 		{
-			$response = array();
-			$id         = ($this->has('id')) ? $this->post('id') : [];
-			$price      = ($this->has('price')) ? (float)$this->post('price') : '';
-			$name       = ($this->has('name')) ? $this->post('name') : '';
+            $response = array();
+            $price_id      = ($this->has('price_id')) ? $this->post('price_id') : '';
+            $seat_id         = ($this->has('seat_id')) ? $this->post('seat_id') : ''; // seat_id
+            $show_id      = ($this->has('show_id')) ? $this->post('show_id') : '';
+			$venue_id      = ($this->has('venue_id')) ? $this->post('venue_id') : '';
+			$ticketType      = ($this->has('type')) ? $this->post('type') : '';
+			
+            
+            $name       = ($this->has('name')) ? $this->post('name') : '';
+            $price      = ($this->has('price')) ? (float)$this->post('price') : '';
             $event      = $this->getSession($this->defaultStore)['arr'];
             
-
-
+            ///$seatId = array();
+            $event_id         = ($event) ? $event['id'] : '';
+            
 			$data = array(
-				'id'		=>	$id,
+				'id'		=>	$seat_id,
 				'qty' 		=>	1,
 				'price' 	=>	$price,
 				'name'		=>	$name,
-				'options' 	=> 	array('event' => $event, 'o_currency' => $this->option_arr['o_currency'])
+                'options' 	=> 	array(),
+                'event_id'  => $event_id, 
+                'venue_id'  => $venue_id, 
+                'show_id'   => $show_id,
+                'tickets'   => array($ticketType => $price_id), 
+                'seat_id'   => array($price_id => $seat_id), 
+                'price_id'   => $price_id, 
+                'o_currency'=> $this->option_arr['o_currency'],
+                'event'     => $event
             );
           
-            if($this->cart->insert($data)){
+            if($this->cart->insert($data)) {
+                $this->session->set_userdata('show', $show_id);
                 $response['cart'] = TRUE;
                 $response['responseText'] = 'Item added to cart';
                 $response['spanArray'] = $this->LoadMapComponent();
@@ -367,9 +390,11 @@ class CartController extends App_Controller {
      * @return array of span
      */
     private static function SeatComponent($args = array()) {
-		return "<span title=".$args['props']['tooltip']." data-id=".$args['props']['id']." data-name=".$args['props']['name']." data-price_id=".$args['props']['price_id']." data-price=".$args['props']['price']." class='".$args['props']['className']."' style='".$args['props']['style']."'>".stripslashes($args['props']['name'])."</span>";
+		return "<span data-type=".$args['props']['ticketAttr']." data-show=".$args['props']['show']." data-venue=".$args['props']['venue']." title=".$args['props']['tooltip']." data-id=".$args['props']['id']." data-name=".$args['props']['name']." data-price_id=".$args['props']['price_id']." data-price=".$args['props']['price']." class='".$args['props']['className']."' style='".$args['props']['style']."'>".stripslashes($args['props']['name'])."</span>";
 	}
     public function pjActionCartEmpty() {
+        //$this->unsetSession('show_id');
+       // $this->unsetSession('price_id');
         $this->cart->destroy();
         return 1;
     }
@@ -386,16 +411,25 @@ class CartController extends App_Controller {
     }
 
     public function checkout() {
+        //App::dd($this->cart->contents());
         $this->load->library(array('ion_auth'));
-        // if (!$this->ion_auth->logged_in())
-        // {
-        //   redirect('auth/login');
-        // }
+        if (!$this->ion_auth->logged_in())
+        {
+          redirect('auth/login');
+        }
+
+        $this->load->model('UserModel');
+        if($this->ion_auth->logged_in()) {
+            $this->UserModel->setUserId($this->getSession('user_id'));
+            $this->data['user'] = $this->UserModel->getUser();
+        }
+        
+        //App::dd($this->getSession('user_id'));
         $this->data['title'] 		= 'Checkout Page';
         $this->data['page_heading'] 		= 'Checkout';
         $this->load->view('frontend/layout/head', $this->data);
 		$this->load->view('frontend/layout/header');
-		$this->load->view('frontend/pages/cart/checkout');
+		$this->load->view('frontend/pages/cart/checkout', $this->data);
 		$this->load->view('frontend/layout/footer');
       
     }

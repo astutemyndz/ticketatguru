@@ -6,7 +6,7 @@ if (!defined("ROOT_PATH"))
 }
 class pjBookingShowModel extends pjAppModel
 {
-		
+	
 	protected $table = 'bookings_shows';
 	
 	protected $schema = array(

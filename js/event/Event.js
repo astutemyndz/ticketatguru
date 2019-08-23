@@ -40,6 +40,7 @@ $("document").ready(function() {
                     
                     $(".timeSlot").on('click', function() {
                         let data = props;
+                        console.log(data);
                         $.ajax({
                             type: "POST",
                             url: API_URL + 'event/pjActionSeatsAjax',
@@ -50,11 +51,11 @@ $("document").ready(function() {
                              },
                             success: function(res) {
                                 //console.log(res);
-                                let data = res.data;
-                                const STATUS = data.status;
+                               // let data = res.data;
+                               
                                 const status = res.status
 
-                                if(STATUS == "OK" && status == true) {
+                                if(status == true) {
                                     
                                     setTimeout(() => {
                                         $("#eventDetails").loading('stop');
@@ -62,7 +63,7 @@ $("document").ready(function() {
                                     }, 1000);
 
                                 } else {
-                                    console.log("ERR:",STATUS,"===",status);
+                                    console.log("ERR:",status,"===",status);
                                 }
                             },
                             error: function(res) {

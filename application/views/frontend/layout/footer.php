@@ -231,7 +231,6 @@
 <script src="<?php echo base_url();?>js/auth/auth.js"></script>
 <script src="<?php echo base_url();?>js/cart/Cart.js"></script>
 <script src="<?php echo base_url();?>js/payment/CreditCard.js"></script>
-<script src="<?php echo base_url();?>js/payment/CreditCard.js"></script>
 <script src="<?php echo base_url();?>js/jquery.creditCardValidator.js"></script>
 <script>
 	(function() {
@@ -245,6 +244,8 @@
 
 		
 	})();
+	
+	
 </script>
 
 <script>
@@ -336,6 +337,13 @@ $(document).ready(function(){
       });
     } 
   });
+  var $cc_type = $('#cc_type');
+  $('#card_number').validateCreditCard(function(result)
+    {
+
+		console.log(result.card_type.name);
+		$cc_type.val(result.card_type.name);
+    });
 });
 </script>	  
 	<script src="<?php echo base_url();?>js/jquery.bootstrap.wizard.js" type="text/javascript"></script>

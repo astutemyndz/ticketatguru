@@ -176,3 +176,6 @@ $route['cart/remove']      = 'CartController/removeCartItemOnClickEventListener'
 $route['cart/checkout'] = 'CartController/checkout';
 
 $route['paypal/pay/credit-card'] = 'PayPalPaymentController/payWithCreditCard';
+
+
+$route['session/empty'] = 'AuthController/emptySession';

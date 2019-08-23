@@ -4,6 +4,7 @@
 
 class App_Controller extends CI_Controller
 {
+	public $defaultStore 				= 'pjTicketBooking_Store';
 	public 		$models 				= array();
 	public 		$defaultLocale 			= 'frontend_locale_id';
 	public 		$defaultFields 			= 'fields';
@@ -17,6 +18,7 @@ class App_Controller extends CI_Controller
 	protected 	$locale_arr 			= 'locale_arr';
 	protected   $data					 = array();
 	protected	$payPalConfig			= array();
+	protected	$response			= array();
 
 	public function __construct()
     {

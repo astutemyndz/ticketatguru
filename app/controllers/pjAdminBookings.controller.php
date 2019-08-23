@@ -182,6 +182,8 @@ class pjAdminBookings extends pjAdmin
 			
 			if (isset($_POST['booking_create']))
 			{
+
+			//	App::dd($_POST);
 				$data = array();
 				
 				$pjBookingModel = pjBookingModel::factory();
@@ -207,6 +209,7 @@ class pjAdminBookings extends pjAdmin
 						->where("t1.venue_id", $_POST['venue_id'])
 						->findAll()
 						->getData();
+					
 					$price_arr = $this->calculatePrice($ticket_arr, $_POST['tickets']);
 					
 					$show_id_arr = array();
@@ -218,6 +221,7 @@ class pjAdminBookings extends pjAdmin
 					}
 					$pjBookingShowModel = pjBookingShowModel::factory();
 					$pjBookingTicketModel = pjBookingTicketModel::factory();
+				
 					foreach($_POST['seat_id'] as $price_id => $seat_arr)
 					{
 						$bs_data = array();
@@ -963,6 +967,9 @@ class pjAdminBookings extends pjAdmin
 					
 					
 					$this->set('venue_id', $venue_id);
+					// echo "<pre>";
+					// print_r($ticket_arr);
+					// exit;
 					$this->set('ticket_arr', $ticket_arr);
 				}
 			}
