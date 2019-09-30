@@ -110,6 +110,7 @@ class pjAdminBookings extends pjAdmin
 				->orderBy("$column $direction")->limit($rowCount, $offset)->findAll()->getData();
 			
 			$data = pjSanitize::clean($data);
+			
 			foreach($data as $k => $v)
 			{
 				$_arr = array();
@@ -131,9 +132,11 @@ class pjAdminBookings extends pjAdmin
 					$v['tickets'] = !empty($_arr) ? join('<br/>', $_arr) : '';
 				}else{
 					$v['tickets'] = !empty($_arr) ? '<a href="'.$pdf.'" target="blank">' . join('<br/>', $_arr) . '</a>' : '';
+					$v['createInvoice'] = !empty($_arr) ? '<input type="button" class="pj-button btnCreateInvoice" value="Generate Invoice" disabled>' : '';
 				}
 				$data[$k] = $v;
 			}
+//App::dd($data);
 			pjAppController::jsonResponse(compact('data', 'total', 'pages', 'page', 'rowCount', 'column', 'direction'));
 		}
 		exit;
@@ -150,6 +153,28 @@ class pjAdminBookings extends pjAdmin
 				->findAll()
 				->getData();
 			$this->set('event_arr', $event_arr);
+
+			/**
+			 * Get Invoice data to generate booking invoice start of code
+			 */
+			$pjBookingModel = pjBookingModel::factory();
+			if (isset($_REQUEST['id']) && (int) $_REQUEST['id'] > 0)
+			{
+				$pjBookingModel->where('t1.id', $_REQUEST['id']);
+			} elseif (isset($_GET['uuid']) && !empty($_GET['uuid'])) {
+				$pjBookingModel->where('t1.uuid', $_GET['uuid']);
+			}
+			$booking = $pjBookingModel
+				->join('pjEvent', 't2.id=t1.event_id')
+				->limit(1)
+				->findAll()
+				->getDataIndex(0);
+			$booking = pjAppController::pjActionGetBookingDetails($booking['id']);
+			//App::dd($booking);
+			$this->set('arr', $booking);
+			/**
+			 * Get Invoice data to generate booking invoice end of code
+			 */
 			
 			$this->appendJs('chosen.jquery.js', PJ_THIRD_PARTY_PATH . 'chosen/');
 			$this->appendCss('chosen.css', PJ_THIRD_PARTY_PATH . 'chosen/');
@@ -399,7 +424,6 @@ class pjAdminBookings extends pjAdmin
 				->limit(1)
 				->findAll()
 				->getDataIndex(0);
-			//echo "<pre>";
 			//App::dd($booking);
 			if (!$booking)
 			{
@@ -642,9 +666,9 @@ class pjAdminBookings extends pjAdmin
 						->findAll()
 						->getData()
 				);
-				
+				//App::dd($booking);
 				$booking = pjAppController::pjActionGetBookingDetails($booking['id']);
-				
+				//App::dd($booking);
 				$this->set('has_map', $has_map);
 				$this->set('venue_id', $venue_id);
 				$this->set('event_arr', $event_arr);

@@ -32,8 +32,8 @@
 		<div id="container">
     		<div id="header">
     			<div id="logo">
-    				<a href="<?php echo PJ_INSTALL_URL;?>" target="_blank" rel="nofollow">Ticket at Guru</a>
-					<span>v<?php echo PJ_SCRIPT_VERSION;?></span>
+    				<a href="<?php echo PJ_INSTALL_URL;?>" target="_blank" rel="nofollow"><img src="app/web/img/logo.png"/></a>
+					<!--<span>v<?php echo PJ_SCRIPT_VERSION;?></span>-->
     			</div>
 			</div>
 			
@@ -57,36 +57,26 @@
 			   	<p>Copyright &copy; <?php echo date("Y"); ?> <a href="https://www.astutemyndz.com/" target="_blank">astutemyndz.com</a></p>
 	        </div>
 		</div>
+
 		<script>
-			// (function() {
-			// 	var $section = $('.wrapper-image');
-			// 	$section.find('.panzoom').panzoom({
-			// 	$zoomIn: $section.find(".zoom-in"),
-			// 	$zoomOut: $section.find(".zoom-out"),
-			// 	$zoomRange: $section.find(".zoom-range"),
-			// 	$reset: $section.find(".reset")
-			// 	});
-			// })();
-/*
-			var $pz2 = $("#mapHolder");
-			var $buttons = $('#PLKZOOMBTNWRAPPER');
-			$pz2.panzoom({
-				$zoomIn: $buttons.find(".zoom-in"),
-				$zoomOut: $buttons.find(".zoom-out"),
-				$reset: $buttons.find(".reset"),
-				cursor: "grab",
-				minScale: 1
-			});
-			$pz2.parent().on('mousewheel.focal', function(e) {
-				e.preventDefault();
-				var delta = e.delta || e.originalEvent.wheelDelta;
-				var zoomOut = delta ? delta < 0 : e.originalEvent.deltaY > 0;
-				$pz2.panzoom('zoom', zoomOut, {
-					increment: 0.1,
-					focal: e
-				});
-			});
-			*/
+			// function myFunction() {
+			// 	document.getElementById("myDropdown").classList.toggle("show");
+			// }
+
+			// 	// Close the dropdown if the user clicks outside of it
+			// 	window.onclick = function(event) {
+			// 	if (!event.target.matches('.dropbtn')) {
+			// 		var dropdowns = document.getElementsByClassName("dropdown-content");
+			// 		var i;
+			// 		for (i = 0; i < dropdowns.length; i++) {
+			// 		var openDropdown = dropdowns[i];
+			// 		if (openDropdown.classList.contains('show')) {
+			// 			openDropdown.classList.remove('show');
+			// 		}
+			// 		}
+			// 	}
+			// 	}
 		</script>
+
 	</body>
 </html>

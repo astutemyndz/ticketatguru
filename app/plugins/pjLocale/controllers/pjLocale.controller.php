@@ -10,6 +10,10 @@ class pjLocale extends pjLocaleAppController
 	
 	private $pjLocaleError = 'pjLocaleError';
 	
+	public function __construct()
+	{
+		parent::__construct();
+	}
 	private function pjActionUpdateFieldsIndex()
 	{
 		return pjOptionModel::factory()
@@ -38,14 +42,7 @@ class pjLocale extends pjLocaleAppController
 	
 	public function pjActionLocales()
 	{
-		$this->checkLogin();
-		
-		if (!$this->isAdmin())
-		{
-			$this->set('status', 2);
-			return;
-		}
-		
+		//echo "test";
 		if (isset($this->option_arr['o_multi_lang']) && (int) $this->option_arr['o_multi_lang'] === 1)
 		{
 			$arr = pjLocaleLanguageModel::factory()->where('t1.file IS NOT NULL')->orderBy('t1.title ASC')->findAll()->getData();
@@ -73,13 +70,9 @@ class pjLocale extends pjLocaleAppController
 	
 	public function pjActionSaveFields()
 	{
-		$this->checkLogin();
+	
 		
-		if (!$this->isAdmin())
-		{
-			$this->set('status', 2);
-			return;
-		}
+	
 		
 		if (isset($_POST['i18n']) && count($_POST['i18n']) > 0)
 		{
@@ -199,13 +192,9 @@ class pjLocale extends pjLocaleAppController
 	
 	public function pjActionImportExport()
 	{
-		$this->checkLogin();
 		
-		if (!$this->isAdmin())
-		{
-			$this->set('status', 2);
-			return;
-		}
+		
+		
     
     	$pjLocaleModel = pjLocaleModel::factory()
 			->select('t1.*, t2.title')
@@ -224,13 +213,9 @@ class pjLocale extends pjLocaleAppController
 	
 	public function pjActionImportConfirm()
 	{
-		$this->checkLogin();
 		
-		if (!$this->isAdmin())
-		{
-			$this->set('status', 2);
-			return;
-		}
+		
+		
     	$pjLocaleModel = pjLocaleModel::factory()
 			->select('t1.*, t2.title, t2.region')
 			->join('pjLocaleLanguage', 't2.iso=t1.language_iso');
@@ -400,7 +385,7 @@ class pjLocale extends pjLocaleAppController
 		$this->setLayout('pjActionEmpty');
 		
 		$err = 'PAL02';
-		if (isset($_POST['import']) && $this->isLoged() && $this->isAdmin())
+		if (isset($_POST['import']))
 		{
 			@set_time_limit(600); //10 min
 			
@@ -534,7 +519,7 @@ class pjLocale extends pjLocaleAppController
 		$this->setAjax(true);
 		$this->setLayout('pjActionEmpty');
 		
-		if (isset($_POST['export']) && isset($_POST['separator']) && $this->isLoged() && $this->isAdmin())
+		if (isset($_POST['export']) && isset($_POST['separator']))
 		{
 			@set_time_limit(600); //10 min
 			
@@ -638,13 +623,9 @@ class pjLocale extends pjLocaleAppController
 	
 	public function pjActionIndex()
 	{
-		$this->checkLogin();
 
-		if (!$this->isAdmin())
-		{
-			$this->set('status', 2);
-			return;
-		}
+
+		
 		if (isset($_POST['lang_show_id']))
 		{
 			if (isset($_POST['show_id']))
@@ -929,13 +910,6 @@ class pjLocale extends pjLocaleAppController
 
 	public function pjActionClean()
 	{
-		$this->checkLogin();
-		
-		if (!$this->isAdmin())
-		{
-			$this->set('status', 2);
-			return;
-		}
 		
 		if (isset($_POST['clean_step']))
 		{

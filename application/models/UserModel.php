@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class UserModel extends App_Model {
     private $pjUserModel;
     private $userId;
-    private $table = 'users';
+    private $table = 'tk_cbs_customers';
     public function __construct()
     {
         parent::__construct();

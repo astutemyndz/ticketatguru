@@ -81,7 +81,7 @@
 							<a href="#"><img src="<?php echo base_url();?>/images/ticketGuruLogo.png" alt="logo"></a>
 						</div>
 						<div class="col-md-6">
-						<p>Copyright &copy; <?php echo date('Y');?>  Ticketatguru.com. Design And Developed By <a href="https://astutemynzd.com/" target="_blank" rel="nofollow" class="MSI_ext_nofollow">Astutemynzd</a></p>
+						<p>Copyright &copy; <?php echo date('Y');?>  Ticketatguru.com. Design And Developed By <a href="https://astutemyndz.com/" target="_blank" rel="nofollow" class="MSI_ext_nofollow">Astutemyndz</a></p>
 						</div>
 					</div>
 				</div>
@@ -169,7 +169,7 @@
 
 		  </div>
 		</div>
-		
+	
         <script src="<?php echo base_url();?>js/bootstrap-slider.min.js"></script>
         <script src="<?php echo base_url();?>js/bootstrap-select.min.js"></script>
         <script src="<?php echo base_url();?>js/jquery.scrolling-tabs.min.js"></script>
@@ -189,7 +189,7 @@
 		var API_URL = '<?php echo base_url();?>';
 		
 			
-			
+			/*
 			$("document").ready(function() {
 				
 				
@@ -224,15 +224,17 @@
 				});
 				$('[data-toggle="datepicker"]').datepicker();
 			});
+			*/
 		</script>		
 <script src="<?php echo base_url();?>js/custom.js"></script>
 <script src="<?php echo base_url();?>js/jquery.loading.js"></script>
 <script src="<?php echo base_url();?>js/event/Event.js"></script>
 <script src="<?php echo base_url();?>js/auth/auth.js"></script>
 <script src="<?php echo base_url();?>js/cart/Cart.js"></script>
-<script src="<?php echo base_url();?>js/payment/CreditCard.js"></script>
+
 <script src="<?php echo base_url();?>js/jquery.creditCardValidator.js"></script>
 <script>
+	var BASE_URL = "<?php echo base_url();?>";
 	(function() {
 		var $section = $('.wrapper-image');
 		$section.find('.panzoom').panzoom({
@@ -337,19 +339,120 @@ $(document).ready(function(){
       });
     } 
   });
-  var $cc_type = $('#cc_type');
-  $('#card_number').validateCreditCard(function(result)
-    {
+  
+});
+const ajaxRequest = function(url, data = null, options = {beforeSend: null, method: null, afterSend: null}, callback = null) {
+	$.ajax({
+		url: url,
+		type: options.method,
+		data: data,
+		beforeSend: options.beforeSend,
+		success: function(response) {
+			if(response) {
+				options.afterSend();
+			}
+			callback(response);
+		},
+		error: function(response) {
+			console.log(response);
+		}
+	});
+}
+const loadStates = function(url, data, options = null, callback = null) {
+	ajaxRequest(url, data, options, function(response) {
+		callback(response.data); 
+	});
+}
+const loadCities = function(url, data, options = null, callback = null) {
+	ajaxRequest(url, data, options, function(response) {
+		callback(response.data); 
+	});
+}
+$(document).ready(function(){
+	
+	var stateUrl = `${BASE_URL}location/states`;
+	var cityUrl = `${BASE_URL}location/cities`;
 
-		console.log(result.card_type.name);
-		$cc_type.val(result.card_type.name);
-    });
+
+	$('#c_country').on('change', function(e) {
+		const country_id = $(this).find(':selected').attr('data-country_id');
+		console.log(country_id);
+		
+		const $c_state = $("#c_state");
+		loadStates(stateUrl, {country_id: country_id}, options = {
+			beforeSend: function() {
+				$("#c_state").loading({theme: 'dark'});
+			},
+			method: 'post',
+			afterSend: function() {
+				$("#c_state").loading('stop');
+			}
+		}, function(states) {
+			$c_state.empty(); 
+			if(!states) {
+				
+				
+			} else {
+				$.each(states, function(key,value) {
+					$c_state.append(value);
+				}); 
+			}
+			
+		});
+		if(!country_id) {
+			console.log('country id  == null');
+			$("#c_state").trigger("change");
+			//$("#c_state").change();
+		} 
+	});
+
+	$('#c_state').on('change', function(e) {
+		const state_id = $(this).find(':selected').attr('data-state_id');
+		const country_id = $(this).find(':selected').attr('data-country_id');
+
+		const $c_city = $("#c_city");
+		loadCities(cityUrl, {country_id: country_id, state_id: state_id}, 
+		options = {
+			beforeSend: function() {
+				$("#c_city").loading({theme: 'dark'});
+			},
+			method: 'post',
+			afterSend: function() {
+				$("#c_city").loading('stop');
+			}
+		}, function(cities) {
+			$c_city.empty(); 
+			$.each(cities, function(key,value) {
+			  $c_city.append(value);
+			}); 
+		});
+	});
+	
+	//loadCities(cityApi, {state_id: state_id});
+	
 });
 </script>	  
 	<script src="<?php echo base_url();?>js/jquery.bootstrap.wizard.js" type="text/javascript"></script>
+	<script src="<?php echo base_url();?>assets/plugins/jquery-validation/additional-methods.js" type="text/javascript"></script>
 	<script src="<?php echo base_url();?>js/jquery.validate.min.js" type="text/javascript"></script>
 	<!--  Plugin for the Wizard -->
+	<!--  Credit Card Form Validation and submit -->
 	<script src="<?php echo base_url();?>js/checkoutFormWizard.js" type="text/javascript"></script>
+	<script src="<?php echo base_url();?>js/validations/checkoutFormValidation.js" type="text/javascript"></script>
 	<script src="<?php echo base_url();?>js/paper-bootstrap-wizard.js" type="text/javascript"></script>
+
+	<!--  Credit Card Form Validation and submit -->
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+	<script src="<?php echo base_url();?>assets/plugins/payment/jquery.payment.js" type="text/javascript"></script>
+	<script src="<?php echo base_url();?>js/validations/creditCardFormValidation.js"></script>
+	<script src="<?php echo base_url();?>js/payment/CreditCard.js"></script>
+	
+	
+	<!-- <script>
+	var BASE_URL = "<?php echo base_url();?>";
+	</script> -->
+	<!-- <script src="<?php echo base_url();?>index.js"></script> -->
+	
+
 </body>
 </html>

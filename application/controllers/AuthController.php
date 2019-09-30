@@ -7,6 +7,10 @@
  */
 class AuthController extends CI_Controller
 {
+	private $tables = array();
+	private $customerRoleId;
+	private $customerRole = array();
+	private $additionalData = array();
 	public function __construct()
 	{
 		parent::__construct();
@@ -18,6 +22,8 @@ class AuthController extends CI_Controller
 		$this->form_validation->set_error_delimiters($this->config->item('error_start_delimiter', 'ion_auth'), $this->config->item('error_end_delimiter', 'ion_auth'));
 
 		$this->lang->load('auth');
+
+		$this->tables = $this->config->item('tables', 'ion_auth');
 		
 	}
 
@@ -60,10 +66,27 @@ class AuthController extends CI_Controller
 	/**
 	 * Create a new user
 	 */
+
+	public function getCustomerRole() {
+		$this->customerRole = $this->db->get_where($this->tables['groups'], array('is_customer' => $this->config->item('is_customer', 'ion_auth')), 1)->row();
+		return $this;
+	}
+	public function setCustomerRoleId($customerRoleId) {
+		$this->customerRoleId = $customerRoleId;
+		return $this;
+	}
+	public function setAdditionalData($additionalData) {
+		$this->additionalData = $additionalData;
+		return $this;
+	}
 	public function register()
 	{
-		
+		$this->getCustomerRole();
+		if($this->customerRole) {
+			$this->setCustomerRoleId($this->customerRole->id);
+		}
 
+		
 
 		$this->data['page_heading'] = $this->lang->line('create_user_heading');
 
@@ -95,17 +118,20 @@ class AuthController extends CI_Controller
 			$identity = strtolower($this->input->post('identity'));//($identity_column === 'email') ? $email : $this->input->post('identity');
 			$password = $this->input->post('password');
 
-			$additional_data = array(
+			$this->additionalData = array(
 				'first_name' => $this->input->post('first_name'),
-				'last_name' => $this->input->post('last_name')
+				'last_name' => $this->input->post('last_name'),
+				'tk_cbs_roles_id' => $this->customerRoleId,
 			);
+			$this->setAdditionalData($this->additionalData);
+			
 		}
-		if ($this->form_validation->run() === TRUE && $this->ion_auth->register($identity, $password, $email, $additional_data))
+		//App::dd($this->additionalData);
+		if ($this->form_validation->run() === TRUE && $this->ion_auth->register($identity, $password, $email, $this->additionalData))
 		{
 			// check to see if we are creating the user
 			// redirect them back to the admin page
 			
-			$this->session->set_flashdata('message', $this->ion_auth->messages());
 			return $this->output
 						->set_content_type('application/json')
 						->set_status_header(200)

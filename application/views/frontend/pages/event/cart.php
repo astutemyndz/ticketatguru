@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						<thead class="table-head">
 							<tr>
 								<th>TICKET(s)</th>
-								<th>PRICE(00.00)</th>
+								<th>PRICE(&pound;)</th>
 								<th class="text-center">Action</th>
 							</tr>
 						</thead>
@@ -19,10 +19,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						</tbody>
 						<tbody class="subtotal">
 							<tr>
-								<td colspan="2">
+								<td colspan="">
 									Subtotal
 								</td>
-								<td id="subtotal" colspan="2">
+								<td id="subtotal">
+									
+								</td>
+								<td>
 									
 								</td>
 							</tr>

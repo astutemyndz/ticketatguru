@@ -13,7 +13,7 @@ class pjAdminOptions extends pjAdmin
 			->orderBy('t1.order ASC, t1.`key` ASC')
 			->findAll()
 			->getData();
-		
+		//App::dd($arr);
 		$this->set('arr', $arr);
 		
 		$this->appendJs('jquery.tipsy.js', PJ_THIRD_PARTY_PATH . 'tipsy/');
@@ -21,6 +21,7 @@ class pjAdminOptions extends pjAdmin
 		$this->appendJs('pjAdminOptions.js');
 		
 	}
+	
 	
 	public function pjActionUpdate()
 	{

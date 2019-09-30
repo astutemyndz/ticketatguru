@@ -1,4 +1,5 @@
 $("document").ready(function() {
+    
     $(".pjCbDaysNav").on('click', function(event) {
         //console.log('fetch times...');
         $('.timesSection').html("");

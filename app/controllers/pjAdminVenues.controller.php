@@ -284,7 +284,8 @@ class pjAdminVenues extends pjAdmin
 	
 	public function pjActionUpdate()
 	{
-		
+			// echo "<pre>";
+			// print_r($_SESSION);
 			$post_max_size = pjUtil::getPostMaxSize();
 			if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_SERVER['CONTENT_LENGTH']) && (int) $_SERVER['CONTENT_LENGTH'] > $post_max_size)
 			{

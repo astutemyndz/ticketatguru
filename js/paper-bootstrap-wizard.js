@@ -41,21 +41,48 @@ transparent = true;
             /*  Activate the tooltips      */
             $('[rel="tooltip"]').tooltip();
 
-            // Code for the Validator
+            //Code for the Validator
             var $validator = $('.wizard-card form').validate({
-        		  rules: {
-        		    firstname: {
-        		      required: true,
-        		      minlength: 3
-        		    },
-        		    lastname: {
-        		      required: true,
-        		      minlength: 3
-        		    },
-        		    email: {
-        		      required: true
-        		    }
-                },
+                rules: {
+                    c_firstName: {
+                      required: true,
+                      minlength: 3,
+                      nowhitespace: true
+                    },
+                    c_lastName: {
+                      required: true,
+                      minlength: 3,
+                      nowhitespace: true
+                    },
+                    c_email: {
+                      required: true,
+                      nowhitespace: true
+                    },
+                    c_phone: {
+                        required: true,
+                        minlength: 3,
+                        nowhitespace: true
+                    },
+                    c_country: {
+                        required: true,
+                        minlength: 3,
+                        nowhitespace: true
+                    },
+                    c_city: {
+                        required: true,
+                        minlength: 3,
+                        nowhitespace: true
+                    },
+                    c_address: {
+                        required: true,
+                        minlength: 3
+                    },
+                    c_zip: {
+                        required: true,
+                        minlength: 3,
+                        nowhitespace: true
+                    }
+                  },
         	});
 
             // Wizard Initialization
@@ -179,10 +206,10 @@ transparent = true;
         };
 
 
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+// (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+// (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+// m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+// })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-ga('create', 'UA-46172202-1', 'auto');
-ga('send', 'pageview');
+// ga('create', 'UA-46172202-1', 'auto');
+// ga('send', 'pageview');

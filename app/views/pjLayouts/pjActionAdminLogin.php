@@ -17,22 +17,22 @@
 	</head>
 	<body>
 		<div id="container">
-			<div id="header">
+			<!--<div id="header">
 				<div id="logo">
     				<a href="<?php echo PJ_INSTALL_URL;?>" target="_blank" rel="nofollow">Ticket at Guru</a>
 					<span>v<?php echo PJ_SCRIPT_VERSION;?></span>
     			</div>
-			</div>
+			</div>-->
 			<div id="middle">
 				<div id="login-content">
 				<?php require $content_tpl; ?>
 				</div>
 			</div> <!-- middle -->
 		</div> <!-- container -->
-		<div id="footer-wrap">
+		<!--<div id="footer-wrap">
 			<div id="footer">
 			   	<p>Copyright &copy; <?php echo date("Y"); ?> <a href="https://www.astutemyndz.com/" target="_blank">astutemyndz.com</a></p>
 	        </div>
-        </div>
+        </div>-->
 	</body>
 </html>

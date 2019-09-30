@@ -176,6 +176,19 @@ $route['cart/remove']      = 'CartController/removeCartItemOnClickEventListener'
 $route['cart/checkout'] = 'CartController/checkout';
 
 $route['paypal/pay/credit-card'] = 'PayPalPaymentController/payWithCreditCard';
+$route['payment/status'] = 'PayPalPaymentController/paymentStatus';
+
+$route['paypal/pay/success'] = 'PayPalPaymentController/success';
+$route['paypal/pay/failed'] = 'PayPalPaymentController/failed';
 
 
 $route['session/empty'] = 'AuthController/emptySession';
+
+$route['location/countries'] = 'LocationController/countries';
+
+$route['session'] = 'LocationController/session';
+$route['location/states'] = 'LocationController/states';
+$route['location/cities'] = 'LocationController/cities';
+
+
+$route['sendMailWithAttachmentTicket'] = 'PayPalPaymentController/sendMailWithAttachmentTicket';

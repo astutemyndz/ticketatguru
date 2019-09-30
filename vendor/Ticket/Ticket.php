@@ -1,9 +1,8 @@
 <?php 
 namespace Ticket;
 
-use App;
 use BarCodeBakery\BarCodeBakery;
-use TCPDF\TCPDF;
+use TCPDF;
 
 class Ticket {
 
@@ -15,6 +14,9 @@ class Ticket {
 	private $url;
 	private $ticketTemplate;
 	private $uploadPath;
+	private $filename;
+	private $PDF;
+	
     public function __construct(){
 		$this->barCodeBakery = new BarCodeBakery();
 	}
@@ -154,10 +156,21 @@ class Ticket {
 			$uuid = $v['uuid'];
 			
 		}
-		
-		$pdf->Output($this->ticketPath . 'pdfs/p_'. $uuid .'.pdf', 'F');
-		$filename = $this->ticketPath . 'pdfs/p_'. $uuid . '.pdf';
-		return $filename;
+		$this->ticketPath = PJ_INSTALL_PATH.$this->ticketPath. 'pdfs/p_'. $uuid .'.pdf';
+		$pdf->Output($this->ticketPath, 'F');
+
+		$this->filename = $this->ticketPath;
+		$this->setPDF($this->filename);
+		//return $this->filename;
+	}
+
+	public function setPDF($PDF) {
+		$this->PDF = $PDF;
+		return $this;
+	}
+
+	public function getPDF() {
+		return $this->PDF;
 	}
     
 }

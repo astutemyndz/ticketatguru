@@ -69,15 +69,18 @@ $active_url = $controller.'/'.$method;
 						</ul>
 					</div>
 					<ul class="js-signin-modal">
-						<?php if(!empty($this->session->userdata('loggedIn')) && $this->session->userdata('loggedIn') === TRUE) { ?>
-							<li>
-								<a id="logoutLink" class="" href="javascript:void(0);" >
-									<span class="hidden-xs">Sign out</span>
-									<span class="m-log hidden-sm hidden-md- hidden-lg">
-										<i class="fa fa-sign-out" aria-hidden="true"></i>
-									</span>
-								</a>
-							</li>
+						<?php if(!empty($this->session->userdata('loggedIn')) && $this->session->userdata('loggedIn') === TRUE) { 
+								if($this->session->userdata('isCustomer')) {
+									?>
+									<li>
+										<a id="logoutLink" class="" href="javascript:void(0);" >
+											<span class="hidden-xs">Sign out</span>
+											<span class="m-log hidden-sm hidden-md- hidden-lg">
+												<i class="fa fa-sign-out" aria-hidden="true"></i>
+											</span>
+										</a>
+									</li>
+							<?php } ?>
 							<?php } else { ?>
 							<li>
 								<a id="loginLink" class="" href="javascript:void(0);" data-signin="login">

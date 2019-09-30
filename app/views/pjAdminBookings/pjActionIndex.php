@@ -102,6 +102,7 @@ if (isset($tpl['status']))
 	</div>
 	
 	<div id="grid"></div>
+	
 	<script type="text/javascript">
 	var pjGrid = pjGrid || {};
 	pjGrid.queryString = "";
@@ -119,11 +120,13 @@ if (isset($tpl['status']))
 		?>pjGrid.queryString += "&dt=<?php echo $_GET['dt']; ?>";<?php
 	}
 	?>
+	//console.log(pjGrid);
 	var myLabel = myLabel || {};
 	myLabel.event = "<?php __('lblEvent'); ?>";
 	myLabel.name = "<?php __('lblName'); ?>";
 	myLabel.tickets = "<?php __('lblTickets'); ?>";
 	myLabel.date_time = "<?php __('lblDateTime'); ?>";
+	//myLabel.createInvoice = "Create Invoice";
 	myLabel.exported = "<?php __('lblExport'); ?>";
 	myLabel.delete_selected = "<?php __('delete_selected'); ?>";
 	myLabel.delete_confirmation = "<?php __('delete_confirmation'); ?>";

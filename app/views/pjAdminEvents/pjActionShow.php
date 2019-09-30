@@ -318,6 +318,7 @@ if (isset($tpl['status']))
 	
 	<script type="text/javascript">
 	var myLabel = myLabel || {};
+	console.log(myLabel);
 	myLabel.choose = "-- <?php __('lblChoose'); ?> --";
 	</script>
 	<?php

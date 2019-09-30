@@ -178,6 +178,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 		}
 		
 		function formatOrderId (str) {
+			console.log(str);
 			if (!('booking_url' in myLabel) || myLabel.booking_url === '' || myLabel.booking_url === '#') {
 				return str;
 			}

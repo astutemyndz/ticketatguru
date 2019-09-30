@@ -241,12 +241,13 @@ if (isset($tpl['status']))
 							<?php
 							foreach (__('payment_methods', true, false) as $k => $v)
 							{
-								?><option value="<?php echo $k; ?>"<?php echo $k == $tpl['arr']['payment_method'] ? ' selected="selected"' : NULL; ?>><?php echo $v; ?></option><?php
+								?><option style="display:<?php echo (in_array($k, ['authorize', 'bank', 'paypal'])) ? 'none' : 'block';?>" value="<?php echo $k; ?>"<?php echo $k == $tpl['arr']['payment_method'] ? ' selected="selected"' : NULL; ?>><?php echo $v; ?></option><?php
 							}
 							?>
 						</select>
 					</span>
 				</p>
+				<div id="boxCC" style="display:none;">
 				<p class="boxCC" style="display: <?php echo $tpl['arr']['payment_method'] != 'creditcard' ? 'none' : 'block'; ?>">
 					<label class="title"><?php __('lblCCType'); ?></label>
 					<span class="inline-block">
@@ -299,6 +300,8 @@ if (isset($tpl['status']))
 						<input type="text" name="cc_code" id="cc_code" value="<?php echo pjSanitize::clean($tpl['arr']['cc_code']); ?>" class="pj-form-field w100" />
 					</span>
 				</p>
+				</div>
+				
 				<div class="p">
 					<label class="title"><?php __('lblStatus'); ?></label>
 					<span class="inline-block">

@@ -154,6 +154,9 @@ class Ion_auth_model extends CI_Model
      * @var object
      */
     protected $db;
+
+    private $tkCbsCustomerRoleId;
+    private $isCustomer;
     public function __construct()
     {
       
@@ -165,6 +168,7 @@ class Ion_auth_model extends CI_Model
         $this->db = $this->load->database($this->config->item('database_group_name', 'ion_auth'), TRUE, TRUE);
         // initialize db tables data
         $this->tables = $this->config->item('tables', 'ion_auth');
+        //App::dd($this->tables);
         // initialize data
         $this->identity_column = $this->config->item('identity', 'ion_auth');
         $this->store_salt = $this->config->item('store_salt', 'ion_auth');
@@ -807,7 +811,8 @@ class Ion_auth_model extends CI_Model
             return FALSE;
         }
         // check if the default set in config exists in database
-        $query = $this->db->get_where($this->tables['groups'], array('name' => $this->config->item('default_group', 'ion_auth')), 1)->row();
+        //$query = $this->db->get_where($this->tables['groups'], array('name' => $this->config->item('default_group', 'ion_auth')), 1)->row();
+        $query = $this->db->get_where($this->tables['groups'], array('is_customer' => $this->config->item('is_customer', 'ion_auth')), 1)->row();
         if (!isset($query->id) && empty($groups))
         {
             $this->set_error('account_creation_invalid_default_group');
@@ -856,7 +861,7 @@ class Ion_auth_model extends CI_Model
             }
         }
         $this->trigger_events('post_register');
-        $query = $this->db->select($this->identity_column . ', email, id, password, active, last_login, user_type')
+        $query = $this->db->select($this->identity_column . ', email, id, password, active, last_login')
                         ->where($this->identity_column, $email)
                         ->limit(1)
                         ->order_by('id', 'desc')
@@ -864,17 +869,50 @@ class Ion_auth_model extends CI_Model
         if ($query->num_rows() === 1)
         {
             $user = $query->row();
-            $session_data = array(
-                'identity'             => $user->{$this->identity_column},
-                $this->identity_column => $user->{$this->identity_column},
-                'email'                => $user->email,
-                'user_id'              => $user->id, //everyone likes to overwrite id so we'll use user_id
-                'old_last_login'       => $user->last_login,
-                'last_check'           => time(),
-                'user_type'				=>	$user->user_type,
-                'loggedIn'				=> true
+            // Get User Type from acl role table start of code
+            if($user) {
+                $customerGroupQuery = $this->db->select('id, tk_cbs_customers_id, tk_cbs_roles_id')
+                                        ->where($this->join['users'], $user->id)
+                                        ->limit(1)
+                                        ->order_by('id', 'desc')
+                                        ->get($this->tables['users_groups']);
+                $customerGroup = $customerGroupQuery->row();
+            }
+
+            if($customerGroup) {
+                $this->setTkCbsCustomerRoleId($customerGroup->tk_cbs_roles_id);
+            }
+
+            if($this->tkCbsCustomerRoleId) {
+                $roleQuery = $this->db->select('id, role, is_superadmin, is_customer, status')
+                                        ->where($this->join['tk_cbs_roles'], $this->tkCbsCustomerRoleId)
+                                        ->limit(1)
+                                        ->order_by('id', 'desc')
+                                        ->get($this->tables['groups']);
+                $role = $roleQuery->row();
+            }
+
+            if($role) {
+                $this->setIsCustomer($role->is_customer);
+            }
+            // Get User Type from acl role table end of code
+
+            // Set User Data start of code
+            $userData = array(
+                'identity'              => $user->{$this->identity_column},
+                 $this->identity_column => $user->{$this->identity_column},
+                'email'                 => $user->email,
+                'user_id'               => $user->id, //everyone likes to overwrite id so we'll use user_id
+                'old_last_login'        => $user->last_login,
+                'last_check'            => time(),
+                'user_type'			    => $this->tkCbsCustomerRoleId,
+                'isCustomer'			    => $this->isCustomer,
+                'loggedIn'			    => true
             );
-            $this->session->set_userdata($session_data);
+
+            $this->session->set_userdata($userData);
+            // Set User Data start of code
+
             $this->update_last_login($user->id);
             // Regenerate the session (for security purpose: to avoid session fixation)
             $this->_regenerate_session();
@@ -901,7 +939,7 @@ class Ion_auth_model extends CI_Model
             return FALSE;
         }
         $this->trigger_events('extra_where');
-        $query = $this->db->select($this->identity_column . ', email, id, password, active, last_login, user_type')
+        $query = $this->db->select($this->identity_column . ', email, id, password, active, last_login')
             ->where($this->identity_column, $identity)
             ->limit(1)
             ->order_by('id', 'desc')
@@ -918,6 +956,33 @@ class Ion_auth_model extends CI_Model
         if ($query->num_rows() === 1)
         {
             $user = $query->row();
+             // Get User Type from acl role table start of code
+            if($user) {
+                $customerGroupQuery = $this->db->select('id, tk_cbs_customers_id, tk_cbs_roles_id')
+                                        ->where($this->join['users'], $user->id)
+                                        ->limit(1)
+                                        ->order_by('id', 'desc')
+                                        ->get($this->tables['users_groups']);
+                $customerGroup = $customerGroupQuery->row();
+            }
+
+            if($customerGroup) {
+                $this->setTkCbsCustomerRoleId($customerGroup->tk_cbs_roles_id);
+            }
+            
+            if($this->tkCbsCustomerRoleId) {
+                $roleQuery = $this->db->select('id, role, is_superadmin, is_customer, status')
+                                        ->where($this->join['tk_cbs_roles'], $this->tkCbsCustomerRoleId)
+                                        ->limit(1)
+                                        ->order_by('id', 'desc')
+                                        ->get($this->tables['groups']);
+                $role = $roleQuery->row();
+            }
+
+            if($role) {
+                $this->setIsCustomer($role->is_customer);
+            }
+            // Get User Type from acl role table end of code
             $password = $this->hash_password_db($user->id, $password);
             if ($password === TRUE)
             {
@@ -927,18 +992,21 @@ class Ion_auth_model extends CI_Model
                     $this->set_error('login_unsuccessful_not_active');
                     return FALSE;
                 }
-                //$this->set_session($user);
-                $session_data = array(
+                // Set User Data start of code
+                $userData = array(
                     'identity'             => $user->{$this->identity_column},
                     $this->identity_column => $user->{$this->identity_column},
                     'email'                => $user->email,
                     'user_id'              => $user->id, //everyone likes to overwrite id so we'll use user_id
                     'old_last_login'       => $user->last_login,
                     'last_check'           => time(),
-                    'user_type'				=>	$user->user_type,
-                    'loggedIn'				=> true
+                    'user_type'			   => $this->tkCbsCustomerRoleId,
+                    'isCustomer'			   => $this->isCustomer,
+                    'loggedIn'			   => true
                 );
-                $this->session->set_userdata($session_data);
+                $this->session->set_userdata($userData);
+                // Set User Data end of code
+
                 $this->update_last_login($user->id);
                 $this->clear_login_attempts($identity);
                 if ($remember && $this->config->item('remember_users', 'ion_auth'))
@@ -1493,7 +1561,8 @@ class Ion_auth_model extends CI_Model
                 else
                 {
                     $group = $this->group($group_id)->result();
-                    $group_name = $group[0]->name;
+                    // App::dd($group);
+                    $group_name = $group[0]->role;
                     $this->_cache_groups[$group_id] = $group_name;
                 }
                 $this->_cache_user_in_group[$user_id][$group_id] = $group_name;
@@ -1835,8 +1904,51 @@ class Ion_auth_model extends CI_Model
         if ($query->num_rows() == 1)
         {
             $user = $query->row();
+             // Get User Type from acl role table start of code
+             if($user) {
+                $customerGroupQuery = $this->db->select('id, tk_cbs_customers_id, tk_cbs_roles_id')
+                                        ->where($this->join['users'], $user->id)
+                                        ->limit(1)
+                                        ->order_by('id', 'desc')
+                                        ->get($this->tables['users_groups']);
+                $customerGroup = $customerGroupQuery->row();
+            }
+
+            if($customerGroup) {
+                $this->setTkCbsCustomerRoleId($customerGroup->tk_cbs_roles_id);
+            }
+            
+            if($this->tkCbsCustomerRoleId) {
+                $roleQuery = $this->db->select('id, role, is_superadmin, is_customer, status')
+                                        ->where($this->join['tk_cbs_roles'], $this->tkCbsCustomerRoleId)
+                                        ->limit(1)
+                                        ->order_by('id', 'desc')
+                                        ->get($this->tables['groups']);
+                $role = $roleQuery->row();
+            }
+
+            if($role) {
+                $this->setIsCustomer($role->is_customer);
+            }
+            // Get User Type from acl role table end of code
+
             $this->update_last_login($user->id);
-            $this->set_session($user);
+            // Set User Data start of code
+            $userData = array(
+                'identity'             => $user->{$this->identity_column},
+                $this->identity_column => $user->{$this->identity_column},
+                'email'                => $user->email,
+                'user_id'              => $user->id, //everyone likes to overwrite id so we'll use user_id
+                'old_last_login'       => $user->last_login,
+                'last_check'           => time(),
+                'user_type'			   => $this->tkCbsCustomerRoleId,
+                'isCustomer'		    => $this->isCustomer,
+                'loggedIn'			   => true
+            );
+            
+            $this->session->set_userdata($userData);
+            // Set User Data end of code
+
             // extend the users cookies if the option is enabled
             if ($this->config->item('user_extend_on_login', 'ion_auth'))
             {
@@ -2288,5 +2400,14 @@ class Ion_auth_model extends CI_Model
     public static function factory($attr=array())
 	{
 		return new Ion_auth_model($attr);
-	}
+    }
+    
+    public function setTkCbsCustomerRoleId($value) {
+        $this->tkCbsCustomerRoleId = $value;
+        return $this;
+    }
+    public function setIsCustomer($value) {
+        $this->isCustomer = $value;
+        return $this;
+    }
 }

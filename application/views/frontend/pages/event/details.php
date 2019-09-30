@@ -114,13 +114,5 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			</div>
 		</section>
 		<script>
-			$("document").ready(function() {
-				$('.date-picker').slick({
-				  slidesToShow: 7,
-				  slidesToScroll: 1,
-				  autoplay: false,
-				  autoplaySpeed: 2000,
-				});
-
-			});
+		
 		</script>

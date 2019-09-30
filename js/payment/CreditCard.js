@@ -1,135 +1,122 @@
-
-$(document).ready(function() {
-    
-    // $('#creditCardNumber').on('change', function() {
-       
-    //    console.log(creditCardInfo);
-    // });
-   
-    //creditCardInfo.type         = $('#type').val();
-   
-      /*
-    $('#finish').on('click', function() {
-        $.ajax({
-          url: `${API_URL}paypal/pay/credit-card`,
-          type: 'POST',
-          data: props,
-          // beforeSend: function() {
-          //     $(".wizard-container").loading({
-          //       message: 'Please Wait – We are processing your payment, do not click away from this page. This process can take up to 30 seconds'
-          //     });
-          //  },
-          success: function(res) {
-              console.log(res);
-              if(res) {
-                //$(".wizard-container").loading('stop');
-                alert('Booked');
-              }
-          },
-          error: function(res) {
-            console.log(res);
-          }         
-      });
-        // $.post(`${API_URL}/paypal/pay/credit-card`, props, function(res) {
-        //   console.log(res);
-        // });
-
-    });
-    */
-    var creditCardInfo = {}, 
-    billingAddress = {};
-
-    $('form.checkoutForm').on('submit', function(e) {
-      
-      e.preventDefault(); //'return false' is deprecated according to jQuery documentation, use this instead.
-      console.log('clicked');
-      var that = $(this),
-      url = that.attr('action'),
-      type = that.attr('method'),
-      data = that.serialize(); //This will capture all form input values, no need to reinvent the wheel
+$(function() {
+  // var $cardNumber = $('#card_number');
+  // var $cardNumberField = $('#card-number-field');
+  // var $cardCvvField = $('#card-cvv-field');
+  // var $formatCardExpiryField = $('#formatCardExpiryField');
+  // var $cvv = $("#cc_code");
+  // var $finish = $("#finish");
+  // var $formatCardExpiry = $("#formatCardExpiry");
+  // var $masterCard = $("#mastercard");
+  // var $visa = $("#visa");
+  // var $amex = $("#amex");
+  // var $cc_type = $('#cc_type');
+  // Use the payform library to format and validate
+  // the payment fields.
 /*
-      creditCardInfo.number       = $('#card_number').val();
-      creditCardInfo.expireMonth  = $('#expireMonth').val();
-      creditCardInfo.expireYear   = $('#expireYear').val();
-      creditCardInfo.cvv2         = $('#cvv2').val();
-      creditCardInfo.type = creditCard.IsValidCreditCardNumber(creditCardInfo.number);
-      
-      billingAddress.firstName  = $('#firstName').val();
-      billingAddress.lastName   = $('#lastName').val();
-      billingAddress.email      = $('#email').val();
-      billingAddress.phone      = $('#phone').val();
-      billingAddress.countryCode    = $('#countryCode').val();
-      billingAddress.city       = $('#city').val();
-      billingAddress.address    = $('#_address').val();
-      billingAddress.postalCode   = $('#postalCode').val();
-    */
-      // var props = {
-      //   creditCardInfo: creditCardInfo,
-      //   billingAddress: billingAddress,
-      //   data: data
-      // };
+  $cardNumber.payform('formatCardNumber');
+  $cvv.payform('formatCardCVC');
+  $formatCardExpiry.payform('formatCardExpiry');
 
-      //console.log(props);
-      $.ajax({
-          url: url,
-          type: type,
-          data: data,
-          success: function(response) {
-             console.log(response);
-          }
-      });
+
+  $cardNumber.keyup(function() {
+      $amex.removeClass('transparent');
+      $visa.removeClass('transparent');
+      $masterCard.removeClass('transparent');
+      if ($.payform.validateCardNumber($cardNumber.val()) == false) {
+          $cardNumberField.addClass('has-error');
+      } else {
+          $cardNumberField.removeClass('has-error');
+          $cardNumberField.addClass('has-success');
+          //set card type
+          $cc_type.val($.payform.parseCardType($cardNumber.val()));
+      }
+
+      if ($.payform.parseCardType($cardNumber.val()) == 'visa') {
+          $masterCard.addClass('transparent');
+          $amex.addClass('transparent');
+      } else if ($.payform.parseCardType($cardNumber.val()) == 'amex') {
+          $masterCard.addClass('transparent');
+          $visa.addClass('transparent');
+      } else if ($.payform.parseCardType($cardNumber.val()) == 'mastercard') {
+          $amex.addClass('transparent');
+          $visa.addClass('transparent');
+      }
   });
-
-    function CreditCard() {
-        const AmexCardNumber = function(cardNumber) {
-            var regex = /^(?:3[47][0-9]{13})$/;
-            return regex.test(cardNumber); 
-        }
-        const VisaCardNumber = function(cardNumber) {
-            var regex = /^(?:4[0-9]{12}(?:[0-9]{3})?)$/;
-            return regex.test(cardNumber);
-        }
-        const MasterCardNumber = function(cardNumber) {
-            var regex = /^(?:5[1-5][0-9]{14})$/;
-            return regex.test(cardNumber);
-        }
-        const DiscoverCardNumber = function(cardNumber) {
-            var regex = /^(?:6(?:011|5[0-9][0-9])[0-9]{12})$/;
-            return regex.test(cardNumber);
-        }
-        const DinerClubCardNumber = function(cardNumber) {
-            var regex = /^(?:3(?:0[0-5]|[68][0-9])[0-9]{11})$/;
-            return regex.test(cardNumber);
-        }
-        const JCBCardNumber = function(cardNumber) {
-            var regex = /^(?:(?:2131|1800|35\d{3})\d{11})$/;
-            return regex.test(cardNumber);
-        }
-        CreditCard.prototype.IsValidCreditCardNumber = function(cardNumber) {
-          var cardType = null;
-          if (VisaCardNumber(cardNumber)) {
-            cardType = "visa";
-          } else if (MasterCardNumber(cardNumber)) {
-            cardType = "mastercard";
-          } else if (AmexCardNumber(cardNumber)) {
-            cardType = "americanexpress";
-          } else if (DiscoverCardNumber(cardNumber)) {
-            cardType = "discover";
-          } else if (DinerClubCardNumber(cardNumber)) {
-            cardType = "dinerclub";
-          } else if (JCBCardNumber(cardNumber)) {
-            cardType = "jcb";
-          }
-        
-          return cardType;
-        }
+  $cvv.keyup(function() {
+      if ($.payform.validateCardCVC($cvv.val()) == false) {
+        $cardCvvField.addClass('has-error');
+      } else {
+        $cardCvvField.removeClass('has-error');
+        $cardCvvField.addClass('has-success');
+      }
+  });
+  $formatCardExpiry.keyup(function() {
+    if ($.payform.validateCardExpiry($formatCardExpiry.val()) == false) {
+      console.log('false');
+      $formatCardExpiryField.addClass('has-error');
+    } else {
+      console.log('true');
+      $formatCardExpiryField.removeClass('has-error');
+      $formatCardExpiryField.addClass('has-success');
+      //$('#finish').show();
+      $finish.prop('disabled', false);
     }
-
-    var creditCard = new CreditCard();
-    
-}); 
-    
-
+});
+*/
+  $('form.checkoutForm').on('submit', function(e) {
+      e.preventDefault();
+          // Everything is correct. Add your form submission code here.
+            var that = $(this),
+            url = that.attr('action'),
+            type = that.attr('method'),
+            data = that.serialize(); //This will capture all form input values, no need to reinvent the wheel
+            var $wizardProfile = $('#wizardProfile');
+            $.ajax({
+                url: url,
+                type: type,
+                data: data,
+                beforeSend: function() {
+                    $(".wizard-container").loading({
+                      message: 'Please Wait – We are processing your payment, do not click away from this page'
+                    });
+                },
+                success: function(response) {
+                  
+                 // console.log(response.status_code);
+                  if(response.status_code == 202) {
+                    $(".wizard-container").loading('stop');
+                   // $('#paymentSuccess').html(response.message);
+                    swal({
+                      title: "Success",
+                      text: response.message,
+                      icon: "success",
+                      button: "OK",
+                    })
+                    .then((value) => {
+                      ///swal(`The returned value is: ${value}`);
+                      location.href = `${BASE_URL}event/list`;
+                    });
+                  } else {
+                    //$('#paymentFailed').html(response.message);
+                    swal({
+                      title: "Failed!",
+                      text: response.message,
+                      icon: "error",
+                      buttons: true,
+                      dangerMode: true,
+                    })
+                    .then((value) => {
+                      ///swal(`The returned value is: ${value}`);
+                      location.href = `${BASE_URL}cart`;
+                    });
+                  }
+                  //console.log(response);
+                }
+            });
+      
+  });
+  
+});
 
 
     

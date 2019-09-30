@@ -8,6 +8,7 @@ class pjLocaleAppController extends pjPlugin
 {
 	public function __construct()
 	{
+		parent::__construct();
 		$this->setLayout('pjActionAdmin');
 	}
 	

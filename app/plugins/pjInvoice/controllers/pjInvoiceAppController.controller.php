@@ -41,9 +41,11 @@ class pjInvoiceAppController extends pjPlugin
 	public function isInvoiceReady()
 	{
 		$reflector = new ReflectionClass('pjPlugin');
+		//App::dd($reflector);
 		try {
 			//Try to find out 'isInvoiceReady' into parent class
 			$ReflectionMethod = $reflector->getMethod('isInvoiceReady');
+			//var_dump($ReflectionMethod);
 			return $ReflectionMethod->invoke(new pjPlugin(), 'isInvoiceReady');
 		} catch (ReflectionException $e) {
 			//echo $e->getMessage();

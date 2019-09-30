@@ -1,4 +1,4 @@
-<?php
+<?php //namespace App\Plugins\PjInvoice\Controllers;
 if (!defined("ROOT_PATH"))
 {
 	header("HTTP/1.1 403 Forbidden");
@@ -211,8 +211,8 @@ class pjInvoice extends pjInvoiceAppController
 		
 		if (!$this->isInvoiceReady())
 		{
-			$this->set('status', 2);
-			return;
+			// $this->set('status', 2);
+			// return;
 		}
 		
 		$pjInvoiceModel = pjInvoiceModel::factory();
@@ -222,6 +222,7 @@ class pjInvoice extends pjInvoiceAppController
 		{
 			$data = array();
 			$data['foreign_id'] = $this->getForeignId();
+			$data['locale_id'] = $this->getLocaleId();
 			$data['issue_date'] = !empty($_POST['issue_date']) ? pjUtil::formatDate($_POST['issue_date'], $this->option_arr['o_date_format']) : NULL;
 			$data['due_date'] = !empty($_POST['due_date']) ? pjUtil::formatDate($_POST['due_date'], $this->option_arr['o_date_format']) : NULL;
 			$data['s_date'] = !empty($_POST['s_date']) ? pjUtil::formatDate($_POST['s_date'], $this->option_arr['o_date_format']) : NULL;
@@ -230,7 +231,9 @@ class pjInvoice extends pjInvoiceAppController
 			{
 				pjUtil::redirect(PJ_INSTALL_URL . "admin.php?controller=pjInvoice&action=pjActionInvoices&err=PIN06");
 			}
+			//App::dd($data);
 			$invoice_id = $pjInvoiceModel->setAttributes($data)->insert()->getInsertId();
+			//App::dd($invoice_id);
 			if ($invoice_id !== false && (int) $invoice_id > 0)
 			{
 				$pjInvoiceItemModel
@@ -394,7 +397,7 @@ class pjInvoice extends pjInvoiceAppController
 	{
 		$this->setAjax(true);
 	
-		if ($this->isXHR() && $this->isLoged() && $this->isInvoiceReady())
+		if ($this->isXHR())
 		{
 			$pjInvoiceModel = pjInvoiceModel::factory();
 			
@@ -446,7 +449,7 @@ class pjInvoice extends pjInvoiceAppController
 			{
 				$data[$k]['paid_deposit'] = pjUtil::formatCurrencySign(number_format($v['paid_deposit'], 2), !empty($v['currency']) ? $v['currency'] : $this->option_arr['o_currency']);
 			}
-						
+			//App::dd($data);			
 			pjAppController::jsonResponse(compact('data', 'total', 'pages', 'page', 'rowCount', 'column', 'direction'));
 		}
 		exit;
@@ -571,11 +574,14 @@ class pjInvoice extends pjInvoiceAppController
 		}
 		
 		$this->set('timezones', $this->sortTimezones(__('timezones', true)));
+		
 		$this->set('country_arr', pjCountryModel::factory()
 			->select('t1.*, t2.content AS `name`')
 			->join('pjMultiLang', "t2.model='pjCountry' AND t2.foreign_id=t1.id AND t2.field='name' AND t2.locale='".$this->getLocaleId()."'", 'left outer')
-			->orderBy('`name` ASC')
+			->orderBy('`sortname` ASC')
 			->findAll()->getData());
+			// App::dd($this->tpl['country_arr']);
+			// exit;
 		
 		$arr = pjInvoiceConfigModel::factory()->find(1)->getData();
 		if (!empty($arr))
@@ -617,12 +623,12 @@ class pjInvoice extends pjInvoiceAppController
 	{
 		//$this->checkLogin();
 		
-		// if (!$this->isInvoiceReady())
-		// {
-		// 	$this->set('status', 2);
-		// 	return;
-		// }
-		
+		if (!$this->isInvoiceReady())
+		{
+			// $this->set('status', 2);
+			// return;
+		}
+		$invoice_config_arr = pjInvoiceConfigModel::factory()->getConfigData($this->getLocaleId());
 		$this
 			->set('invoice_config_arr', pjInvoiceConfigModel::factory()->getConfigData($this->getLocaleId()))
 			->appendJs('jquery.datagrid.js', PJ_FRAMEWORK_LIBS_PATH . 'pj/js/')
@@ -1009,11 +1015,11 @@ class pjInvoice extends pjInvoiceAppController
 	{
 		//$this->checkLogin();
 		
-		if (!$this->isInvoiceReady())
-		{
-			$this->set('status', 2);
-			return;
-		}
+		// if (!$this->isInvoiceReady())
+		// {
+		// 	$this->set('status', 2);
+		// 	return;
+		// }
 		
 		$pjInvoiceModel = pjInvoiceModel::factory();
 		
@@ -1048,7 +1054,7 @@ class pjInvoice extends pjInvoiceAppController
 		$this->set('country_arr', pjCountryModel::factory()
 			->select('t1.*, t2.content AS `name`')
 			->join('pjMultiLang', "t2.model='pjCountry' AND t2.foreign_id=t1.id AND t2.field='name' AND t2.locale='".$this->getLocaleId()."'", 'left outer')
-			->orderBy('`name` ASC')
+			->orderBy('`sortname` ASC')
 			->findAll()->getData());
 		$this
 			->set('arr', $arr)
@@ -1103,5 +1109,6 @@ class pjInvoice extends pjInvoiceAppController
 			->appendCss('invoice.css', $this->getConst('PLUGIN_CSS_PATH'))
 		;
 	}
+	
 }
 ?>

@@ -27,6 +27,8 @@ class BookingModel extends App_Model {
 	private $billingAddress = array();
 	
 	private $table;
+	private $ticket;
+	private $attachment;
 
 	// ### Ticket PDF
 	private $hash = '';
@@ -45,18 +47,8 @@ class BookingModel extends App_Model {
 
 		mt_srand();
 		$this->hash = mt_rand(1000, 9999);
-
-		
-		
-
+		$this->ticket = new Ticket();
 	}
-	
-	
-	
-	
-	
-	
-	
 	public function generatePdf($params)
 	{
 		$dm = new pjDependencyManager(PJ_INSTALL_PATH, PJ_THIRD_PARTY_PATH);
@@ -103,10 +95,13 @@ class BookingModel extends App_Model {
 		//App::dd($this->optionArray);
 		
 		if(is_array($this->data) && count($this->data) > 0) {
+			/*
+			 * don't trust this code go for stack overflow
+			 * 
 			if(is_array($this->data['creditCardInfo']) && count($this->data['creditCardInfo']) > 0) {
 				$this->creditCardInfo = array($this->data['creditCardInfo']);
 				foreach($this->creditCardInfo as $creditCardInfo) {
-					///App::dd($creditCardInfo);
+					App::dd($creditCardInfo);
 					$this->data['booking']['cc_num'] 		= $creditCardInfo['cc_num'];
 					$this->data['booking']['cc_type'] 		= $creditCardInfo['cc_type'];
 					$this->data['booking']['cc_exp_month'] = $creditCardInfo['cc_exp_month'];
@@ -114,15 +109,15 @@ class BookingModel extends App_Model {
 					$this->data['booking']['cc_code'] 		= $creditCardInfo['cc_code'];
 				}
 			}
+			*/
 			if(is_array($this->data['billingAddress']) && count($this->data['billingAddress']) > 0) {
 				$this->billingAddress = array($this->data['billingAddress']);
 				foreach($this->billingAddress as $billingAddress) {
-
 					$this->data['booking']['c_name'] 		= $billingAddress['c_firstName'] . " " . $billingAddress['c_lastName'];
 					$this->data['booking']['c_phone'] 		= $billingAddress['c_phone'];
 					$this->data['booking']['c_email'] 		= $billingAddress['c_email'];
 					$this->data['booking']['c_country'] 	= $billingAddress['c_country'];
-					//$this->data['c_state'] 		= $billingAddress['state'];
+					$this->data['booking']['c_state'] 		= $billingAddress['c_state'];
 					$this->data['booking']['c_city'] 		= $billingAddress['c_city'];
 					$this->data['booking']['c_address'] 	= $billingAddress['c_address'];
 					$this->data['booking']['c_zip'] 		= $billingAddress['c_zip'];
@@ -141,9 +136,11 @@ class BookingModel extends App_Model {
 		$this->data['booking']['created'] 			= $this->data['created'];
 		$this->data['booking']['uuid'] = self::uuid();
 		$this->data['booking']['ip'] = self::getClientIp();
+		$this->data['booking']['date_time'] = $this->data['date_time'];
+		//App::dd($this->data);
 		$insertId = $this->pjBookingModel->setAttributes($this->data['booking'])->insert()->getInsertId();
 		
-		$this->data['date_time'] = $this->data['date_time'];
+		
 		$arr = array();
 		if($insertId !== false && (int) $insertId > 0) {
 			
@@ -151,7 +148,7 @@ class BookingModel extends App_Model {
 									->join('pjPrice', "t1.price_id=t2.id", 'left outer')
 									->select("t1.id, t1.price_id, t1.price")
 									->where('t1.event_id', $this->data['event_id'])
-									->where("t1.date_time = '". $this->data['date_time'] . "'")
+									->where("t1.date_time = '". $this->data['booking']['date_time'] . "'")
 									->where("t1.venue_id", $this->data['venue_id'])
 									->findAll()
 									->getData();
@@ -199,21 +196,18 @@ class BookingModel extends App_Model {
 			// ### generate invoice
 			$this->pjActionGenerateInvoice($arr);
 					   
-			exit;
-			// $this->response['error'] = 'AR03'; 
-			// $this->response['data'] = $this->data; 
-			// $this->response['arr'] = $arr; 
-			// $this->response['insertId'] = $insertId;
-			// return $this->response;
+			//exit;
+			$this->response['error'] = 'AR03'; 
+			$this->response['message'] = 'You have successfully booked';
+			//$this->response['attachmentTicket'] = $this->getAttachmentTicket();
+			return $this->response;
 		} else {
 			$this->response['error'] = 'AR04'; 
-			$this->response['data'] = $this->data; 
-			$this->response['arr'] = $arr; 
-			$this->response['insertId']  = 0;
+			$this->response['message'] = 'Booking Failed! Try again later';
+			$this->response['attachmentTicket'] = '';
 		}
 		return $this->response;
 	}
-
 
 	private function pjActionGetBookingDetails($id, $options = null) {
 		try {
@@ -345,12 +339,20 @@ class BookingModel extends App_Model {
 				}
 				$bt_arr[$k] = $v;
 			}
-			$ticket = new Ticket();
-			$ticket->generatePdf($bt_arr);
+			
+			$this->ticket->generatePdf($bt_arr);
+			$this->setAttachmentTicket($this->ticket->getPDF());
 		}
 		} catch(\Exception $ex) {
 			echo "error in buildPdfTickets".$ex->getMessage();
 		}
+	}
+	public function setAttachmentTicket($attachment) {
+		$this->attachment = $attachment;
+		return $this;
+	}
+	public function getAttachmentTicket() {
+		return $this->attachment;
 	}
 	private function getData($option_arr, $booking_arr, $salt, $locale_id)
 	{
@@ -539,8 +541,6 @@ class BookingModel extends App_Model {
 	
 		return $response;*/
 	}
-
-
 	public function saveToBookingTable($data){
 		$this->db->insert('tk_cbs_bookings', $data);
 		$insert_id = $this->db->insert_id();

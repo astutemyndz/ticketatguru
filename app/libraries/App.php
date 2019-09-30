@@ -83,5 +83,18 @@ class App {
         return FALSE;
     }
 
-
+   public static function setMapHolderWidth($mapHolderWidth) {
+       self::setSession('mapHolderWidth', $mapHolderWidth);
+       return $this;
+   }
+   public static function getMapHolderWidth() {
+       return self::getSession('mapHolderWidth');
+   }
+   public static function setMapHolderHeight($mapHolderHeight) {
+        self::setSession('mapHolderHeight', $mapHolderHeight);
+        return $this;
+   }
+   public static function getMapHolderHeight() {
+     return self::getSession('mapHolderHeight');
+   }
 }

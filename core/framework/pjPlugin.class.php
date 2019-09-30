@@ -20,6 +20,10 @@ if (!defined("ROOT_PATH"))
  */
 class pjPlugin extends pjAppController
 {
+	public function __construct()
+	{
+		parent::__construct();
+	}
 /**
  * Invoked after script install
  *

@@ -1,9 +1,11 @@
 <?php 
 //use App\Controllers\pjAppController;
 //use App\Models\pjAppModel;
+use Honeycrisp\Mail\Mailer;
 
 class App_Controller extends CI_Controller
 {
+	protected $value;
 	public $defaultStore 				= 'pjTicketBooking_Store';
 	public 		$models 				= array();
 	public 		$defaultLocale 			= 'frontend_locale_id';
@@ -19,6 +21,7 @@ class App_Controller extends CI_Controller
 	protected   $data					 = array();
 	protected	$payPalConfig			= array();
 	protected	$response			= array();
+	protected 	$mailer;
 
 	public function __construct()
     {
@@ -26,7 +29,59 @@ class App_Controller extends CI_Controller
 		$this->pjActionLoad();
 		$this->beforeFilter();
 		$this->afterFilter();
+		$this->createMailerInstance();
+		$this->setServerConfiguration();
 	}
+	// Create an Instance of Mailer Class;
+	protected function createMailerInstance() {
+		$this->mailer =  new Mailer();
+	}
+	// Get SMTP HOST
+	protected function getSMTPHost() {
+		return ($this->option_arr['o_smtp_host']) ? $this->option_arr['o_smtp_host'] : '';
+	}
+	// Get SMTP USER
+	protected function getSMTPUser() {
+		return ($this->option_arr['o_smtp_user']) ? $this->option_arr['o_smtp_user'] : '';
+	}
+	// Get SMTP PASS
+	protected function getSMTPPass() {
+		return ($this->option_arr['o_smtp_pass']) ? $this->option_arr['o_smtp_pass'] : '';
+	}
+	// Get SMTP POST
+	protected function getSMTPPort() {
+		return ($this->option_arr['o_smtp_port']) ? $this->option_arr['o_smtp_port'] : '';
+	}
+	// Email account for email notifications
+	protected function getSMTPEmailAddress() {
+		return ($this->option_arr['o_email_address']) ? $this->option_arr['o_email_address'] : '';
+	}
+	// Email account for email notifications
+	// protected function getLoggedInUserEmail()) {
+	// 	return ($this->option_arr['email']) ? $this->option_arr['o_email_address'] : '';
+	// }
+	
+	// Server Configuration
+	protected function setServerConfiguration() {
+		//App::dd($this->mailer);
+		$this->mailer->setSMTPDebug(2);
+		$this->mailer->isSMTP();
+		$this->mailer->setHost($this->getSMTPHost());
+		$this->mailer->setSMTPAuth(true);
+		$this->mailer->setUsername($this->getSMTPUser());
+		$this->mailer->setPassword($this->getSMTPPass());
+		$this->mailer->setSMTPSecure('tls');
+		$this->mailer->setPort($this->getSMTPPort());
+		$this->mailer->setFrom($this->getSMTPEmailAddress(), 'Ticket At Guru');
+	}
+	public function __setter($value) {
+        $this->value = $value;
+        return $this;
+    }
+    public function __getter() {
+        return $this->value;
+	}
+	
 	private function setSetOptionArrayInSession() {
 		$OptionModel = pjOptionModel::factory();
 		$this->option_arr = $OptionModel->getPairs($this->getForeignId());

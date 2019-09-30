@@ -322,6 +322,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 				          {text: myLabel.tickets, type: "text", sortable: true, editable: false},
 				          {text: myLabel.event, type: "text", sortable: true, editable: false, width: 140},
 				          {text: myLabel.date_time, type: "text", sortable: true, width: 120},
+				          
 				          {text: myLabel.status, type: "select", sortable: true, editable: true, width: 100, options: [
 				                                                                                     {label: myLabel.pending, value: "pending"}, 
 				                                                                                     {label: myLabel.confirmed, value: "confirmed"},
@@ -834,7 +835,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 		}).on("change", "#payment_method", function (e) {
 			switch ($("option:selected", this).val()) {
 				case 'creditcard':
-					$(".boxCC").show();
+					//$(".boxCC").show();
 					break;
 				default:
 					$(".boxCC").hide();

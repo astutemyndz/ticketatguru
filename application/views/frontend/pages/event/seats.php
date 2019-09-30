@@ -1,5 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
+// echo "<pre>";
+// print_r($_SESSION);
 // exit;
 mt_srand();
 $index = mt_rand(1, 9999);
@@ -7,6 +9,7 @@ $validate = str_replace(array('"', "'"), array('\"', "\'"), __('validate', true,
 
 
 $defaultStore = ($this->session->userdata('pjTicketBooking_Store')) ? $this->session->userdata('pjTicketBooking_Store') : [];
+
 $option_arr = ($this->session->userdata('option_arr')) ? $this->session->userdata('option_arr') : [];
 $layout = ($this->input->get('layout')) ? $this->input->get('layout') : $option_arr['o_theme'];
 
@@ -51,8 +54,10 @@ if($defaultStore['ticket_arr'] && count($defaultStore['ticket_arr']) > 0)
 								$map = PJ_INSTALL_PATH . $defaultStore['venue_arr']['map_path'];
 									if (is_file($map)) { 
 										$size = getimagesize($map);
-										?>
-										<div class="wrapper-image">
+										$mapWidth = "800";
+										$mapHeight = "650";
+										/*?>
+										<div class="wrapper-image" style="width: <?php echo $mapWidth; ?>px; height: <?php echo $mapHeight; ?>px; margin: 0 auto;">
 												<div id="tbMapHolder_<?php echo $index;?>" class="tbMapHolder pjCbCinema" style="height: <?php echo $size[1];?>px;">
 													<div style="height: <?php echo $size[1];?>px;width:<?php echo $size[0];?>px;margin-left: 0px;margin:0 auto;position: relative;" class="panzoom">
 														<!-- <img id="stadium-seat-plan"  src="<?php echo base_url();?>images/stadium2-bg.jpg" alt="stadium" usemap="#map" /> -->
@@ -72,7 +77,21 @@ if($defaultStore['ticket_arr'] && count($defaultStore['ticket_arr']) > 0)
 													<button class="button zoom-in" alt="Zoom In" title="Zoom In"><i class="fa fa-plus-circle" alt="Zoom In"></i></button>
 											</div>
 										</div>
-										
+										*/?>
+										<div class="wrapper-image" style="width: <?php echo $mapWidth; ?>px; height: <?php echo $mapHeight; ?>px; margin: 0 auto;">
+												<div id="tbMapHolder_<?php echo $index;?>" class="tbMapHolder pjCbCinema panzoom">
+														<img usemap="#map" id="tbMap_1" src="<?php echo PJ_INSTALL_URL . $defaultStore['venue_arr']['map_path']; ?>" alt=""/>
+														<map id="plk-map-seat-points-wrapper" name="map" class="seatmap">
+															<!--Map Seats-->
+														</map>
+												</div>
+											<div id="PLKZOOMBTNWRAPPER" style="clear:both;" class="show-for-large zoom-buttons-wrapper">
+													<!-- <button class="button print" alt="Print Map" title="Print Map" onclick="printGalaMap('72', '64')"><i class="fa fa-print" alt="Print Map"></i></button> -->
+													<button class="button reset" alt="Reset" title="Reset"><i class="fa fa-times-circle" alt="Reset"></i></button>
+													<button class="button zoom-out" alt="Zoom Out" title="Zoom Out"><i class="fa fa-minus-circle" alt="Zoom Out"></i></button>
+													<button class="button zoom-in" alt="Zoom In" title="Zoom In"><i class="fa fa-plus-circle" alt="Zoom In"></i></button>
+											</div>
+										</div>
 										
 								<?php } else { ?>
 								<?php } ?>

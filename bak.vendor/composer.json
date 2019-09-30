@@ -1,0 +1,22 @@
+{
+    "name": "rakesh/ticketatguru",
+    "version": "1.0.0",
+    "homepage": "http://google.com/",
+    "type": "library",
+    "description": "",
+    "keywords": [
+    ],
+    "license": "LGPL-3.0",
+    "authors": [
+      {
+        "name": "Rakesh Maity",
+        "email": "rakesh@astutemyndz.com",
+        "role": "web developer"
+      }
+    ],
+    "require": {
+        "tecnickcom/tcpdf": "6.2.26",
+        "rakeshmaity271/components": "1.0.0",
+        "php": ">=5.3.0"
+    }
+}

@@ -35,9 +35,7 @@ class pjAdmin extends pjAppController
 				// App::printSession();
 				// exit;
 			}
-			if(!App::isView()) {
-				$this->set('status', 2);
-			}
+			
 		}
 	}
 	

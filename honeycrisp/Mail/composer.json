@@ -1,0 +1,31 @@
+{
+    "name": "honeycrisp/mail",
+    "description": "The Illuminate Mail package.",
+    "license": "MIT",
+    "homepage": "https://honeycrisp.com",
+    "authors": [
+        {
+            "name": "Rakesh",
+            "email": "rakeshmaity271@gmail.com"
+        }
+    ],
+    "require": {
+      
+    },
+    "replace": {
+       
+    },
+    "require-dev": {
+       
+    },
+    "autoload": {
+        "psr-4": {
+            "Honeycrisp\\Mail\\": ""
+        }
+    },
+     "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

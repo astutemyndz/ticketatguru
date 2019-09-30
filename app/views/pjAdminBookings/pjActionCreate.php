@@ -186,7 +186,8 @@ if (isset($tpl['status']))
 							<?php
 							foreach (__('payment_methods', true, false) as $k => $v)
 							{
-								?><option value="<?php echo $k; ?>"><?php echo $v; ?></option><?php
+							
+								?><option style="display:<?php echo (in_array($k, ['authorize', 'bank', 'paypal'])) ? 'none' : 'block';?>"  value="<?php echo $k; ?>"><?php echo $v; ?></option><?php
 							}
 							?>
 						</select>

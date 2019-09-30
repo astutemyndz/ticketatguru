@@ -16,6 +16,7 @@ class pjFieldModel extends pjAppModel
 		array('name' => 'type', 'type' => 'enum', 'default' => ':NULL'),
 		array('name' => 'label', 'type' => 'varchar', 'default' => ':NULL'),
 		array('name' => 'source', 'type' => 'enum', 'default' => 'script'),
+		array('name' => 'created_at', 'type' => 'timestamp', 'default' => ':current_timestamp()'),
 		array('name' => 'modified', 'type' => 'datetime', 'default' => ':NULL')
 	);
 	

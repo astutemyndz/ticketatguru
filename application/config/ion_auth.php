@@ -38,9 +38,9 @@ $config['database_group_name'] = '';
 | -------------------------------------------------------------------------
 | Database table names.
 */
-$config['tables']['users']           = 'users';
-$config['tables']['groups']          = 'groups';
-$config['tables']['users_groups']    = 'users_groups';
+$config['tables']['users']           = 'tk_cbs_customers';
+$config['tables']['groups']          = 'tk_cbs_roles';
+$config['tables']['users_groups']    = 'tk_cbs_customer_groups';
 $config['tables']['login_attempts']  = 'login_attempts';
 
 /*
@@ -49,8 +49,9 @@ $config['tables']['login_attempts']  = 'login_attempts';
  | Joins from users.id
  | Joins from groups.id
  */
-$config['join']['users']  = 'user_id';
-$config['join']['groups'] = 'group_id';
+$config['join']['users']  = 'tk_cbs_customers_id';
+$config['join']['groups'] = 'tk_cbs_roles_id';
+$config['join']['tk_cbs_roles'] = 'id';
 
 /*
  | -------------------------------------------------------------------------
@@ -195,3 +196,6 @@ $config['message_start_delimiter'] = '<p>'; 	// Message start delimiter
 $config['message_end_delimiter']   = '</p>'; 	// Message end delimiter
 $config['error_start_delimiter']   = '<p>';		// Error message start delimiter
 $config['error_end_delimiter']     = '</p>';	// Error message end delimiter
+
+
+$config['is_customer'] = 1;

@@ -117,7 +117,7 @@ $("document").ready(function() {
     loadCart();
     $('#checkoutLink').on('click', function() {
 		setTimeout(() => {
-			window.location.href = `${API_URL}auth/login`;
+			window.location.href = `${API_URL}cart/checkout`;
 		}, 300);
     });
     $('#continueLink').on('click', function() {

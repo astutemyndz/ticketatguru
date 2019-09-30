@@ -8,7 +8,7 @@ if (!defined("ROOT_PATH"))
 class pjAdminEvents extends pjAdmin
 {
 	public $sessionShow = 'pjShow_session';
-	
+	private $currentDate = null;
 	public function pjActionCreate()
 	{
 		
@@ -571,7 +571,54 @@ class pjAdminEvents extends pjAdmin
 						$booked_id_arr[$v['show_id']][] = $v['seat_id'];
 					}
 				}
+			// 	$this->currentDate = strtotime(date($this->option_arr['o_date_format']));
+			// 	// $showTime = strtotime('2019-08-30 23:00:00');
+			// 	// if($currentDate > $showTime)
+			// 	// {
+			// 	// 	echo '<span class="status expired">Expired</span>';
+			// 	// } else {
+			// 	// 	echo '<span class="status expired">Not Expired</span>';
+			// 	// }
+			// 	// exit;
+			// 	//App::dd($show_arr);
+			// 	// $fullArray = array();
+
+
+			// 	// function filterArray($value, $key){
+			// 	// 	print_r($value);
+			// 	// 	//return ($this->currentDate > $value);
+			// 	// }
+
+			// 	// $filteredArray = array_filter($fullArray, 'filterArray');
+
+			// 	// foreach($filteredArray as $k => $v){
+			// 	// 	echo "$k = $v";
+			// 	// }
+			// 	// $showArr = array();
+			// 	// $expired = false;
+			// 	// if(is_array($show_arr) && !empty($show_arr)) {
+			// 	// 	foreach($show_arr as $show) {
+			// 	// 		$fullArray = $show;
+			// 	// 		//App::dd($fullArray);
+			// 	// 		$filteredArray = array_filter($fullArray, 'filterArray');
+			// 	// 	}
+			// 	// }
+			// 	if(is_array($show_arr) && !empty($show_arr)) {
+			// 		foreach($show_arr as $show) {
+						
+			// 				if ($this->currentDate > strtotime($show['date_time']))  {
+			// 					echo "expired";
+			// 				} else {
+			// 					echo "not expired";
+			// 				}
+						
+			// 		}
+			// 	}
 				
+			// //	print_r($show_arr);
+			// 	exit;
+			// 	
+				//App::dd($show_arr);
 				$this->set('arr', $arr);
 				$this->set('venue_arr', $venue_arr);
 				$this->set('price_arr', $price_arr);

@@ -476,26 +476,20 @@ class EventController extends App_Controller
 										->findAll()
 										->getData();
 				
-				// echo "<pre>";
-				// print_r($_show_arr);
-				// exit;
-				if(count($_show_arr) > 0 && !$this->hasSession('venue_id'))
+				
+				if(count($_show_arr) > 0)
 				{
 					$venue_id = $_show_arr[0]['venue_id'];
+					$this->session->set_userdata('venue_id', $venue_id);
 					
-					
-				}else if($this->hasSession('venue_id')){
-					
-					$venue_id = $this->getSession('venue_id');
-					
-				} 
+				}
 				// echo $venue_id;
 				// 	exit;
 					
 				if($venue_id != null)
 				{
 					
-					$this->setSession('venue_id', $venue_id);
+					//$this->setSession('venue_id', $venue_id);
 					
 					$ticket_arr = $pjShowModel->reset()
 						->join('pjMultiLang', "t2.model='pjPrice' AND t2.foreign_id=t1.price_id AND t2.field='price_name' AND t2.locale='".$this->getLocaleId()."'", 'left outer')
@@ -519,8 +513,9 @@ class EventController extends App_Controller
 						->getData();
 					
 					$this->data['ticket_arr'] = $ticket_arr;
-					
+				
 					$venue_arr = pjVenueModel::factory()->find($venue_id)->getData();
+				
 					
 					$seat_arr = pjSeatModel::factory()
 						->select("t1.*, (SELECT GROUP_CONCAT( TS.price_id SEPARATOR '~:~') FROM `".pjShowModel::factory()->getTable()."` AS TS WHERE TS.event_id='".$id."' AND TS.date_time = '". $selected_date . ' ' . $selected_time . ":00' AND TS.id IN (SELECT TSS.show_id FROM `".pjShowSeatModel::factory()->getTable()."` AS TSS WHERE TSS.seat_id=t1.id) ) AS price_id,
@@ -562,7 +557,7 @@ class EventController extends App_Controller
 					$this->data['seat_name_arr'] 					= $seat_name_arr;
 					$this->data['seats_available'] 					= $cnt_booked_seats >= $total_available_seats ? false: true;
 					$this->data['total_remaining_avaliable_seats'] 	= $total_remaining_avaliable_seats;
-				}
+				} 
 					$this->data['arr'] 				= $arr;
 					$this->data['hash_date'] 		= $hash_date;
 					$this->data['selected_date'] 	= $selected_date;
@@ -576,7 +571,8 @@ class EventController extends App_Controller
 				$selected_date 	= $hash_date;
 				$this->data['status'] 			= 'ERR';
 			}
-			$this->setSession($this->defaultStore, $this->data);
+			//$this->setSession($this->defaultStore, $this->data);
+			$this->session->set_userdata($this->defaultStore, $this->data);
 			pjAppController::jsonResponse(array('status' => TRUE, 'code' => 200, 'data' => $this->data));
 		}
 	}

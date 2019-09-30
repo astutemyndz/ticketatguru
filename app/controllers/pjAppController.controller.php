@@ -14,6 +14,13 @@ class pjAppController extends pjController
 	
 	public $defaultFieldsIndex = 'fields_index';
   
+	public function __construct() {
+		if(!App::isView()) {
+			$this->set('status', 2);
+		}
+		// App::setMapHolderWidth(800);
+		// App::setMapHolderHeight(600);
+	}
 	protected function loadSetFields($force=FALSE, $locale_id=NULL, $fields=NULL)
 	{
 		if (is_null($locale_id))

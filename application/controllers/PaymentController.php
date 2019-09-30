@@ -102,7 +102,8 @@ class PaymentController extends App_Controller
         // set credit card info
         $this->setCreditCardInfo($this->data['creditCardInfo']);
         $this->creditCardInfo = $this->getCreditCardInfo();
-
+        
+        
         $this->item = new Item();
 
         if($this->cartItems) {
@@ -132,8 +133,8 @@ class PaymentController extends App_Controller
         $this->creditCard = new CreditCard();
         $this->creditCard->setNumber($this->creditCardInfo['number']);
         $this->creditCard->setType($this->creditCardInfo['type']);
-        $this->creditCard->setExpireMonth($this->creditCardInfo['expireMonth']);
-        $this->creditCard->setExpireYear($this->creditCardInfo['expireYear']);
+        $this->creditCard->setExpireMonth($this->creditCardInfo['expiryMonth']);
+        $this->creditCard->setExpireYear($this->creditCardInfo['expiryYear']);
         $this->creditCard->setCvv2($this->creditCardInfo['cvv2']);
         $this->creditCard->setBillingAddress($this->billingAddress);
 

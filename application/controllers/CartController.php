@@ -6,12 +6,19 @@ class CartController extends App_Controller {
     public $defaultStore = 'pjTicketBooking_Store';
 	public $cartItems = array();
     private $isCart = false;
+    private $country;
+
     function __construct() {
         parent::__construct();
+        $this->cart->product_name_safe = FALSE;
         $this->isCart = (count($this->cart->contents()) > 0) ? true : false;
+        $this->load->model('LocationModel');
         
     }
-
+    public function setCountry($value) {
+        $this->country = $value;
+        return $this;
+    }
    
     /**
      * List of cart items or Cart page
@@ -96,15 +103,15 @@ class CartController extends App_Controller {
         $total = 0;
         if($this->isCart) {
             $items = $this->cart->contents();
-            
+          //  App::dd($items);
             if(count($items) > 0) {
                 foreach($items as $rowid => $item) {
                     $rows[] = '<tr class="cartTr" data-id="'.$rowid.'">
                                     <td>'.$item['name'].'</td>
-                                    <td>'.$item['price'].'</td>
+                                    <td>'.(float)$item['price'].'.00</td>
                                     <td class="text-right"><button class="btn btn-sm btn-danger" data-id="'.$rowid.'"><i class="fa fa-trash"></i> </button> </td>
                                 </tr>';
-                    $total += $this->cart->format_number($item['subtotal']); 
+                    $total += (float) $this->cart->format_number($item['subtotal']); 
                    
                 }
                 //$this->cart->format_number($items['subtotal']);
@@ -112,46 +119,15 @@ class CartController extends App_Controller {
                 $rows = [];
             }
 
-            /*
-            $props = array(
-                'thead' => array(
-                    'id' => '',
-                    'className' => '"table-head',
-                    'tr' => array(
-                        'id' => '',
-                        'className' => ''
-                    ),
-                    'th' => array(
-                        'columns' => array('Title','Quantity','Price','Action'),
-                        'id' => 'th',
-                        'className' => 'th',
-                        'component' => NULL
-
-                    )
-                ),
-                'tbody' => array(
-                    'id' => '',
-                    'className' => 'table-list',
-                    'tr' => array(
-                        'id' => '',
-                        'className' => ''
-                    ),
-                    'body' => $rows,
-                    'td' => array(
-                        'id' => '',
-                        'className' => '',
-                        'component' => NULL
-                    )
-                ),
-            );
-            */
 
             
         }
+        // echo $total;
+        // exit;
             $this->data['rows'] = $rows;
             $this->data['cart'] = ($this->cart->contents()) ? count($this->cart->contents()) : 0;
             $this->data['li'] = $this->LIComponent();
-            $this->data['subtotal'] = ($total) ? $total : 0;
+            $this->data['subtotal'] = ($total) ? $total.".00" : "0.00";
             // echo "<pre>";
             // print_r($this->data);
             pjAppController::jsonResponse($this->data);
@@ -194,8 +170,7 @@ class CartController extends App_Controller {
 		if ($this->isXHR())
 		{
 			$this->defaultStore = ($this->session->userdata($this->defaultStore)) ? $this->session->userdata($this->defaultStore) : [];
-            // echo "<pre>";
-            // print_r($option_arr);
+            
 			$class = 'tbAssignedNoMap';
 			if(isset($this->defaultStore['venue_arr']))
 			{
@@ -280,8 +255,7 @@ class CartController extends App_Controller {
                 
 
 			} else {
-                // echo "<pre>";
-                // print_r($this->defaultStore['seat_arr']);
+              
                 foreach($this->defaultStore['seat_arr'] as $seat) {
                     $is_selected = false;
                     $is_available = true;
@@ -349,7 +323,10 @@ class CartController extends App_Controller {
                 'o_currency'=> $this->option_arr['o_currency'],
                 'event'     => $event
             );
-          
+            //App::dd($data);
+            // try {
+
+            // } catch( \)
             if($this->cart->insert($data)) {
                 $this->session->set_userdata('show', $show_id);
                 $response['cart'] = TRUE;
@@ -360,7 +337,7 @@ class CartController extends App_Controller {
                 $response['cart'] = FALSE;
                 $response['responseText'] = 'Item not add to cart';
                 $response['spanArray'] = $this->LoadMapComponent();
-                $response['liy'] = $this->LIComponent();
+                $response['li'] = $this->LIComponent();
             }
            
             $response['code'] = 200;
@@ -390,7 +367,7 @@ class CartController extends App_Controller {
      * @return array of span
      */
     private static function SeatComponent($args = array()) {
-		return "<span data-type=".$args['props']['ticketAttr']." data-show=".$args['props']['show']." data-venue=".$args['props']['venue']." title=".$args['props']['tooltip']." data-id=".$args['props']['id']." data-name=".$args['props']['name']." data-price_id=".$args['props']['price_id']." data-price=".$args['props']['price']." class='".$args['props']['className']."' style='".$args['props']['style']."'>".stripslashes($args['props']['name'])."</span>";
+		return "<span data-type=".$args['props']['ticketAttr']." data-show=".$args['props']['show']." data-venue=".$args['props']['venue']." title='".$args['props']['tooltip']."' data-id=".$args['props']['id']." data-name='".$args['props']['name']."' data-price_id=".$args['props']['price_id']." data-price=".$args['props']['price']." class='".$args['props']['className']."' style='".$args['props']['style']."'></span>";
 	}
     public function pjActionCartEmpty() {
         //$this->unsetSession('show_id');
@@ -409,13 +386,18 @@ class CartController extends App_Controller {
         }
         return false;
     }
-
+    // Checkout Page start of code
     public function checkout() {
-        //App::dd($this->cart->contents());
+       // App::dd($_SESSION);
         $this->load->library(array('ion_auth'));
         if (!$this->ion_auth->logged_in())
         {
           redirect('auth/login');
+        }
+
+        if (!$this->cart->contents())
+        {
+          redirect('cart');
         }
 
         $this->load->model('UserModel');
@@ -423,8 +405,15 @@ class CartController extends App_Controller {
             $this->UserModel->setUserId($this->getSession('user_id'));
             $this->data['user'] = $this->UserModel->getUser();
         }
-        
-        //App::dd($this->getSession('user_id'));
+        $this->setCountry($this->LocationModel->countries());
+        foreach($this->country as $c) {
+            $this->data['countries'][] = array(
+                'value' => $c['sortname'],
+                'text' => $c['name'],
+                'id' => $c['id'],
+            ); 
+        }
+        //App::dd($this->data);
         $this->data['title'] 		= 'Checkout Page';
         $this->data['page_heading'] 		= 'Checkout';
         $this->load->view('frontend/layout/head', $this->data);
@@ -435,6 +424,10 @@ class CartController extends App_Controller {
     }
 
     public function pjActionCheckout() {
+        if (!$this->ion_auth->logged_in())
+        {
+          redirect('auth/login');
+        }
         $this->data['page_heading'] 		= 'Checkout';
     }
 	
